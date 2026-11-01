@@ -5,6 +5,7 @@ const ROOT = path.join(__dirname, '..');
 const DN = path.join(ROOT, 'memory', 'dash_now.json'), DH = path.join(ROOT, 'logs', 'dash_history.jsonl');
 const PAGE = path.join(ROOT, 'web', 'dash.html');
 const PORT = +(process.env.DASH_PORT || 3010), HOST = process.env.DASH_HOST || '127.0.0.1';
+const BOT_PORT = +(process.env.DASH_BOT_PORT || 3002); // botEval 目标（线上号 3002；本地测试 DASH_BOT_PORT=3001）
 
 function history(hours, raw) {
   const since = Date.now() - hours * 3600e3;
@@ -20,7 +21,7 @@ const F = (n) => path.join(ROOT, 'memory', n);
 const wlog = (t) => { try { fs.appendFileSync(path.join(ROOT, 'logs', 'online_watch.log'), new Date().toTimeString().slice(0, 8) + ' dash ' + t + '\n'); } catch {} };
 function botEval(body) {
   return new Promise((ok) => {
-    const r2 = http.request({ host: '127.0.0.1', port: 3002, path: '/eval', method: 'POST', headers: { 'Content-Type': 'text/plain' }, timeout: 15000 }, (r) => {
+    const r2 = http.request({ host: '127.0.0.1', port: BOT_PORT, path: '/eval', method: 'POST', headers: { 'Content-Type': 'text/plain' }, timeout: 15000 }, (r) => {
       let b = ''; r.on('data', (d) => (b += d)); r.on('end', () => { try { ok(JSON.parse(b)); } catch { ok({ ok: false, err: b.slice(0, 200) }); } });
     });
     r2.on('error', (e) => ok({ ok: false, err: '号不在线（' + e.code + '）' })); r2.on('timeout', () => { r2.destroy(); ok({ ok: false, err: '超时' }); });
@@ -98,13 +99,24 @@ http.createServer((req, res) => {
   }
   // 回城补给阈值：GET 读；POST ?k=口令&v=JSON 写 memory/home_cfg.json 并立刻应用到在线的号
   if (u.pathname === '/api/cfg') {
-    const CF = F('home_cfg.json'); const KEYS = ['minArrow', 'buyArrowTo', 'minFood', 'buyFoodTo', 'minFree'];
+    const CF = F('home_cfg.json'); const KEYS = ['minArrow', 'buyArrowTo', 'minFood', 'buyFoodTo', 'minFree']; const ELEMS = ['rotten_flesh', 'bone', 'string', 'blaze_rod', 'magma_cream'];
     let cur = {}; try { cur = JSON.parse(fs.readFileSync(CF, 'utf8')); } catch {}
     if (req.method !== 'POST') return json(cur);
     let key = ''; try { key = fs.readFileSync(F('dash_key.txt'), 'utf8').trim(); } catch {}
     if (!key || u.searchParams.get('k') !== key) return json({ ok: false, err: '口令不对', badKey: true });
     let v; try { v = JSON.parse(u.searchParams.get('v') || '{}'); } catch { return json({ ok: false, err: 'bad json' }); }
     for (const k of KEYS) if (v[k] != null) { const n = Math.round(+v[k]); if (!(n >= 0 && n <= 2304)) return json({ ok: false, err: k + ' 要在 0-2304 之间' }); cur[k] = n; }
+    // 每种元素：sell 卖回收員 / refine 精煉師做精練元素存末影箱
+    if (v.elemMode != null) {
+      if (typeof v.elemMode !== 'object' || Array.isArray(v.elemMode)) return json({ ok: false, err: 'elemMode 要是对象' });
+      const em = Object.assign({}, ELEMS.reduce((a, e) => ((a[e] = 'sell'), a), {}), cur.elemMode || {});
+      for (const [e, m] of Object.entries(v.elemMode)) {
+        if (!ELEMS.includes(e)) return json({ ok: false, err: '未知元素 ' + e });
+        if (m !== 'sell' && m !== 'refine') return json({ ok: false, err: e + ' 只能是 sell 或 refine' });
+        em[e] = m;
+      }
+      cur.elemMode = em;
+    }
     if (cur.buyArrowTo < cur.minArrow) cur.buyArrowTo = cur.minArrow; if (cur.buyFoodTo < cur.minFood) cur.buyFoodTo = cur.minFood;
     fs.writeFileSync(CF, JSON.stringify(cur)); wlog('cfg ' + JSON.stringify(cur));
     return botEval('Object.assign(h.home.cfg,' + JSON.stringify(cur) + ');return "live"').then((r) => json({ ok: true, cfg: cur, live: !!r.ok }));

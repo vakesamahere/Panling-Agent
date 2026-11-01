@@ -13,7 +13,10 @@ module.exports = (bot, h) => {
   const food = () => bot.inventory.items().filter((i) => FOOD.test(i.name) && !i.customName).reduce((a, i) => a + i.count, 0);
   const cfg = { anchor: { x: -164, y: 45, z: 673 }, farmR: 60, minArrow: 128, buyArrowTo: 448, minFood: 24, buyFoodTo: 60, minFree: 3, south: [179.6, 47, 175.9], goods: /王員外/, useGraph: false,
     // 王員外（沙漠马贼营地，命令方块 -283,49,394 召唤，村民在 -283,54,395）：40 货 → 9 金锭（第 3 页 idx2）
-    wang: process.env.ONLINE !== '1', wangMin: 120, wangAt: [-283, 54, 397], wangNpc: '王員外', wangClearR: 14, wangWaitMs: 90000 };
+    wang: process.env.ONLINE !== '1', wangMin: 120, wangAt: [-283, 54, 397], wangNpc: '王員外', wangClearR: 14, wangWaitMs: 90000,
+    elemMode: { rotten_flesh: 'sell', bone: 'sell', string: 'sell', blaze_rod: 'sell', magma_cream: 'sell' } };
+  // 元素模式启动时就从 home_cfg.json 读（其余阈值照旧由 farm_start.js / 看板 Object.assign 进来）
+  try { const c = JSON.parse(require('fs').readFileSync(require('../paths').mem('home_cfg.json'), 'utf8')); if (c.elemMode) Object.assign(cfg.elemMode, c.elemMode); } catch {}
 
   async function follow(k) {
     st.step = k; const t0 = Date.now();
@@ -52,10 +55,17 @@ module.exports = (bot, h) => {
   }
   // 皇城固定流程（只走录好的路，h.goto 只用于 NPC/箱子前最后几格）：
   // 南门→元素回收員 卖元素 →南门→熟食小販→南北→錢莊 存煤/王員外货、换钱 →南北 买箭 →熟食小販 买吃的 →南门
-  const ELEM = ['rotten_flesh', 'bone', 'string', 'blaze_rod', 'magma_cream']; // 元素回收員 idx 0-4，5 个换 3 铜钱
+  const ELEM = ['rotten_flesh', 'bone', 'string', 'blaze_rod', 'magma_cream']; // 元素回收員 5 个换 3 铜钱；元素精煉師 5 个换 1 精練X元素（idx 都按输入物品匹配，不写死）
   const plain = (n) => bot.inventory.items().filter((i) => i.name === n && !i.customName).reduce((a, i) => a + i.count, 0);
+  // 每种元素：'sell' 卖回收員（默认，原行为）/ 'refine' 精煉師做成精練元素存末影箱。cfg.elemMode 来自 memory/home_cfg.json，看板可改
+  const elemMode = (n) => ((cfg.elemMode || {})[n] === 'refine' ? 'refine' : 'sell');
+  const isRefined = (i) => ELEM.includes(i.name) && /^精練.元素$/.test(String(i.customName || '').replace(/§./g, ''));
+  const refinedN = () => bot.inventory.items().filter(isRefined).reduce((a, i) => a + i.count, 0);
+  // trade 选择器：输入=普通(无名) n×5；输出 sell=铜钱 / refine=带 精練 名字的同种物品
+  const pickElem = (n, want) => (T) => T.findIndex((t) => t && t.inputItem1 && t.inputItem1.name === n && !t.inputItem1.customName && !t.inputItem2 && t.outputItem &&
+    (want === 'sell' ? t.outputItem.name === 'gold_nugget' : t.outputItem.name === n && /精練/.test(String(t.outputItem.customName || ''))));
   const isGoods = (i) => cfg.goods.test(String(i.customName || '').replace(/§./g, ''));
-  const isStash = (i) => isGoods(i) && !cfg.wang; // 煤不再存，拿去礦物收購商卖；cfg.wang 时货留着拿去王員外换金锭
+  const isStash = (i) => (isGoods(i) && !cfg.wang) || isRefined(i); // 煤不再存，拿去礦物收購商卖；cfg.wang 时货留着拿去王員外换金锭；精練元素存
   const nug = () => h.count('gold_nugget'), ing = () => h.count('gold_ingot'), note = () => h.count('iron_ingot');
   const wealth = () => nug() + 10 * ing() + 100 * note();
   const buyNeed = () => { // 买到目标还需要多少铜钱
@@ -131,12 +141,13 @@ module.exports = (bot, h) => {
             if (w.selectedItem) await bot.clickWindow(src.slot, 0, 0);
           }
           if (!w.slots[0] || w.slots[0].count < price) break;
-          if (bot.inventory.emptySlotCount() < 1 && !inv().some((x) => x && x.type === T.outputItem.type && x.count + T.outputItem.count <= x.stackSize)) { out.push(tag + ' bag full'); break; }
+          if (bot.inventory.emptySlotCount() < 1 && !inv().some((x) => x && x.type === T.outputItem.type && (x.customName || null) === (T.outputItem.customName || null) && x.count + T.outputItem.count <= x.stackSize)) { out.push(tag + ' bag full'); break; }
           await sleep(150);
           // 1.8：按 mineflayer 的做法本地预测——产物格填上、0 号格扣掉 price，否则下一次点击和服务器对不上被拒
           w.updateSlot(2, Object.assign(Object.create(Object.getPrototypeOf(T.outputItem)), T.outputItem));
           { const s0 = w.slots[0]; w.updateSlot(0, s0.count - price > 0 ? Object.assign(Object.create(Object.getPrototypeOf(s0)), s0, { count: s0.count - price }) : null); }
-          const wc = () => inv().filter((x) => x && x.type === T.outputItem.type).reduce((a, x) => a + x.count, 0); const before = wc();
+          const same = (x) => x && x.type === T.outputItem.type && (x.customName || null) === (T.outputItem.customName || null); // 精練元素与普通元素同 type，必须按名字区分
+          const wc = () => inv().filter(same).reduce((a, x) => a + x.count, 0); const before = wc();
           try { await bot.clickWindow(2, 0, 1); } catch (e) { out.push(tag + ' click ' + errs(e)); await sleep(500); }
           await sleep(250);
           for (let q = 0; q < 6 && wc() <= before; q++) await sleep(150);
@@ -171,8 +182,8 @@ module.exports = (bot, h) => {
     const out = [];
     const t0 = { arrow: h.count('arrow'), food: food(), free: bot.inventory.emptySlotCount(), money: wealth() };
     if (bot.inventory.emptySlotCount() < 3) { try { out.push('merged ' + (await compact())); } catch (e) { out.push('merge err ' + errs(e)); } }
-    // 1. 元素回收員：所有元素（普通物品）按 5 的倍数卖掉
-    const sell = ELEM.map((n, k) => [k, Math.floor(plain(n) / 5)]).filter((x) => x[1] > 0);
+    // 1. 元素回收員：模式为 sell 的元素（普通物品）按 5 的倍数卖掉
+    const sell = ELEM.filter((n) => elemMode(n) === 'sell').map((n) => [pickElem(n, 'sell'), Math.floor(plain(n) / 5)]).filter((x) => x[1] > 0);
     if (sell.length) {
       await follow('皇城南门->元素回收員'); chk();
       await tradeNpc('元素回收員', sell, 'elem', out);
@@ -181,6 +192,15 @@ module.exports = (bot, h) => {
     // 2-3. 錢莊：煤和王員外货进末影箱，然后换钱
     await follow('皇城南门->熟食小販'); chk();
     await follow('熟食小販->南北雜貨批發'); chk();
+    // 1b. 元素精煉師（林記打鐵鋪）：模式为 refine 的元素 5→1 精練元素，后面錢莊一起存末影箱；不足 5 个的留着下次
+    const refine = ELEM.filter((n) => elemMode(n) === 'refine').map((n) => [pickElem(n, 'refine'), Math.floor(plain(n) / 5)]).filter((x) => x[1] > 0);
+    if (refine.length) {
+      const r0 = refinedN();
+      await follow('南北雜貨批發->皇城鐵匠舖'); chk();
+      await tradeNpc('元素精煉師', refine, 'refine', out);
+      out.push('refined +' + (refinedN() - r0));
+      await follow('皇城鐵匠舖->南北雜貨批發'); chk();
+    }
     await follow('南北雜貨批發->錢莊'); chk();
     st.step = 'stash'; try { out.push('stash ' + (await stashAll())); } catch (e) { out.push('stash err ' + errs(e)); }
     await bank(out);
@@ -211,7 +231,7 @@ module.exports = (bot, h) => {
   }
   // 箭少 / 吃的少（且买得起）/ 背包快满 → 需要回城；最近 10 分钟失败过就不算
   const needShop = () => {
-    const m = wealth() + 3 * ELEM.reduce((a, n) => a + Math.floor(plain(n) / 5), 0);
+    const m = wealth() + 3 * ELEM.filter((n) => elemMode(n) === 'sell').reduce((a, n) => a + Math.floor(plain(n) / 5), 0);
     const na = h.count('arrow') < cfg.minArrow && m >= 4, nf = food() < cfg.minFood && m >= 5, nb = bot.inventory.emptySlotCount() < cfg.minFree;
     if (!na && !nf && !nb) return false;
     if (st.shopFailAt && Date.now() - st.shopFailAt < 600000) return false;

@@ -74,6 +74,8 @@ table{width:100%;border-collapse:collapse;font-size:13px}td,th{padding:4px 6px;b
     <div class="row"><span>食物少于这个数就回城</span><input id="cf_minFood" type="number" style="width:80px"></div>
     <div class="row"><span>回城时把食物买到</span><input id="cf_buyFoodTo" type="number" style="width:80px"></div>
     <div class="row"><span>空格子少于这个数就回城</span><input id="cf_minFree" type="number" style="width:80px"></div>
+    <div class="sub" style="margin-top:6px">元素：卖 = 元素回收員 5→3 铜钱；精炼 = 林記打鐵鋪 元素精煉師 5→1 精練元素，存錢莊末影箱</div>
+    <div id="cfElem"></div>
     <div style="margin-top:8px"><button id="cfSave">保存</button> <span id="cfMsg" class="sub">1 组 = 64</span></div></div>
   <div class="card"><h2>最近几轮（一次回城=一轮）</h2><table id="rounds"><thead><tr><th>结束</th><th>分钟</th><th>击杀</th><th>铜钱</th><th>铜钱/时</th></tr></thead><tbody></tbody></table></div>
   <div class="card"><h2>回城流程</h2><div id="homeLog" class="log"></div></div>
@@ -179,10 +181,14 @@ document.querySelector('.ctl').onclick=e=>{const b=e.target.closest('button');if
   const v=a==='route'?$('rSel').value:a==='goto'?$('gIn').value.trim():null;if((a==='route'||a==='goto')&&!v)return;act(a,v,b)};
 (async()=>{try{const r=await (await fetch('/api/routes')).json();$('rSel').innerHTML=r.routes.map(x=>`<option>${x}</option>`).join('');$('pList').innerHTML=r.places.map(x=>`<option value="${x}">`).join('')}catch{}})();
 const CFK=['minArrow','buyArrowTo','minFood','buyFoodTo','minFree'];
+const CFE=[['rotten_flesh','金元素(腐肉)'],['bone','木元素(骨頭)'],['string','水元素(線)'],['blaze_rod','火元素(烈焰棒)'],['magma_cream','土元素(岩漿膏)']];
+$('cfElem').innerHTML=CFE.map(([k,n])=>`<div class="row"><span>${n}</span><select id="ce_${k}"><option value="sell">卖</option><option value="refine">精炼</option></select></div>`).join('');
+const setElem=em=>{for(const [k] of CFE)$('ce_'+k).value=(em&&em[k]==='refine')?'refine':'sell'};
+(async()=>{try{const c=await (await fetch('/api/cfg')).json();setElem(c.elemMode)}catch{}})();
 (async()=>{try{const c=await (await fetch('/api/cfg')).json();for(const k of CFK)if(c[k]!=null)$('cf_'+k).value=c[k]}catch{}})();
-$('cfSave').onclick=async()=>{const k=key();if(!k)return;const v={};for(const x of CFK){const s=$('cf_'+x).value;if(s!=='')v[x]=+s}
+$('cfSave').onclick=async()=>{const k=key();if(!k)return;const v={};for(const x of CFK){const s=$('cf_'+x).value;if(s!=='')v[x]=+s}v.elemMode={};for(const [x] of CFE)v.elemMode[x]=$('ce_'+x).value;
   try{const r=await (await fetch('/api/cfg?k='+encodeURIComponent(k)+'&v='+encodeURIComponent(JSON.stringify(v)),{method:'POST'})).json();
-    if(r.badKey)localStorage.removeItem('dashKey');if(r.ok){for(const x of CFK)$('cf_'+x).value=r.cfg[x];txt('cfMsg','✓ 已保存'+(r.live?'，号上已生效':'（号不在线，上线开刷时生效）'))}else txt('cfMsg','✗ '+r.err)}catch{txt('cfMsg','✗ 请求失败')}};
+    if(r.badKey)localStorage.removeItem('dashKey');if(r.ok){for(const x of CFK)$('cf_'+x).value=r.cfg[x];setElem(r.cfg.elemMode);txt('cfMsg','✓ 已保存'+(r.live?'，号上已生效':'（号不在线，上线开刷时生效）'))}else txt('cfMsg','✗ '+r.err)}catch{txt('cfMsg','✗ 请求失败')}};
 let LIVE=null;
 // 原版英文名 → 本服叫法（材质包 zh_TW.lang + 常见原版中文）
 const ZH={gold_nugget:'銅錢(金粒)',gold_ingot:'金元寶',iron_ingot:'銀票',bone:'木元素(骨頭)',rotten_flesh:'金元素(腐肉)',string:'水元素(線)',blaze_rod:'火元素(烈焰棒)',magma_cream:'土元素(岩漿膏)',

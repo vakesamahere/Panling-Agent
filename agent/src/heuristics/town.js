@@ -5,7 +5,7 @@ module.exports = (bot, h) => {
   const nm = (i) => (i && i.customName ? i.customName.replace(/§./g, '') : i ? i.name : '');
   const cfg = { minArrow: 64, buyArrowTo: 256, minBread: 16, buyBreadTo: 48, minFree: 3, keepGold: 10 };
   // 进店前要先走到的点（pathfinder 直接去会卡楼下）
-  const approach = { '元素回收員': [[258, 48, 40], [256, 48, 36]], '熟食小販': [[147.5, 46, 185.5]], '錢莊': [[33.5, 47, 166.5]], '蒙古烤肉': [[136.5, 46, 187.5]] }; // 熟食小販在柜台里，录好的路终点 3.7 格开不了
+  const approach = { '元素回收員': [[258, 48, 40], [256, 48, 36]], '熟食小販': [[147.5, 46, 185.5]], '錢莊': [[33.5, 47, 166.5]], '蒙古烤肉': [[136.5, 46, 187.5]], '元素精煉師': [[84.5, 46, 149.5], [85.5, 46, 149.5]] }; // 精煉師：录好的路终点 (84.5,149) 离 NPC ~3.2 格，再往东 1 格；别走 (86,145) 楼梯角（会被拉回） // 熟食小販在柜台里，录好的路终点 3.7 格开不了
   const st = { log: [], runs: 0, busy: false };
   const log = (m) => { st.log.push(new Date().toTimeString().slice(0, 8) + ' ' + m); if (st.log.length > 40) st.log.shift(); };
 

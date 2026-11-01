@@ -1,0 +1,396 @@
+{
+ "name": "renzu_village_v2",
+ "box": {
+  "x0": 1570,
+  "z0": 60,
+  "x1": 1770,
+  "z1": 210
+ },
+ "opts": {
+  "pad": 24,
+  "borderDiag": false,
+  "endpoint": "anchor",
+  "pruneRule": "junction",
+  "pMin": 4,
+  "pK": 2,
+  "minComp": 10,
+  "selfLoopMin": 8,
+  "plazaD": 6,
+  "plazaMin": 40,
+  "plaza": true,
+  "corners": true,
+  "polyStep": 4,
+  "reach": true,
+  "seeds": [
+   [
+    1686,
+    143,
+    107
+   ],
+   [
+    1598,
+    132,
+    123
+   ],
+   [
+    1600,
+    140,
+    112
+   ],
+   [
+    1739,
+    160,
+    95
+   ],
+   [
+    1654,
+    153,
+    174
+   ],
+   [
+    1625,
+    136,
+    100
+   ],
+   [
+    1689,
+    140,
+    138
+   ],
+   [
+    1663,
+    181,
+    184
+   ],
+   [
+    1677,
+    134,
+    141
+   ]
+  ],
+  "cycles": true,
+  "cycleMin": 16,
+  "cycleK": 4,
+  "oneway": true,
+  "world": "C:/Users/Administrator/Desktop/vake/.server/盘灵古域/world_backup_20261028_1454/region",
+  "roofMin": 2,
+  "roofMax": 12,
+  "bldMinCells": 12,
+  "bldMaxOpen": 0.6,
+  "bldMaxCells": 20000,
+  "eavePeel": 0,
+  "holeMax": 8,
+  "roomMax": 400,
+  "roomRoofMin": 0.25,
+  "groveClose": 3,
+  "groveMin": 150,
+  "groveCanopy": 0.5,
+  "plazaElong": 3,
+  "spurLen": 8
+ },
+ "stats": {
+  "cells": 87978,
+  "regions": [
+   "r.3.0"
+  ],
+  "reach": {
+   "seeds": [
+    {
+     "at": [
+      1686,
+      143,
+      107
+     ],
+     "cell": [
+      1686,
+      143,
+      107
+     ]
+    },
+    {
+     "at": [
+      1598,
+      132,
+      123
+     ],
+     "cell": [
+      1598,
+      132,
+      123
+     ]
+    },
+    {
+     "at": [
+      1600,
+      140,
+      112
+     ],
+     "cell": [
+      1600,
+      140,
+      112
+     ]
+    },
+    {
+     "at": [
+      1739,
+      160,
+      95
+     ],
+     "cell": [
+      1739,
+      160,
+      95
+     ]
+    },
+    {
+     "at": [
+      1654,
+      153,
+      174
+     ],
+     "cell": [
+      1654,
+      153,
+      174
+     ]
+    },
+    {
+     "at": [
+      1625,
+      136,
+      100
+     ],
+     "cell": [
+      1625,
+      136,
+      99
+     ]
+    },
+    {
+     "at": [
+      1689,
+      140,
+      138
+     ],
+     "cell": [
+      1689,
+      140.75,
+      138
+     ]
+    },
+    {
+     "at": [
+      1663,
+      181,
+      184
+     ],
+     "cell": [
+      1663,
+      181,
+      184
+     ]
+    },
+    {
+     "at": [
+      1677,
+      134,
+      141
+     ],
+     "cell": [
+      1677,
+      134,
+      141
+     ]
+    }
+   ],
+   "kept": 56097,
+   "dropped": 31881
+  },
+  "planar_full": {
+   "candidate": 235673,
+   "bidir": 220734,
+   "oneway": 14939,
+   "oneway_by_type": {
+    "drop": 14816,
+    "walk": 122,
+    "door_open": 1
+   },
+   "multi_same_dir": 0,
+   "oneway_added": 29878,
+   "undirected_edges": 125306
+  },
+  "world": {
+   "regions": 1,
+   "chunks": 178,
+   "sections": 2055,
+   "bytes": 6131712
+  },
+  "floor_check": {
+   "sampled": 3000,
+   "solid_below": 2999,
+   "not_solid": 1,
+   "fb_field_matches_world": 3000,
+   "examples": [
+    [
+     1624,
+     137,
+     100,
+     96
+    ]
+   ]
+  },
+  "roof": {
+   "kept_cells": 56097,
+   "roofed_cells": 16756,
+   "canopy_cells": 0
+  },
+  "buildings": {
+   "door_cut": {
+    "components": 199,
+    "main": 47195,
+    "rooms": 79,
+    "room_cells": 5116
+   },
+   "holes": {
+    "pockets": 40,
+    "cells": 85
+   },
+   "eave_peeled": 0,
+   "candidates": 436,
+   "rejected": {
+    "small": 333,
+    "open": 23,
+    "large": 0,
+    "open_cells": 748
+   },
+   "buildings": 80,
+   "building_cells": 15308
+  },
+  "groves": {
+   "closed_cells": 0,
+   "groves": 0,
+   "grove_cells": 0,
+   "rejected": {
+    "small": 0,
+    "sparse": 0
+   }
+  },
+  "planar": {
+   "candidate": 163543,
+   "bidir": 149682,
+   "oneway": 13861,
+   "oneway_by_type": {
+    "drop": 13845,
+    "walk": 16
+   },
+   "multi_same_dir": 0,
+   "oneway_added": 27722,
+   "undirected_edges": 88702
+  },
+  "clearance": {
+   "boundary": 7197,
+   "dmax": 33.5
+  },
+  "thin": {
+   "deleted": 32230,
+   "skeleton": 8559,
+   "pops": 87011
+  },
+  "small_components": {
+   "dropped_cells": 308,
+   "components": 15
+  },
+  "prune": {
+   "rounds": 3,
+   "spurs": 101,
+   "cells": 457
+  },
+  "cycles": {
+   "rounds": 5,
+   "edges_removed": 81,
+   "cells": 539
+  },
+  "prune2": {
+   "rounds": 2,
+   "spurs": 1,
+   "cells": 2
+  },
+  "small_components_after_prune": {
+   "dropped_cells": 9,
+   "components": 13
+  },
+  "plazas": {
+   "plazas": 4,
+   "rejected": {
+    "small": 21,
+    "elongated": 2
+   },
+   "plaza_cells": 1674,
+   "skeleton_cells_removed": 305
+  },
+  "forced": {
+   "teleport": 9,
+   "teleport_external": 9,
+   "door": 1,
+   "ladder_components": 4,
+   "linked": 292,
+   "unlinked": 6,
+   "link_cells": 347
+  },
+  "exits_folded": 239,
+  "special_from_regions": 0,
+  "final_prune_merge": {
+   "merged": 73,
+   "spurs": 25,
+   "rounds": 3
+  },
+  "graph": {
+   "nodes": 476,
+   "nodes_by_kind": {
+    "junction": 344,
+    "end": 49,
+    "pass": 7,
+    "building": 72,
+    "plaza": 4
+   },
+   "edges": 750,
+   "edges_by_kind": {
+    "road": 727,
+    "region_link": 16,
+    "teleport": 7
+   },
+   "road_length_total": 8187.2,
+   "buildings_in_box": 72,
+   "plazas_in_box": 4,
+   "groves_in_box": 0
+  },
+  "timing_ms": {
+   "load_ms": 21,
+   "reach_ms": 30,
+   "planar_full_ms": 45,
+   "roof_scan_ms": 69,
+   "floor_check_ms": 5,
+   "clearance_full_ms": 17,
+   "buildings_ms": 21,
+   "groves_ms": 9,
+   "outdoor_thin_ms": 88,
+   "outdoor_prune_ms": 48,
+   "plaza_ms": 11,
+   "exits_ms": 6,
+   "forced_ms": 5,
+   "graph_ms": 3,
+   "assemble_ms": 14,
+   "png_ms": 52,
+   "json_ms": 4,
+   "total_ms": 448
+  },
+  "rss_mb": 164,
+  "heap_mb": 33,
+  "png": {
+   "w": 603,
+   "h": 453,
+   "scale": 3
+  }
+ }
+}

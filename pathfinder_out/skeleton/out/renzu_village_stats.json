@@ -1,0 +1,302 @@
+{
+ "name": "renzu_village",
+ "box": {
+  "x0": 1570,
+  "z0": 60,
+  "x1": 1770,
+  "z1": 210
+ },
+ "opts": {
+  "pad": 24,
+  "borderDiag": false,
+  "endpoint": "anchor",
+  "pruneRule": "junction",
+  "pMin": 4,
+  "pK": 2,
+  "minComp": 10,
+  "selfLoopMin": 8,
+  "plazaD": 6,
+  "plazaMin": 40,
+  "plaza": true,
+  "corners": true,
+  "polyStep": 4,
+  "reach": true,
+  "seeds": [
+   [
+    1686,
+    143,
+    107
+   ],
+   [
+    1598,
+    132,
+    123
+   ],
+   [
+    1600,
+    140,
+    112
+   ],
+   [
+    1739,
+    160,
+    95
+   ],
+   [
+    1654,
+    153,
+    174
+   ],
+   [
+    1625,
+    136,
+    100
+   ],
+   [
+    1689,
+    140,
+    138
+   ],
+   [
+    1663,
+    181,
+    184
+   ],
+   [
+    1677,
+    134,
+    141
+   ]
+  ],
+  "cycles": true,
+  "cycleMin": 16,
+  "cycleK": 4
+ },
+ "stats": {
+  "regions": [
+   "r.3.0"
+  ],
+  "cells": 87978,
+  "reach": {
+   "seeds": [
+    {
+     "at": [
+      1686,
+      143,
+      107
+     ],
+     "cell": [
+      1686,
+      143,
+      107
+     ]
+    },
+    {
+     "at": [
+      1598,
+      132,
+      123
+     ],
+     "cell": [
+      1598,
+      132,
+      123
+     ]
+    },
+    {
+     "at": [
+      1600,
+      140,
+      112
+     ],
+     "cell": [
+      1600,
+      140,
+      112
+     ]
+    },
+    {
+     "at": [
+      1739,
+      160,
+      95
+     ],
+     "cell": [
+      1739,
+      160,
+      95
+     ]
+    },
+    {
+     "at": [
+      1654,
+      153,
+      174
+     ],
+     "cell": [
+      1654,
+      153,
+      174
+     ]
+    },
+    {
+     "at": [
+      1625,
+      136,
+      100
+     ],
+     "cell": [
+      1625,
+      136,
+      99
+     ]
+    },
+    {
+     "at": [
+      1689,
+      140,
+      138
+     ],
+     "cell": [
+      1689,
+      140.75,
+      138
+     ]
+    },
+    {
+     "at": [
+      1663,
+      181,
+      184
+     ],
+     "cell": [
+      1663,
+      181,
+      184
+     ]
+    },
+    {
+     "at": [
+      1677,
+      134,
+      141
+     ],
+     "cell": [
+      1677,
+      134,
+      141
+     ]
+    }
+   ],
+   "kept": 56097,
+   "dropped": 31881
+  },
+  "planar": {
+   "candidate": 235673,
+   "bidir": 220734,
+   "oneway": 14939,
+   "oneway_by_type": {
+    "drop": 14816,
+    "walk": 122,
+    "door_open": 1
+   },
+   "multi_same_dir": 0,
+   "undirected_edges": 110367
+  },
+  "clearance": {
+   "boundary": 30601,
+   "dmax": 13.5
+  },
+  "thin": {
+   "deleted": 26749,
+   "skeleton": 29348,
+   "pops": 110019
+  },
+  "small_components": {
+   "dropped_cells": 2232,
+   "components": 75
+  },
+  "prune": {
+   "rounds": 3,
+   "spurs": 598,
+   "cells": 1602
+  },
+  "cycles": {
+   "rounds": 10,
+   "edges_removed": 1062,
+   "cells": 2665
+  },
+  "prune2": {
+   "rounds": 3,
+   "spurs": 36,
+   "cells": 100
+  },
+  "small_components_after_prune": {
+   "dropped_cells": 105,
+   "components": 78
+  },
+  "skeleton_after_prune": 22644,
+  "forced": {
+   "teleport": 11,
+   "teleport_external": 7,
+   "door": 333,
+   "ladder_components": 4,
+   "linked": 355,
+   "unlinked": 1,
+   "link_cells": 195
+  },
+  "plaza": {
+   "components": 9,
+   "used": 9,
+   "merged_nodes": 40
+  },
+  "merged_pass_nodes": 395,
+  "graph": {
+   "nodes": 1528,
+   "nodes_by_kind": {
+    "junction": 854,
+    "end": 610,
+    "forced": 56,
+    "isolated": 2,
+    "plaza": 6
+   },
+   "edges": 1733,
+   "edges_by_kind": {
+    "road": 1722,
+    "teleport": 9,
+    "ladder": 2
+   },
+   "plaza_nodes": 9,
+   "road_length_total": 17337.6
+  },
+  "timing_ms": {
+   "load_ms": 20,
+   "reach_ms": 36,
+   "planar_ms": 23,
+   "clearance_ms": 16,
+   "thin_ms": 45,
+   "prune_ms": 153,
+   "forced_ms": 5,
+   "graph_ms": 7,
+   "plaza_output_ms": 18,
+   "png_ms": 82,
+   "json_ms": 3,
+   "total_ms": 415
+  },
+  "levels": {
+   "cells_in_box": 40367,
+   "columns": 26527,
+   "multi_level_columns": 10896,
+   "max_levels": 6,
+   "skeleton_cells_in_box": 16185,
+   "skeleton_in_multi_level_columns": 9318,
+   "columns_with_skeleton_on_2plus_levels": 2021
+  },
+  "rss_mb": 138,
+  "png": {
+   "w": 603,
+   "h": 453,
+   "scale": 3
+  }
+ }
+}

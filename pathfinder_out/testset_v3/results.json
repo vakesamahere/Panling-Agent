@@ -1,0 +1,1454 @@
+{
+ "load_s": 4.71243691444397,
+ "rows": [
+  {
+   "frm": "人族出生点",
+   "to": "村莊大門",
+   "n_goal": 10,
+   "src": [
+    1687,
+    132.5,
+    139
+   ],
+   "reachable": true,
+   "expanded": 8517,
+   "ms": 506.2406565994024,
+   "length": 124.1,
+   "cost": 123.8,
+   "kinds": {
+    "swim": 1,
+    "drop": 7,
+    "walk": 94
+   },
+   "n_cells": 103,
+   "waypoints": 62,
+   "end": [
+    1598,
+    132.0,
+    121
+   ],
+   "teleports": [],
+   "banned_hit": [],
+   "doors": []
+  },
+  {
+   "frm": "人族出生点",
+   "to": "村長",
+   "n_goal": 12,
+   "src": [
+    1687,
+    132.5,
+    139
+   ],
+   "reachable": true,
+   "expanded": 587,
+   "ms": 9.091190062463284,
+   "length": 59.9,
+   "cost": 61.4,
+   "kinds": {
+    "swim": 1,
+    "drop": 1,
+    "walk": 47,
+    "jump": 2
+   },
+   "n_cells": 52,
+   "waypoints": 30,
+   "end": [
+    1687,
+    143.0,
+    107
+   ],
+   "teleports": [],
+   "banned_hit": [],
+   "doors": []
+  },
+  {
+   "frm": "人族出生点",
+   "to": "補給品簡方",
+   "n_goal": 12,
+   "src": [
+    1687,
+    132.5,
+    139
+   ],
+   "reachable": true,
+   "expanded": 4136,
+   "ms": 67.41694267839193,
+   "length": 104.5,
+   "cost": 105.3,
+   "kinds": {
+    "swim": 1,
+    "drop": 1,
+    "walk": 88
+   },
+   "n_cells": 91,
+   "waypoints": 53,
+   "end": [
+    1603,
+    139.5,
+    109
+   ],
+   "teleports": [],
+   "banned_hit": [],
+   "doors": []
+  },
+  {
+   "frm": "人族出生点",
+   "to": "雜貨舖掌櫃",
+   "n_goal": 13,
+   "src": [
+    1687,
+    132.5,
+    139
+   ],
+   "reachable": true,
+   "expanded": 716,
+   "ms": 10.56248601526022,
+   "length": 79.8,
+   "cost": 81.1,
+   "kinds": {
+    "swim": 1,
+    "drop": 3,
+    "walk": 61
+   },
+   "n_cells": 66,
+   "waypoints": 30,
+   "end": [
+    1631,
+    136.0,
+    102
+   ],
+   "teleports": [],
+   "banned_hit": [],
+   "doors": []
+  },
+  {
+   "frm": "人族出生点",
+   "to": "鐵匠舖",
+   "n_goal": 13,
+   "src": [
+    1687,
+    132.5,
+    139
+   ],
+   "reachable": true,
+   "expanded": 2675,
+   "ms": 41.9083796441555,
+   "length": 103.4,
+   "cost": 112.8,
+   "kinds": {
+    "swim": 1,
+    "walk": 65,
+    "drop": 2,
+    "jump": 17
+   },
+   "n_cells": 86,
+   "waypoints": 65,
+   "end": [
+    1737,
+    160.0,
+    95
+   ],
+   "teleports": [],
+   "banned_hit": [],
+   "doors": []
+  },
+  {
+   "frm": "人族出生点",
+   "to": "丹藥舖",
+   "n_goal": 11,
+   "src": [
+    1687,
+    132.5,
+    139
+   ],
+   "reachable": true,
+   "expanded": 4473,
+   "ms": 76.91220194101334,
+   "length": 108.8,
+   "cost": 107.1,
+   "kinds": {
+    "swim": 1,
+    "drop": 1,
+    "walk": 91,
+    "jump": 1
+   },
+   "n_cells": 95,
+   "waypoints": 46,
+   "end": [
+    1654,
+    153.0,
+    172
+   ],
+   "teleports": [],
+   "banned_hit": [],
+   "doors": []
+  },
+  {
+   "frm": "村莊大門",
+   "to": "人族出生点",
+   "n_goal": 13,
+   "src": [
+    1598,
+    132.0,
+    123
+   ],
+   "reachable": true,
+   "expanded": 14719,
+   "ms": 258.33549350500107,
+   "length": 121.0,
+   "cost": 120.9,
+   "kinds": {
+    "walk": 104
+   },
+   "n_cells": 105,
+   "waypoints": 38,
+   "end": [
+    1685,
+    132.0,
+    139
+   ],
+   "teleports": [],
+   "banned_hit": [],
+   "doors": []
+  },
+  {
+   "frm": "村莊大門",
+   "to": "村長",
+   "n_goal": 12,
+   "src": [
+    1598,
+    132.0,
+    123
+   ],
+   "reachable": true,
+   "expanded": 11276,
+   "ms": 195.33082004636526,
+   "length": 144.9,
+   "cost": 137.8,
+   "kinds": {
+    "walk": 124,
+    "drop": 3
+   },
+   "n_cells": 128,
+   "waypoints": 45,
+   "end": [
+    1687,
+    143.0,
+    107
+   ],
+   "teleports": [],
+   "banned_hit": [],
+   "doors": []
+  },
+  {
+   "frm": "村莊大門",
+   "to": "補給品簡方",
+   "n_goal": 12,
+   "src": [
+    1598,
+    132.0,
+    123
+   ],
+   "reachable": true,
+   "expanded": 455,
+   "ms": 6.658764556050301,
+   "length": 20.1,
+   "cost": 39.8,
+   "kinds": {
+    "teleport": 2,
+    "walk": 19
+   },
+   "n_cells": 22,
+   "waypoints": 10,
+   "end": [
+    1599,
+    140.0,
+    109
+   ],
+   "teleports": [
+    {
+     "x": 220.5,
+     "y": 48.0,
+     "z": 34.5,
+     "act": "teleport",
+     "fb": "end_stone",
+     "kind": "teleport",
+     "tp_from": [
+      1598,
+      132.0,
+      123
+     ],
+     "tp_to": [
+      220,
+      48.0,
+      34
+     ]
+    },
+    {
+     "x": 1595.5,
+     "y": 140.0,
+     "z": 123.5,
+     "act": "teleport",
+     "fb": "quartz_block",
+     "kind": "teleport",
+     "tp_from": [
+      220,
+      49.0,
+      31
+     ],
+     "tp_to": [
+      1595,
+      140.0,
+      123
+     ]
+    }
+   ],
+   "banned_hit": [],
+   "doors": []
+  },
+  {
+   "frm": "村莊大門",
+   "to": "雜貨舖掌櫃",
+   "n_goal": 13,
+   "src": [
+    1598,
+    132.0,
+    123
+   ],
+   "reachable": true,
+   "expanded": 729,
+   "ms": 10.590631514787674,
+   "length": 62.8,
+   "cost": 61.6,
+   "kinds": {
+    "walk": 56
+   },
+   "n_cells": 57,
+   "waypoints": 19,
+   "end": [
+    1631,
+    136.0,
+    102
+   ],
+   "teleports": [],
+   "banned_hit": [],
+   "doors": []
+  },
+  {
+   "frm": "村莊大門",
+   "to": "鐵匠舖",
+   "n_goal": 13,
+   "src": [
+    1598,
+    132.0,
+    123
+   ],
+   "reachable": true,
+   "expanded": 21762,
+   "ms": 655.7455034926534,
+   "length": 205.3,
+   "cost": 198.3,
+   "kinds": {
+    "walk": 185
+   },
+   "n_cells": 186,
+   "waypoints": 79,
+   "end": [
+    1737,
+    160.0,
+    95
+   ],
+   "teleports": [],
+   "banned_hit": [],
+   "doors": []
+  },
+  {
+   "frm": "村莊大門",
+   "to": "丹藥舖",
+   "n_goal": 11,
+   "src": [
+    1598,
+    132.0,
+    123
+   ],
+   "reachable": true,
+   "expanded": 8304,
+   "ms": 130.79851027578115,
+   "length": 114.1,
+   "cost": 108.8,
+   "kinds": {
+    "walk": 100
+   },
+   "n_cells": 101,
+   "waypoints": 46,
+   "end": [
+    1654,
+    153.0,
+    172
+   ],
+   "teleports": [],
+   "banned_hit": [],
+   "doors": []
+  },
+  {
+   "frm": "村長",
+   "to": "人族出生点",
+   "n_goal": 13,
+   "src": [
+    1686,
+    143.0,
+    105
+   ],
+   "reachable": true,
+   "expanded": 816,
+   "ms": 14.329950325191021,
+   "length": 60.0,
+   "cost": 62.3,
+   "kinds": {
+    "walk": 49,
+    "drop": 2
+   },
+   "n_cells": 52,
+   "waypoints": 27,
+   "end": [
+    1685,
+    132.0,
+    139
+   ],
+   "teleports": [],
+   "banned_hit": [],
+   "doors": []
+  },
+  {
+   "frm": "村長",
+   "to": "村莊大門",
+   "n_goal": 10,
+   "src": [
+    1686,
+    143.0,
+    105
+   ],
+   "reachable": true,
+   "expanded": 12526,
+   "ms": 196.45570125430822,
+   "length": 150.2,
+   "cost": 150.2,
+   "kinds": {
+    "walk": 119,
+    "drop": 6
+   },
+   "n_cells": 126,
+   "waypoints": 70,
+   "end": [
+    1598,
+    132.0,
+    121
+   ],
+   "teleports": [],
+   "banned_hit": [],
+   "doors": []
+  },
+  {
+   "frm": "村長",
+   "to": "補給品簡方",
+   "n_goal": 12,
+   "src": [
+    1686,
+    143.0,
+    105
+   ],
+   "reachable": true,
+   "expanded": 6707,
+   "ms": 97.42091316729784,
+   "length": 130.5,
+   "cost": 131.6,
+   "kinds": {
+    "walk": 113
+   },
+   "n_cells": 114,
+   "waypoints": 61,
+   "end": [
+    1603,
+    139.5,
+    109
+   ],
+   "teleports": [],
+   "banned_hit": [],
+   "doors": []
+  },
+  {
+   "frm": "村長",
+   "to": "雜貨舖掌櫃",
+   "n_goal": 13,
+   "src": [
+    1686,
+    143.0,
+    105
+   ],
+   "reachable": true,
+   "expanded": 1238,
+   "ms": 16.93345233798027,
+   "length": 105.9,
+   "cost": 107.4,
+   "kinds": {
+    "walk": 86,
+    "drop": 2
+   },
+   "n_cells": 89,
+   "waypoints": 44,
+   "end": [
+    1631,
+    136.0,
+    102
+   ],
+   "teleports": [],
+   "banned_hit": [],
+   "doors": []
+  },
+  {
+   "frm": "村長",
+   "to": "鐵匠舖",
+   "n_goal": 13,
+   "src": [
+    1686,
+    143.0,
+    105
+   ],
+   "reachable": true,
+   "expanded": 948,
+   "ms": 14.252018183469772,
+   "length": 92.6,
+   "cost": 90.2,
+   "kinds": {
+    "walk": 80,
+    "jump": 2
+   },
+   "n_cells": 83,
+   "waypoints": 49,
+   "end": [
+    1737,
+    160.0,
+    95
+   ],
+   "teleports": [],
+   "banned_hit": [],
+   "doors": []
+  },
+  {
+   "frm": "村長",
+   "to": "丹藥舖",
+   "n_goal": 11,
+   "src": [
+    1686,
+    143.0,
+    105
+   ],
+   "reachable": true,
+   "expanded": 7328,
+   "ms": 108.54833945631981,
+   "length": 134.8,
+   "cost": 133.4,
+   "kinds": {
+    "walk": 116,
+    "jump": 1
+   },
+   "n_cells": 118,
+   "waypoints": 54,
+   "end": [
+    1654,
+    153.0,
+    172
+   ],
+   "teleports": [],
+   "banned_hit": [],
+   "doors": []
+  },
+  {
+   "frm": "補給品簡方",
+   "to": "人族出生点",
+   "n_goal": 13,
+   "src": [
+    1601,
+    140.0,
+    109
+   ],
+   "reachable": true,
+   "expanded": 8288,
+   "ms": 117.62368306517601,
+   "length": 104.1,
+   "cost": 106.3,
+   "kinds": {
+    "walk": 90
+   },
+   "n_cells": 91,
+   "waypoints": 35,
+   "end": [
+    1685,
+    132.0,
+    139
+   ],
+   "teleports": [],
+   "banned_hit": [],
+   "doors": []
+  },
+  {
+   "frm": "補給品簡方",
+   "to": "村莊大門",
+   "n_goal": 10,
+   "src": [
+    1601,
+    140.0,
+    109
+   ],
+   "reachable": true,
+   "expanded": 114,
+   "ms": 1.8834928050637245,
+   "length": 19.6,
+   "cost": 17.8,
+   "kinds": {
+    "walk": 10,
+    "drop": 3
+   },
+   "n_cells": 14,
+   "waypoints": 10,
+   "end": [
+    1598,
+    132.0,
+    121
+   ],
+   "teleports": [],
+   "banned_hit": [],
+   "doors": []
+  },
+  {
+   "frm": "補給品簡方",
+   "to": "村長",
+   "n_goal": 12,
+   "src": [
+    1601,
+    140.0,
+    109
+   ],
+   "reachable": true,
+   "expanded": 4136,
+   "ms": 57.73449037224054,
+   "length": 115.2,
+   "cost": 110.4,
+   "kinds": {
+    "walk": 98,
+    "drop": 3
+   },
+   "n_cells": 102,
+   "waypoints": 38,
+   "end": [
+    1687,
+    143.0,
+    107
+   ],
+   "teleports": [],
+   "banned_hit": [],
+   "doors": []
+  },
+  {
+   "frm": "補給品簡方",
+   "to": "雜貨舖掌櫃",
+   "n_goal": 13,
+   "src": [
+    1601,
+    140.0,
+    109
+   ],
+   "reachable": true,
+   "expanded": 584,
+   "ms": 9.998767636716366,
+   "length": 45.8,
+   "cost": 46.9,
+   "kinds": {
+    "walk": 42
+   },
+   "n_cells": 43,
+   "waypoints": 15,
+   "end": [
+    1631,
+    136.0,
+    102
+   ],
+   "teleports": [],
+   "banned_hit": [],
+   "doors": []
+  },
+  {
+   "frm": "補給品簡方",
+   "to": "鐵匠舖",
+   "n_goal": 13,
+   "src": [
+    1601,
+    140.0,
+    109
+   ],
+   "reachable": true,
+   "expanded": 9807,
+   "ms": 165.38022458553314,
+   "length": 175.6,
+   "cost": 170.9,
+   "kinds": {
+    "walk": 159
+   },
+   "n_cells": 160,
+   "waypoints": 72,
+   "end": [
+    1737,
+    160.0,
+    95
+   ],
+   "teleports": [],
+   "banned_hit": [],
+   "doors": []
+  },
+  {
+   "frm": "補給品簡方",
+   "to": "丹藥舖",
+   "n_goal": 11,
+   "src": [
+    1601,
+    140.0,
+    109
+   ],
+   "reachable": true,
+   "expanded": 6871,
+   "ms": 111.64933629333973,
+   "length": 112.8,
+   "cost": 110.7,
+   "kinds": {
+    "walk": 98,
+    "jump": 1
+   },
+   "n_cells": 100,
+   "waypoints": 38,
+   "end": [
+    1654,
+    153.0,
+    172
+   ],
+   "teleports": [],
+   "banned_hit": [],
+   "doors": []
+  },
+  {
+   "frm": "雜貨舖掌櫃",
+   "to": "人族出生点",
+   "n_goal": 13,
+   "src": [
+    1631,
+    136.0,
+    99
+   ],
+   "reachable": true,
+   "expanded": 2687,
+   "ms": 36.97886783629656,
+   "length": 81.4,
+   "cost": 83.2,
+   "kinds": {
+    "jump": 1,
+    "drop": 1,
+    "walk": 65
+   },
+   "n_cells": 68,
+   "waypoints": 27,
+   "end": [
+    1685,
+    132.0,
+    139
+   ],
+   "teleports": [],
+   "banned_hit": [],
+   "doors": []
+  },
+  {
+   "frm": "雜貨舖掌櫃",
+   "to": "村莊大門",
+   "n_goal": 10,
+   "src": [
+    1631,
+    136.0,
+    99
+   ],
+   "reachable": true,
+   "expanded": 1484,
+   "ms": 18.863982520997524,
+   "length": 67.2,
+   "cost": 66.0,
+   "kinds": {
+    "jump": 1,
+    "drop": 7,
+    "walk": 47
+   },
+   "n_cells": 56,
+   "waypoints": 27,
+   "end": [
+    1598,
+    132.0,
+    121
+   ],
+   "teleports": [],
+   "banned_hit": [],
+   "doors": []
+  },
+  {
+   "frm": "雜貨舖掌櫃",
+   "to": "村長",
+   "n_goal": 12,
+   "src": [
+    1631,
+    136.0,
+    99
+   ],
+   "reachable": true,
+   "expanded": 2304,
+   "ms": 35.82311514765024,
+   "length": 106.9,
+   "cost": 106.0,
+   "kinds": {
+    "jump": 1,
+    "drop": 1,
+    "walk": 87
+   },
+   "n_cells": 90,
+   "waypoints": 43,
+   "end": [
+    1687,
+    143.0,
+    107
+   ],
+   "teleports": [],
+   "banned_hit": [],
+   "doors": []
+  },
+  {
+   "frm": "雜貨舖掌櫃",
+   "to": "補給品簡方",
+   "n_goal": 12,
+   "src": [
+    1631,
+    136.0,
+    99
+   ],
+   "reachable": true,
+   "expanded": 318,
+   "ms": 5.518538877367973,
+   "length": 47.6,
+   "cost": 47.4,
+   "kinds": {
+    "jump": 1,
+    "drop": 1,
+    "walk": 41
+   },
+   "n_cells": 44,
+   "waypoints": 18,
+   "end": [
+    1603,
+    139.5,
+    109
+   ],
+   "teleports": [],
+   "banned_hit": [],
+   "doors": []
+  },
+  {
+   "frm": "雜貨舖掌櫃",
+   "to": "鐵匠舖",
+   "n_goal": 13,
+   "src": [
+    1631,
+    136.0,
+    99
+   ],
+   "reachable": true,
+   "expanded": 9443,
+   "ms": 143.6167825013399,
+   "length": 184.8,
+   "cost": 182.3,
+   "kinds": {
+    "jump": 4,
+    "drop": 1,
+    "walk": 154
+   },
+   "n_cells": 160,
+   "waypoints": 87,
+   "end": [
+    1737,
+    160.0,
+    95
+   ],
+   "teleports": [],
+   "banned_hit": [],
+   "doors": []
+  },
+  {
+   "frm": "雜貨舖掌櫃",
+   "to": "丹藥舖",
+   "n_goal": 11,
+   "src": [
+    1631,
+    136.0,
+    99
+   ],
+   "reachable": true,
+   "expanded": 2228,
+   "ms": 39.04056362807751,
+   "length": 90.7,
+   "cost": 88.2,
+   "kinds": {
+    "jump": 2,
+    "drop": 1,
+    "walk": 74
+   },
+   "n_cells": 78,
+   "waypoints": 29,
+   "end": [
+    1654,
+    153.0,
+    172
+   ],
+   "teleports": [],
+   "banned_hit": [],
+   "doors": []
+  },
+  {
+   "frm": "鐵匠舖",
+   "to": "人族出生点",
+   "n_goal": 13,
+   "src": [
+    1739,
+    160.0,
+    95
+   ],
+   "reachable": true,
+   "expanded": 5734,
+   "ms": 90.25974106043577,
+   "length": 104.6,
+   "cost": 109.0,
+   "kinds": {
+    "walk": 62,
+    "drop": 19,
+    "jump": 3
+   },
+   "n_cells": 85,
+   "waypoints": 51,
+   "end": [
+    1687,
+    133.0,
+    140
+   ],
+   "teleports": [],
+   "banned_hit": [],
+   "doors": []
+  },
+  {
+   "frm": "鐵匠舖",
+   "to": "村莊大門",
+   "n_goal": 10,
+   "src": [
+    1739,
+    160.0,
+    95
+   ],
+   "reachable": true,
+   "expanded": 35464,
+   "ms": 514.5323611795902,
+   "length": 195.7,
+   "cost": 199.2,
+   "kinds": {
+    "walk": 162,
+    "drop": 8
+   },
+   "n_cells": 171,
+   "waypoints": 63,
+   "end": [
+    1598,
+    132.0,
+    121
+   ],
+   "teleports": [],
+   "banned_hit": [],
+   "doors": []
+  },
+  {
+   "frm": "鐵匠舖",
+   "to": "村長",
+   "n_goal": 12,
+   "src": [
+    1739,
+    160.0,
+    95
+   ],
+   "reachable": true,
+   "expanded": 1406,
+   "ms": 19.820423796772957,
+   "length": 88.6,
+   "cost": 91.1,
+   "kinds": {
+    "walk": 72,
+    "drop": 4
+   },
+   "n_cells": 77,
+   "waypoints": 37,
+   "end": [
+    1687,
+    143.0,
+    107
+   ],
+   "teleports": [],
+   "banned_hit": [],
+   "doors": []
+  },
+  {
+   "frm": "鐵匠舖",
+   "to": "補給品簡方",
+   "n_goal": 12,
+   "src": [
+    1739,
+    160.0,
+    95
+   ],
+   "reachable": true,
+   "expanded": 23519,
+   "ms": 353.08065451681614,
+   "length": 176.1,
+   "cost": 180.6,
+   "kinds": {
+    "walk": 156,
+    "drop": 2
+   },
+   "n_cells": 159,
+   "waypoints": 54,
+   "end": [
+    1603,
+    139.5,
+    109
+   ],
+   "teleports": [],
+   "banned_hit": [],
+   "doors": []
+  },
+  {
+   "frm": "鐵匠舖",
+   "to": "雜貨舖掌櫃",
+   "n_goal": 13,
+   "src": [
+    1739,
+    160.0,
+    95
+   ],
+   "reachable": true,
+   "expanded": 16546,
+   "ms": 252.8047151863575,
+   "length": 179.6,
+   "cost": 183.6,
+   "kinds": {
+    "walk": 146,
+    "drop": 6
+   },
+   "n_cells": 153,
+   "waypoints": 69,
+   "end": [
+    1631,
+    136.0,
+    102
+   ],
+   "teleports": [],
+   "banned_hit": [],
+   "doors": []
+  },
+  {
+   "frm": "鐵匠舖",
+   "to": "丹藥舖",
+   "n_goal": 11,
+   "src": [
+    1739,
+    160.0,
+    95
+   ],
+   "reachable": true,
+   "expanded": 22271,
+   "ms": 322.03036826103926,
+   "length": 173.5,
+   "cost": 174.6,
+   "kinds": {
+    "walk": 156,
+    "drop": 3
+   },
+   "n_cells": 160,
+   "waypoints": 77,
+   "end": [
+    1654,
+    153.0,
+    172
+   ],
+   "teleports": [],
+   "banned_hit": [],
+   "doors": []
+  },
+  {
+   "frm": "丹藥舖",
+   "to": "人族出生点",
+   "n_goal": 13,
+   "src": [
+    1654,
+    153.0,
+    174
+   ],
+   "reachable": true,
+   "expanded": 4226,
+   "ms": 64.90048300474882,
+   "length": 84.5,
+   "cost": 85.8,
+   "kinds": {
+    "jump": 1,
+    "drop": 8,
+    "walk": 58
+   },
+   "n_cells": 68,
+   "waypoints": 41,
+   "end": [
+    1685,
+    132.0,
+    139
+   ],
+   "teleports": [],
+   "banned_hit": [],
+   "doors": []
+  },
+  {
+   "frm": "丹藥舖",
+   "to": "村莊大門",
+   "n_goal": 10,
+   "src": [
+    1654,
+    153.0,
+    174
+   ],
+   "reachable": true,
+   "expanded": 10571,
+   "ms": 157.2715248912573,
+   "length": 111.7,
+   "cost": 115.9,
+   "kinds": {
+    "jump": 1,
+    "drop": 3,
+    "walk": 90
+   },
+   "n_cells": 95,
+   "waypoints": 43,
+   "end": [
+    1600,
+    131.0,
+    123
+   ],
+   "teleports": [],
+   "banned_hit": [],
+   "doors": []
+  },
+  {
+   "frm": "丹藥舖",
+   "to": "村長",
+   "n_goal": 12,
+   "src": [
+    1654,
+    153.0,
+    174
+   ],
+   "reachable": true,
+   "expanded": 2899,
+   "ms": 53.94660867750645,
+   "length": 100.2,
+   "cost": 100.3,
+   "kinds": {
+    "jump": 1,
+    "drop": 3,
+    "walk": 80
+   },
+   "n_cells": 85,
+   "waypoints": 55,
+   "end": [
+    1687,
+    143.0,
+    107
+   ],
+   "teleports": [],
+   "banned_hit": [],
+   "doors": []
+  },
+  {
+   "frm": "丹藥舖",
+   "to": "補給品簡方",
+   "n_goal": 12,
+   "src": [
+    1654,
+    153.0,
+    174
+   ],
+   "reachable": true,
+   "expanded": 7925,
+   "ms": 124.10085648298264,
+   "length": 113.5,
+   "cost": 117.7,
+   "kinds": {
+    "jump": 1,
+    "drop": 2,
+    "walk": 96
+   },
+   "n_cells": 100,
+   "waypoints": 52,
+   "end": [
+    1603,
+    139.5,
+    109
+   ],
+   "teleports": [],
+   "banned_hit": [],
+   "doors": []
+  },
+  {
+   "frm": "丹藥舖",
+   "to": "雜貨舖掌櫃",
+   "n_goal": 13,
+   "src": [
+    1654,
+    153.0,
+    174
+   ],
+   "reachable": true,
+   "expanded": 1307,
+   "ms": 18.709445372223854,
+   "length": 89.7,
+   "cost": 94.7,
+   "kinds": {
+    "jump": 1,
+    "drop": 2,
+    "walk": 73
+   },
+   "n_cells": 77,
+   "waypoints": 29,
+   "end": [
+    1631,
+    136.0,
+    102
+   ],
+   "teleports": [],
+   "banned_hit": [],
+   "doors": []
+  },
+  {
+   "frm": "丹藥舖",
+   "to": "鐵匠舖",
+   "n_goal": 13,
+   "src": [
+    1654,
+    153.0,
+    174
+   ],
+   "reachable": true,
+   "expanded": 11032,
+   "ms": 171.95354122668505,
+   "length": 174.0,
+   "cost": 173.9,
+   "kinds": {
+    "jump": 2,
+    "drop": 1,
+    "walk": 156
+   },
+   "n_cells": 160,
+   "waypoints": 80,
+   "end": [
+    1737,
+    160.0,
+    95
+   ],
+   "teleports": [],
+   "banned_hit": [],
+   "doors": []
+  },
+  {
+   "frm": "人族出生点",
+   "to": "南门",
+   "n_goal": 13,
+   "src": [
+    1687,
+    132.5,
+    139
+   ],
+   "reachable": true,
+   "expanded": 89475,
+   "ms": 1463.1313849240541,
+   "length": 300.7,
+   "cost": 310.4,
+   "kinds": {
+    "swim": 1,
+    "drop": 7,
+    "walk": 257,
+    "teleport": 1
+   },
+   "n_cells": 267,
+   "waypoints": 87,
+   "end": [
+    179,
+    47.0,
+    181
+   ],
+   "teleports": [
+    {
+     "x": 220.5,
+     "y": 48.0,
+     "z": 34.5,
+     "act": "teleport",
+     "fb": "end_stone",
+     "kind": "teleport",
+     "tp_from": [
+      1598,
+      132.0,
+      121
+     ],
+     "tp_to": [
+      220,
+      48.0,
+      34
+     ]
+    }
+   ],
+   "banned_hit": [],
+   "doors": []
+  },
+  {
+   "frm": "人族出生点",
+   "to": "錢莊掌櫃",
+   "n_goal": 11,
+   "src": [
+    1687,
+    132.5,
+    139
+   ],
+   "reachable": true,
+   "expanded": 182892,
+   "ms": 3144.359616562724,
+   "length": 395.2,
+   "cost": 407.0,
+   "kinds": {
+    "swim": 1,
+    "drop": 10,
+    "walk": 317,
+    "teleport": 1,
+    "jump": 3
+   },
+   "n_cells": 333,
+   "waypoints": 128,
+   "end": [
+    33,
+    46.5,
+    161
+   ],
+   "teleports": [
+    {
+     "x": 220.5,
+     "y": 48.0,
+     "z": 34.5,
+     "act": "teleport",
+     "fb": "end_stone",
+     "kind": "teleport",
+     "tp_from": [
+      1598,
+      132.0,
+      121
+     ],
+     "tp_to": [
+      220,
+      48.0,
+      34
+     ]
+    }
+   ],
+   "banned_hit": [],
+   "doors": []
+  },
+  {
+   "frm": "復活點",
+   "to": "復活石壓板",
+   "n_goal": 10,
+   "src": [
+    205,
+    54.0,
+    -1771
+   ],
+   "reachable": true,
+   "expanded": 26,
+   "ms": 0.8568679913878441,
+   "length": 15.7,
+   "cost": 15.8,
+   "kinds": {
+    "walk": 15
+   },
+   "n_cells": 16,
+   "waypoints": 6,
+   "end": [
+    205,
+    54.0,
+    -1786
+   ],
+   "teleports": [],
+   "banned_hit": [],
+   "doors": []
+  },
+  {
+   "frm": "復活點",
+   "to": "人族出生点",
+   "n_goal": 13,
+   "src": [
+    205,
+    54.0,
+    -1771
+   ],
+   "reachable": true,
+   "expanded": 647,
+   "ms": 9.92058590054512,
+   "length": 51.6,
+   "cost": 84.5,
+   "kinds": {
+    "walk": 26,
+    "teleport": 1,
+    "swim": 5,
+    "jump": 11,
+    "drop": 2
+   },
+   "n_cells": 46,
+   "waypoints": 32,
+   "end": [
+    1687,
+    133.0,
+    140
+   ],
+   "teleports": [
+    {
+     "x": 1689.5,
+     "y": 124.875,
+     "z": 138.5,
+     "act": "teleport",
+     "fb": "water",
+     "kind": "teleport",
+     "tp_from": [
+      205,
+      54.0,
+      -1788
+     ],
+     "tp_to": [
+      1689,
+      124.875,
+      138
+     ]
+    }
+   ],
+   "banned_hit": [],
+   "doors": []
+  }
+ ]
+}

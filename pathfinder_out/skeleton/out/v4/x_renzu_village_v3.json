@@ -1,0 +1,855 @@
+{
+ "graph": "out/renzu_village_v3_graph.json",
+ "set": "renzu",
+ "eval_params": {
+  "attach_radius": 24,
+  "coverage_radius": 8,
+  "main_street_width": 6,
+  "main_street_radius": 3,
+  "port_link_radius": 12,
+  "cross_margin": 3,
+  "directed": true
+ },
+ "route": {
+  "pairs": 10,
+  "reachable": 10,
+  "ratio_median": 1.238,
+  "ratio_max": 3.0449,
+  "ratio_min": 1.0017,
+  "ratio_p90": 2.6747,
+  "directed": true,
+  "roads_one_way": 230,
+  "roads_blocked": 12,
+  "ratio_mean": 1.5147,
+  "pass": false,
+  "rows": [
+   {
+    "frm": "人族出生点",
+    "to": "村長",
+    "gt_length": 59.87,
+    "l1_length": 59.97,
+    "ratio": 1.0017,
+    "l1_nodes": 3,
+    "attach_s_cost": 30.59,
+    "attach_t_cost": 19.56,
+    "gt_kinds": {
+     "swim": 1,
+     "drop": 1,
+     "walk": 47,
+     "jump": 2
+    }
+   },
+   {
+    "frm": "人族出生点",
+    "to": "鐵匠舖",
+    "gt_length": 103.37,
+    "l1_length": 124.14,
+    "ratio": 1.201,
+    "l1_nodes": 7,
+    "attach_s_cost": 24.29,
+    "attach_t_cost": 20.49,
+    "gt_kinds": {
+     "swim": 1,
+     "walk": 65,
+     "drop": 2,
+     "jump": 17
+    }
+   },
+   {
+    "frm": "人族出生点",
+    "to": "村莊大門",
+    "gt_length": 124.15,
+    "l1_length": 332.06,
+    "ratio": 2.6747,
+    "l1_nodes": 18,
+    "attach_s_cost": 24.29,
+    "attach_t_cost": 30.02,
+    "gt_kinds": {
+     "swim": 1,
+     "drop": 7,
+     "walk": 94
+    }
+   },
+   {
+    "frm": "丹藥舖",
+    "to": "村長",
+    "gt_length": 100.17,
+    "l1_length": 101.19,
+    "ratio": 1.0101,
+    "l1_nodes": 5,
+    "attach_s_cost": 27.81,
+    "attach_t_cost": 19.56,
+    "gt_kinds": {
+     "jump": 1,
+     "drop": 3,
+     "walk": 80
+    }
+   },
+   {
+    "frm": "丹藥舖",
+    "to": "鐵匠舖",
+    "gt_length": 173.96,
+    "l1_length": 191.63,
+    "ratio": 1.1016,
+    "l1_nodes": 11,
+    "attach_s_cost": 27.81,
+    "attach_t_cost": 23.31,
+    "gt_kinds": {
+     "jump": 2,
+     "drop": 1,
+     "walk": 156
+    }
+   },
+   {
+    "frm": "村莊大門",
+    "to": "丹藥舖",
+    "gt_length": 114.07,
+    "l1_length": 116.44,
+    "ratio": 1.0208,
+    "l1_nodes": 7,
+    "attach_s_cost": 32.45,
+    "attach_t_cost": 15.06,
+    "gt_kinds": {
+     "walk": 100
+    }
+   },
+   {
+    "frm": "村長",
+    "to": "雜貨舖掌櫃",
+    "gt_length": 105.86,
+    "l1_length": 322.35,
+    "ratio": 3.0449,
+    "l1_nodes": 19,
+    "attach_s_cost": 11.36,
+    "attach_t_cost": 31.32,
+    "gt_kinds": {
+     "walk": 86,
+     "drop": 2
+    }
+   },
+   {
+    "frm": "補給品簡方",
+    "to": "鐵匠舖",
+    "gt_length": 175.61,
+    "l1_length": 223.91,
+    "ratio": 1.275,
+    "l1_nodes": 14,
+    "attach_s_cost": 26.68,
+    "attach_t_cost": 23.31,
+    "gt_kinds": {
+     "walk": 159
+    }
+   },
+   {
+    "frm": "雜貨舖掌櫃",
+    "to": "人族出生点",
+    "gt_length": 81.37,
+    "l1_length": 106.7,
+    "ratio": 1.3112,
+    "l1_nodes": 5,
+    "attach_s_cost": 25.36,
+    "attach_t_cost": 18.05,
+    "gt_kinds": {
+     "jump": 1,
+     "drop": 1,
+     "walk": 65
+    }
+   },
+   {
+    "frm": "鐵匠舖",
+    "to": "村莊大門",
+    "gt_length": 195.75,
+    "l1_length": 294.88,
+    "ratio": 1.5064,
+    "l1_nodes": 15,
+    "attach_s_cost": 22.49,
+    "attach_t_cost": 30.02,
+    "gt_kinds": {
+     "walk": 162,
+     "drop": 8
+    }
+   }
+  ]
+ },
+ "random": {
+  "pairs": 30,
+  "reachable": 24,
+  "min_geodesic": 80,
+  "seed": 12345,
+  "ratio_median": 1.283,
+  "ratio_p90": 1.6881,
+  "ratio_max": 1.9878,
+  "gt_length_median": 187.4,
+  "rows": [
+   {
+    "frm": "r0:1630,136.875,162",
+    "to": "1750,143,79",
+    "gt_length": 295.07,
+    "l1_length": 408.85,
+    "ratio": 1.3856
+   },
+   {
+    "frm": "r1:1727,135,132",
+    "to": "1661,174,178",
+    "gt_length": 188.79,
+    "l1_length": 223.2,
+    "ratio": 1.1823
+   },
+   {
+    "frm": "r2:1735,149,146",
+    "to": "1634,129,135",
+    "gt_length": 151.26,
+    "l1_length": 300.67,
+    "ratio": 1.9878
+   },
+   {
+    "frm": "r3:1702,186,185",
+    "to": "1642,138,130",
+    "gt_length": 136.46,
+    "l1_length": 264.52,
+    "ratio": 1.9384
+   },
+   {
+    "frm": "r4:1637,168,194",
+    "to": "1734,141,156",
+    "gt_length": 156.74,
+    "l1_length": 214.21,
+    "ratio": 1.3666
+   },
+   {
+    "frm": "r5:1618,140,132",
+    "to": "1684,175,193",
+    "gt_length": 165.64,
+    "l1_length": 223.31,
+    "ratio": 1.3481
+   },
+   {
+    "frm": "r6:1676,152,71",
+    "to": "1677,162,181",
+    "gt_length": 230.76,
+    "l1_length": 266.63,
+    "ratio": 1.1555
+   },
+   {
+    "frm": "r7:1739,145,166",
+    "to": "1630,147.5,162",
+    "gt_length": 183.36,
+    "l1_length": 224.87,
+    "ratio": 1.2264
+   },
+   {
+    "frm": "r8:1628,161,73",
+    "to": "1657,174,177",
+    "gt_length": 237.22,
+    "l1_length": null,
+    "ratio": null
+   },
+   {
+    "frm": "r9:1669,165,86",
+    "to": "1690,173,187",
+    "gt_length": 202.06,
+    "l1_length": 277.09,
+    "ratio": 1.3713
+   },
+   {
+    "frm": "r10:1765,189,209",
+    "to": "1684,124.875,127",
+    "gt_length": 203.59,
+    "l1_length": 326.91,
+    "ratio": 1.6058
+   },
+   {
+    "frm": "r11:1729,160,108",
+    "to": "1641,161,62",
+    "gt_length": 240.62,
+    "l1_length": null,
+    "ratio": null
+   },
+   {
+    "frm": "r12:1679,166,81",
+    "to": "1748,153.5,161",
+    "gt_length": 184.78,
+    "l1_length": 206.17,
+    "ratio": 1.1158
+   },
+   {
+    "frm": "r13:1739,154,138",
+    "to": "1655,185,201",
+    "gt_length": 163.54,
+    "l1_length": 180.41,
+    "ratio": 1.1032
+   },
+   {
+    "frm": "r14:1721,136,98",
+    "to": "1618,127.875,122",
+    "gt_length": 198.08,
+    "l1_length": 334.37,
+    "ratio": 1.6881
+   },
+   {
+    "frm": "r15:1704,172,66",
+    "to": "1614,152,97",
+    "gt_length": 139.48,
+    "l1_length": 177.85,
+    "ratio": 1.2751
+   },
+   {
+    "frm": "r16:1670,163,79",
+    "to": "1672,152,195",
+    "gt_length": 166.53,
+    "l1_length": 185.85,
+    "ratio": 1.116
+   },
+   {
+    "frm": "r17:1675,174.5,191",
+    "to": "1760,149,142",
+    "gt_length": 160.21,
+    "l1_length": 185.73,
+    "ratio": 1.1593
+   },
+   {
+    "frm": "r18:1678,165,80",
+    "to": "1590,152,133",
+    "gt_length": 187.41,
+    "l1_length": null,
+    "ratio": null
+   },
+   {
+    "frm": "r19:1715,151,114",
+    "to": "1579,173,138",
+    "gt_length": 302.24,
+    "l1_length": null,
+    "ratio": null
+   },
+   {
+    "frm": "r20:1696,160,177",
+    "to": "1744,142,99",
+    "gt_length": 169.81,
+    "l1_length": 261.91,
+    "ratio": 1.5424
+   },
+   {
+    "frm": "r21:1589,166,141",
+    "to": "1699,165,104",
+    "gt_length": 219.19,
+    "l1_length": null,
+    "ratio": null
+   },
+   {
+    "frm": "r22:1681,169,98",
+    "to": "1691,153.5,200",
+    "gt_length": 172.8,
+    "l1_length": 188.54,
+    "ratio": 1.091
+   },
+   {
+    "frm": "r23:1687,185,204",
+    "to": "1762,155,108",
+    "gt_length": 219.67,
+    "l1_length": 311.26,
+    "ratio": 1.4169
+   },
+   {
+    "frm": "r24:1586,166,100",
+    "to": "1711,160,97",
+    "gt_length": 177.64,
+    "l1_length": 205.86,
+    "ratio": 1.1588
+   },
+   {
+    "frm": "r25:1651,165,69",
+    "to": "1735,147.5,108",
+    "gt_length": 167.39,
+    "l1_length": 171.15,
+    "ratio": 1.0224
+   },
+   {
+    "frm": "r26:1770,186,88",
+    "to": "1688,163,183",
+    "gt_length": 184.36,
+    "l1_length": null,
+    "ratio": null
+   },
+   {
+    "frm": "r27:1612,156,175",
+    "to": "1758,169,159",
+    "gt_length": 234.59,
+    "l1_length": 284.25,
+    "ratio": 1.2117
+   },
+   {
+    "frm": "r28:1656,152,107",
+    "to": "1746,158,143",
+    "gt_length": 188.86,
+    "l1_length": 310.9,
+    "ratio": 1.6462
+   },
+   {
+    "frm": "r29:1642,138,154",
+    "to": "1737,146,88",
+    "gt_length": 303.5,
+    "l1_length": 391.8,
+    "ratio": 1.2909
+   }
+  ]
+ },
+ "coverage": {
+  "reachable_cells_in_box": 40367,
+  "in_region": 13851,
+  "within8_of_l1": 23718,
+  "covered": 37569,
+  "coverage": 0.9307,
+  "metric": "planar-graph geodesic distance (3D step length) <= 8 from any L1 node / port cell or road polyline cell (polyline densified to every block)"
+ },
+ "size": {
+  "nodes": 478,
+  "nodes_by_kind": {
+   "junction": 217,
+   "end": 42,
+   "pass": 7,
+   "building": 200,
+   "plaza": 12
+  },
+  "junctions": 217,
+  "edges": 746,
+  "edges_by_kind": {
+   "road": 568,
+   "region_link": 13,
+   "teleport": 7,
+   "region_adj": 158
+  },
+  "regions": 212,
+  "regions_by_kind": {
+   "building": 200,
+   "plaza": 12
+  },
+  "region_max_diam": 47.6,
+  "region_max_bbox_extent": 29,
+  "regions_diam_gt48": 0,
+  "regions_bbox_gt48": 0,
+  "ports_total": 476,
+  "ports_max": 8,
+  "close_port_pairs_lt4": 2,
+  "regions_deg0": 0,
+  "junctions_within2_of_grove": 0,
+  "road_length_total": 8109.9,
+  "cross_pairs": 968,
+  "cross_pairs_unreachable": 149
+ },
+ "main_street": {
+  "w4": {
+   "points": 729,
+   "in_region": 104,
+   "near_road": 606,
+   "kept": 0.9739,
+   "kept_outside_regions": 0.9696
+  },
+  "w6": {
+   "points": 327,
+   "in_region": 35,
+   "near_road": 287,
+   "kept": 0.9847,
+   "kept_outside_regions": 0.9829
+  },
+  "w8": {
+   "points": 133,
+   "in_region": 15,
+   "near_road": 116,
+   "kept": 0.985,
+   "kept_outside_regions": 0.9831
+  }
+ },
+ "connectivity": {
+  "count": 2,
+  "sizes": [
+   462,
+   16
+  ],
+  "small": [
+   [
+    {
+     "id": 188,
+     "kind": "junction",
+     "pos": [
+      1722,
+      43,
+      210
+     ],
+     "cells": 7,
+     "deg": 4
+    },
+    {
+     "id": 293,
+     "kind": "building",
+     "pos": [
+      1707,
+      44.5,
+      210
+     ],
+     "cells": 203,
+     "deg": 3
+    },
+    {
+     "id": 300,
+     "kind": "building",
+     "pos": [
+      1728,
+      43,
+      203
+     ],
+     "cells": 83,
+     "deg": 5
+    },
+    {
+     "id": 306,
+     "kind": "building",
+     "pos": [
+      1745,
+      43,
+      210
+     ],
+     "cells": 145,
+     "deg": 1
+    },
+    {
+     "id": 435,
+     "kind": "building",
+     "pos": [
+      1741,
+      49,
+      206
+     ],
+     "cells": 35,
+     "deg": 2
+    },
+    {
+     "id": 436,
+     "kind": "building",
+     "pos": [
+      1705,
+      50,
+      207
+     ],
+     "cells": 51,
+     "deg": 1
+    },
+    {
+     "id": 437,
+     "kind": "building",
+     "pos": [
+      1718,
+      50,
+      230
+     ],
+     "cells": 108,
+     "deg": 2
+    },
+    {
+     "id": 438,
+     "kind": "building",
+     "pos": [
+      1730,
+      51,
+      231
+     ],
+     "cells": 26,
+     "deg": 1
+    },
+    {
+     "id": 439,
+     "kind": "building",
+     "pos": [
+      1708,
+      50,
+      223
+     ],
+     "cells": 69,
+     "deg": 3
+    },
+    {
+     "id": 440,
+     "kind": "building",
+     "pos": [
+      1708,
+      50,
+      215
+     ],
+     "cells": 68,
+     "deg": 2
+    },
+    {
+     "id": 441,
+     "kind": "building",
+     "pos": [
+      1748,
+      50,
+      223
+     ],
+     "cells": 52,
+     "deg": 1
+    },
+    {
+     "id": 442,
+     "kind": "building",
+     "pos": [
+      1747,
+      50,
+      215
+     ],
+     "cells": 48,
+     "deg": 2
+    },
+    {
+     "id": 443,
+     "kind": "building",
+     "pos": [
+      1724,
+      49,
+      223
+     ],
+     "cells": 48,
+     "deg": 3
+    },
+    {
+     "id": 444,
+     "kind": "building",
+     "pos": [
+      1740,
+      49,
+      219
+     ],
+     "cells": 61,
+     "deg": 5
+    },
+    {
+     "id": 445,
+     "kind": "building",
+     "pos": [
+      1711,
+      49,
+      207
+     ],
+     "cells": 42,
+     "deg": 2
+    },
+    {
+     "id": 446,
+     "kind": "building",
+     "pos": [
+      1737,
+      50,
+      229
+     ],
+     "cells": 77,
+     "deg": 3
+    }
+   ]
+  ]
+ },
+ "regions": [
+  {
+   "id": 278,
+   "kind": "building",
+   "cells": 77,
+   "diam": 47.6,
+   "bbox_extent": 26,
+   "ports": 4,
+   "exits": 0,
+   "close_port_pairs": 0,
+   "deg": 4
+  },
+  {
+   "id": 319,
+   "kind": "building",
+   "cells": 277,
+   "diam": 45.9,
+   "bbox_extent": 24,
+   "ports": 1,
+   "exits": 0,
+   "close_port_pairs": 0,
+   "deg": 3
+  },
+  {
+   "id": 293,
+   "kind": "building",
+   "cells": 203,
+   "diam": 42.8,
+   "bbox_extent": 18,
+   "ports": 2,
+   "exits": 0,
+   "close_port_pairs": 0,
+   "deg": 3
+  },
+  {
+   "id": 313,
+   "kind": "building",
+   "cells": 237,
+   "diam": 42.7,
+   "bbox_extent": 17,
+   "ports": 1,
+   "exits": 0,
+   "close_port_pairs": 0,
+   "deg": 1
+  },
+  {
+   "id": 316,
+   "kind": "building",
+   "cells": 58,
+   "diam": 42.6,
+   "bbox_extent": 17,
+   "ports": 4,
+   "exits": 0,
+   "close_port_pairs": 0,
+   "deg": 5
+  },
+  {
+   "id": 274,
+   "kind": "building",
+   "cells": 121,
+   "diam": 41.8,
+   "bbox_extent": 18,
+   "ports": 2,
+   "exits": 0,
+   "close_port_pairs": 0,
+   "deg": 3
+  },
+  {
+   "id": 259,
+   "kind": "building",
+   "cells": 78,
+   "diam": 40.2,
+   "bbox_extent": 28,
+   "ports": 5,
+   "exits": 0,
+   "close_port_pairs": 1,
+   "deg": 7
+  },
+  {
+   "id": 304,
+   "kind": "building",
+   "cells": 80,
+   "diam": 39.1,
+   "bbox_extent": 21,
+   "ports": 3,
+   "exits": 0,
+   "close_port_pairs": 0,
+   "deg": 5
+  },
+  {
+   "id": 322,
+   "kind": "plaza",
+   "cells": 238,
+   "diam": 38.2,
+   "bbox_extent": 21,
+   "ports": 8,
+   "exits": 0,
+   "close_port_pairs": 0,
+   "deg": 13
+  },
+  {
+   "id": 299,
+   "kind": "building",
+   "cells": 49,
+   "diam": 36.7,
+   "bbox_extent": 16,
+   "ports": 4,
+   "exits": 0,
+   "close_port_pairs": 0,
+   "deg": 4
+  },
+  {
+   "id": 295,
+   "kind": "building",
+   "cells": 152,
+   "diam": 36.3,
+   "bbox_extent": 13,
+   "ports": 1,
+   "exits": 0,
+   "close_port_pairs": 0,
+   "deg": 3
+  },
+  {
+   "id": 266,
+   "kind": "building",
+   "cells": 110,
+   "diam": 34.9,
+   "bbox_extent": 12,
+   "ports": 3,
+   "exits": 0,
+   "close_port_pairs": 0,
+   "deg": 4
+  },
+  {
+   "id": 314,
+   "kind": "building",
+   "cells": 143,
+   "diam": 34.4,
+   "bbox_extent": 15,
+   "ports": 1,
+   "exits": 0,
+   "close_port_pairs": 0,
+   "deg": 2
+  },
+  {
+   "id": 282,
+   "kind": "building",
+   "cells": 54,
+   "diam": 33.8,
+   "bbox_extent": 19,
+   "ports": 4,
+   "exits": 0,
+   "close_port_pairs": 0,
+   "deg": 6
+  },
+  {
+   "id": 265,
+   "kind": "building",
+   "cells": 147,
+   "diam": 33.5,
+   "bbox_extent": 16,
+   "ports": 1,
+   "exits": 0,
+   "close_port_pairs": 0,
+   "deg": 2
+  }
+ ],
+ "build": {
+  "timing_ms": {
+   "load_ms": 29,
+   "reach_ms": 39,
+   "planar_full_ms": 50,
+   "roof_scan_ms": 70,
+   "floor_check_ms": 6,
+   "clearance_full_ms": 16,
+   "buildings_ms": 21,
+   "groves_ms": 8,
+   "hook_regions_ms": 2,
+   "outdoor_thin_ms": 82,
+   "outdoor_prune_ms": 43,
+   "plaza_ms": 15,
+   "exits_ms": 6,
+   "forced_ms": 7,
+   "graph_ms": 5,
+   "assemble_ms": 12,
+   "v2_total_ms": 411,
+   "v3_post_ms": 223,
+   "build_total_ms": 634,
+   "eval_ms": 276,
+   "png_ms": 92
+  },
+  "rss_mb": 174
+ },
+ "eval_timing_ms": {
+  "gt_ms": 2,
+  "l1_build_ms": 132,
+  "routes_ms": 10,
+  "rand_gt_ms": 254,
+  "rand_routes_ms": 22,
+  "coverage_ms": 28,
+  "regions_ms": 16,
+  "main_street_ms": 5,
+  "total_ms": 470,
+  "load_ms": 173
+ },
+ "eval_rss_mb": 268
+}

@@ -1,0 +1,195 @@
+{
+"frm": "復活點",
+"to": "復活石壓板",
+"frm_xyz": [
+205,
+54,
+-1771
+],
+"to_xyz": [
+205,
+54,
+-1787.5
+],
+"length": 15.7,
+"cost": 15.8,
+"kinds": {
+"walk": 15
+},
+"points": [
+{
+"x": 205.5,
+"y": 54.0,
+"z": -1770.5,
+"act": "start",
+"fb": "stained_hardened_clay"
+},
+{
+"x": 205.5,
+"y": 54.0,
+"z": -1774.5,
+"act": "walk",
+"fb": "bedrock",
+"kind": "walk"
+},
+{
+"x": 205.5,
+"y": 55.5,
+"z": -1777.5,
+"act": "walk",
+"fb": "stone_slab",
+"kind": "walk"
+},
+{
+"x": 205.5,
+"y": 55.5,
+"z": -1781.5,
+"act": "walk",
+"fb": "stone_slab",
+"kind": "walk"
+},
+{
+"x": 205.5,
+"y": 54.0,
+"z": -1784.5,
+"act": "walk",
+"fb": "bedrock",
+"kind": "walk"
+},
+{
+"x": 205.5,
+"y": 54.0,
+"z": -1785.5,
+"act": "end",
+"fb": "bedrock"
+}
+],
+"cells": [
+{
+"x": 205.5,
+"y": 54.0,
+"z": -1770.5,
+"act": "start",
+"fb": "stained_hardened_clay"
+},
+{
+"x": 205.5,
+"y": 54.0,
+"z": -1771.5,
+"act": "walk",
+"fb": "bedrock",
+"kind": "walk"
+},
+{
+"x": 205.5,
+"y": 54.0,
+"z": -1772.5,
+"act": "walk",
+"fb": "bedrock",
+"kind": "walk"
+},
+{
+"x": 205.5,
+"y": 54.0,
+"z": -1773.5,
+"act": "walk",
+"fb": "bedrock",
+"kind": "walk"
+},
+{
+"x": 205.5,
+"y": 54.0,
+"z": -1774.5,
+"act": "walk",
+"fb": "bedrock",
+"kind": "walk"
+},
+{
+"x": 205.5,
+"y": 54.5,
+"z": -1775.5,
+"act": "walk",
+"fb": "stone_slab",
+"kind": "walk"
+},
+{
+"x": 205.5,
+"y": 55.0,
+"z": -1776.5,
+"act": "walk",
+"fb": "quartz_stairs",
+"kind": "walk"
+},
+{
+"x": 205.5,
+"y": 55.5,
+"z": -1777.5,
+"act": "walk",
+"fb": "stone_slab",
+"kind": "walk"
+},
+{
+"x": 205.5,
+"y": 55.5,
+"z": -1778.5,
+"act": "walk",
+"fb": "stone_slab",
+"kind": "walk"
+},
+{
+"x": 205.5,
+"y": 55.5,
+"z": -1779.5,
+"act": "walk",
+"fb": "stone_slab",
+"kind": "walk"
+},
+{
+"x": 205.5,
+"y": 55.5,
+"z": -1780.5,
+"act": "walk",
+"fb": "stone_slab",
+"kind": "walk"
+},
+{
+"x": 205.5,
+"y": 55.5,
+"z": -1781.5,
+"act": "walk",
+"fb": "stone_slab",
+"kind": "walk"
+},
+{
+"x": 205.5,
+"y": 55.0,
+"z": -1782.5,
+"act": "walk",
+"fb": "quartz_stairs",
+"kind": "walk"
+},
+{
+"x": 205.5,
+"y": 54.5,
+"z": -1783.5,
+"act": "walk",
+"fb": "stone_slab",
+"kind": "walk"
+},
+{
+"x": 205.5,
+"y": 54.0,
+"z": -1784.5,
+"act": "walk",
+"fb": "bedrock",
+"kind": "walk"
+},
+{
+"x": 205.5,
+"y": 54.0,
+"z": -1785.5,
+"act": "end",
+"fb": "bedrock"
+}
+]
+}

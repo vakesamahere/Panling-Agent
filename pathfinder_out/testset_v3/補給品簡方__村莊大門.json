@@ -1,0 +1,212 @@
+{
+"frm": "補給品簡方",
+"to": "村莊大門",
+"frm_xyz": [
+1601.5,
+140,
+109.8
+],
+"to_xyz": [
+1598,
+132,
+123
+],
+"length": 19.6,
+"cost": 17.8,
+"kinds": {
+"walk": 10,
+"drop": 3
+},
+"points": [
+{
+"x": 1601.5,
+"y": 140.0,
+"z": 109.5,
+"act": "start",
+"fb": "quartz_block"
+},
+{
+"x": 1601.5,
+"y": 140.0,
+"z": 111.5,
+"act": "walk",
+"fb": "quartz_block",
+"kind": "walk"
+},
+{
+"x": 1599.5,
+"y": 140.0,
+"z": 113.5,
+"act": "walk",
+"fb": "quartz_block",
+"kind": "walk"
+},
+{
+"x": 1599.5,
+"y": 137.0,
+"z": 114.5,
+"act": "drop",
+"fb": "dirt",
+"kind": "drop"
+},
+{
+"x": 1599.5,
+"y": 134.0,
+"z": 115.5,
+"act": "drop",
+"fb": "dirt",
+"kind": "drop"
+},
+{
+"x": 1599.5,
+"y": 132.0,
+"z": 116.5,
+"act": "drop",
+"fb": "dirt",
+"kind": "drop"
+},
+{
+"x": 1599.5,
+"y": 132.0,
+"z": 119.5,
+"act": "walk",
+"fb": "stone_brick_stairs",
+"kind": "walk"
+},
+{
+"x": 1599.5,
+"y": 131.5,
+"z": 120.5,
+"act": "walk",
+"fb": "stone_slab",
+"kind": "walk"
+},
+{
+"x": 1598.5,
+"y": 132.0,
+"z": 120.5,
+"act": "walk",
+"fb": "stonebrick",
+"kind": "walk"
+},
+{
+"x": 1598.5,
+"y": 132.0,
+"z": 121.5,
+"act": "end",
+"fb": "stonebrick"
+}
+],
+"cells": [
+{
+"x": 1601.5,
+"y": 140.0,
+"z": 109.5,
+"act": "start",
+"fb": "quartz_block"
+},
+{
+"x": 1601.5,
+"y": 140.0,
+"z": 110.5,
+"act": "walk",
+"fb": "quartz_block",
+"kind": "walk"
+},
+{
+"x": 1601.5,
+"y": 140.0,
+"z": 111.5,
+"act": "walk",
+"fb": "quartz_block",
+"kind": "walk"
+},
+{
+"x": 1600.5,
+"y": 140.0,
+"z": 112.5,
+"act": "walk",
+"fb": "quartz_block",
+"kind": "walk"
+},
+{
+"x": 1599.5,
+"y": 140.0,
+"z": 113.5,
+"act": "walk",
+"fb": "quartz_block",
+"kind": "walk"
+},
+{
+"x": 1599.5,
+"y": 137.0,
+"z": 114.5,
+"act": "drop",
+"fb": "dirt",
+"kind": "drop"
+},
+{
+"x": 1599.5,
+"y": 134.0,
+"z": 115.5,
+"act": "drop",
+"fb": "dirt",
+"kind": "drop"
+},
+{
+"x": 1599.5,
+"y": 132.0,
+"z": 116.5,
+"act": "drop",
+"fb": "dirt",
+"kind": "drop"
+},
+{
+"x": 1599.5,
+"y": 132.0,
+"z": 117.5,
+"act": "walk",
+"fb": "dirt",
+"kind": "walk"
+},
+{
+"x": 1599.5,
+"y": 132.0,
+"z": 118.5,
+"act": "walk",
+"fb": "stone_brick_stairs",
+"kind": "walk"
+},
+{
+"x": 1599.5,
+"y": 132.0,
+"z": 119.5,
+"act": "walk",
+"fb": "stone_brick_stairs",
+"kind": "walk"
+},
+{
+"x": 1599.5,
+"y": 131.5,
+"z": 120.5,
+"act": "walk",
+"fb": "stone_slab",
+"kind": "walk"
+},
+{
+"x": 1598.5,
+"y": 132.0,
+"z": 120.5,
+"act": "walk",
+"fb": "stonebrick",
+"kind": "walk"
+},
+{
+"x": 1598.5,
+"y": 132.0,
+"z": 121.5,
+"act": "end",
+"fb": "stonebrick"
+}
+]
+}

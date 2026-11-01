@@ -1,0 +1,70 @@
+[
+ {
+  "name": "鐵匠舖->蜀山(中转站传送)",
+  "ok": false,
+  "d": 3187.7,
+  "sec": 7,
+  "err": "unreachable maxNodes exceeded",
+  "end": [
+   83,
+   46,
+   145
+  ]
+ },
+ {
+  "name": "蜀山->崑崙",
+  "ok": true,
+  "d": 0.7,
+  "sec": 20,
+  "stalls": 0,
+  "sb": 2,
+  "err": null,
+  "end": [
+   3167,
+   145,
+   106
+  ]
+ },
+ {
+  "name": "崑崙->綠洲路牌",
+  "ok": true,
+  "d": 1.5,
+  "sec": 127,
+  "stalls": 0,
+  "sb": 0,
+  "err": null,
+  "end": [
+   -82,
+   46,
+   771
+  ]
+ },
+ {
+  "name": "綠洲->火山路牌",
+  "ok": true,
+  "d": 1.8,
+  "sec": 16,
+  "stalls": 0,
+  "sb": 0,
+  "err": null,
+  "end": [
+   120,
+   50,
+   795
+  ]
+ },
+ {
+  "name": "火山路牌->馬賊刷怪點",
+  "ok": true,
+  "d": 2.9,
+  "sec": 28,
+  "stalls": 0,
+  "sb": 0,
+  "err": null,
+  "end": [
+   -162,
+   45,
+   673
+  ]
+ }
+]

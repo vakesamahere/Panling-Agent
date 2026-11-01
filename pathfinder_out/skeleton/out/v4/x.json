@@ -1,0 +1,722 @@
+{
+ "graph": "out/huangcheng_xh3_graph.json",
+ "set": "huangcheng",
+ "eval_params": {
+  "attach_radius": 24,
+  "coverage_radius": 8,
+  "main_street_width": 6,
+  "main_street_radius": 3,
+  "port_link_radius": 12,
+  "cross_margin": 3,
+  "directed": true
+ },
+ "route": {
+  "pairs": 12,
+  "reachable": 12,
+  "ratio_median": 1.0452,
+  "ratio_max": 1.0886,
+  "ratio_min": 1.0073,
+  "ratio_p90": 1.0886,
+  "directed": true,
+  "roads_one_way": 476,
+  "roads_blocked": 0,
+  "ratio_mean": 1.0425,
+  "pass": true,
+  "rows": [
+   {
+    "frm": "南门",
+    "to": "錢莊掌櫃",
+    "gt_length": 163.78,
+    "l1_length": 171.15,
+    "ratio": 1.045,
+    "l1_nodes": 8,
+    "attach_s_cost": 19.14,
+    "attach_t_cost": 31.84,
+    "gt_kinds": {
+     "walk": 151
+    }
+   },
+   {
+    "frm": "南门",
+    "to": "元素回收員",
+    "gt_length": 202.28,
+    "l1_length": 207.2,
+    "ratio": 1.0244,
+    "l1_nodes": 10,
+    "attach_s_cost": 10.24,
+    "attach_t_cost": 34.78,
+    "gt_kinds": {
+     "walk": 172,
+     "jump": 2,
+     "drop": 1
+    }
+   },
+   {
+    "frm": "南门",
+    "to": "人皇-軒轅氏",
+    "gt_length": 358.7,
+    "l1_length": 390.47,
+    "ratio": 1.0886,
+    "l1_nodes": 23,
+    "attach_s_cost": 21.24,
+    "attach_t_cost": 36.96,
+    "gt_kinds": {
+     "walk": 347
+    }
+   },
+   {
+    "frm": "錢莊掌櫃",
+    "to": "南门",
+    "gt_length": 164.37,
+    "l1_length": 171.88,
+    "ratio": 1.0457,
+    "l1_nodes": 7,
+    "attach_s_cost": 34.37,
+    "attach_t_cost": 36.36,
+    "gt_kinds": {
+     "walk": 149,
+     "drop": 2
+    }
+   },
+   {
+    "frm": "錢莊掌櫃",
+    "to": "元素回收員",
+    "gt_length": 316.4,
+    "l1_length": 331.29,
+    "ratio": 1.047,
+    "l1_nodes": 15,
+    "attach_s_cost": 34.37,
+    "attach_t_cost": 34.78,
+    "gt_kinds": {
+     "walk": 270,
+     "drop": 4,
+     "jump": 3
+    }
+   },
+   {
+    "frm": "錢莊掌櫃",
+    "to": "人皇-軒轅氏",
+    "gt_length": 437,
+    "l1_length": 452.72,
+    "ratio": 1.036,
+    "l1_nodes": 25,
+    "attach_s_cost": 34.37,
+    "attach_t_cost": 36.96,
+    "gt_kinds": {
+     "walk": 388,
+     "drop": 4,
+     "jump": 2
+    }
+   },
+   {
+    "frm": "元素回收員",
+    "to": "南门",
+    "gt_length": 202.28,
+    "l1_length": 207.2,
+    "ratio": 1.0244,
+    "l1_nodes": 10,
+    "attach_s_cost": 36.78,
+    "attach_t_cost": 23.61,
+    "gt_kinds": {
+     "walk": 173,
+     "jump": 1,
+     "drop": 1
+    }
+   },
+   {
+    "frm": "元素回收員",
+    "to": "錢莊掌櫃",
+    "gt_length": 316.03,
+    "l1_length": 330.76,
+    "ratio": 1.0466,
+    "l1_nodes": 15,
+    "attach_s_cost": 36.78,
+    "attach_t_cost": 31.84,
+    "gt_kinds": {
+     "walk": 271,
+     "drop": 3,
+     "jump": 2
+    }
+   },
+   {
+    "frm": "元素回收員",
+    "to": "人皇-軒轅氏",
+    "gt_length": 320.28,
+    "l1_length": 323.72,
+    "ratio": 1.0108,
+    "l1_nodes": 17,
+    "attach_s_cost": 63.38,
+    "attach_t_cost": 36.96,
+    "gt_kinds": {
+     "walk": 293,
+     "drop": 3
+    }
+   },
+   {
+    "frm": "人皇-軒轅氏",
+    "to": "南门",
+    "gt_length": 358.7,
+    "l1_length": 390.47,
+    "ratio": 1.0886,
+    "l1_nodes": 24,
+    "attach_s_cost": 38.96,
+    "attach_t_cost": 19.24,
+    "gt_kinds": {
+     "walk": 346,
+     "drop": 1
+    }
+   },
+   {
+    "frm": "人皇-軒轅氏",
+    "to": "錢莊掌櫃",
+    "gt_length": 437.05,
+    "l1_length": 456.85,
+    "ratio": 1.0453,
+    "l1_nodes": 24,
+    "attach_s_cost": 38.96,
+    "attach_t_cost": 31.84,
+    "gt_kinds": {
+     "walk": 390,
+     "drop": 3,
+     "jump": 2
+    }
+   },
+   {
+    "frm": "人皇-軒轅氏",
+    "to": "元素回收員",
+    "gt_length": 321.18,
+    "l1_length": 323.52,
+    "ratio": 1.0073,
+    "l1_nodes": 17,
+    "attach_s_cost": 38.96,
+    "attach_t_cost": 61.17,
+    "gt_kinds": {
+     "walk": 294,
+     "drop": 1,
+     "jump": 3
+    }
+   }
+  ]
+ },
+ "random": {
+  "pairs": 30,
+  "reachable": 30,
+  "min_geodesic": 80,
+  "seed": 12345,
+  "ratio_median": 1.0663,
+  "ratio_p90": 1.0959,
+  "ratio_max": 1.1225,
+  "gt_length_median": 304.8,
+  "rows": [
+   {
+    "frm": "r0:90,46,170",
+    "to": "172,89,-154",
+    "gt_length": 547.87,
+    "l1_length": 579.01,
+    "ratio": 1.0568
+   },
+   {
+    "frm": "r1:76,48,90",
+    "to": "298,44,118",
+    "gt_length": 245.66,
+    "l1_length": 265.3,
+    "ratio": 1.08
+   },
+   {
+    "frm": "r2:93,44,-87",
+    "to": "229,46,123",
+    "gt_length": 324.7,
+    "l1_length": 339.28,
+    "ratio": 1.0449
+   },
+   {
+    "frm": "r3:123,48.5,126",
+    "to": "195,47,204",
+    "gt_length": 156.64,
+    "l1_length": 175.84,
+    "ratio": 1.1225
+   },
+   {
+    "frm": "r4:143,47,109",
+    "to": "186,48,-21",
+    "gt_length": 156.18,
+    "l1_length": 158.92,
+    "ratio": 1.0176
+   },
+   {
+    "frm": "r5:176,47,119",
+    "to": "106,45,-81",
+    "gt_length": 295.34,
+    "l1_length": 313.26,
+    "ratio": 1.0607
+   },
+   {
+    "frm": "r6:44,46,112",
+    "to": "135,48,-111",
+    "gt_length": 320.13,
+    "l1_length": 336.61,
+    "ratio": 1.0515
+   },
+   {
+    "frm": "r7:118,48,-78",
+    "to": "173,44,42",
+    "gt_length": 166.86,
+    "l1_length": 179.18,
+    "ratio": 1.0738
+   },
+   {
+    "frm": "r8:223,42,14",
+    "to": "206,47,185",
+    "gt_length": 186.32,
+    "l1_length": 193.96,
+    "ratio": 1.041
+   },
+   {
+    "frm": "r9:57,48,-166",
+    "to": "262,50,-101",
+    "gt_length": 800.55,
+    "l1_length": 879.81,
+    "ratio": 1.099
+   },
+   {
+    "frm": "r10:138,47,105",
+    "to": "200,66,-127",
+    "gt_length": 274.26,
+    "l1_length": 284.81,
+    "ratio": 1.0385
+   },
+   {
+    "frm": "r11:160,63,-195",
+    "to": "201,48,-99",
+    "gt_length": 154.58,
+    "l1_length": 164.96,
+    "ratio": 1.0672
+   },
+   {
+    "frm": "r12:252,46,9",
+    "to": "222,45.875,164",
+    "gt_length": 188.08,
+    "l1_length": 191.03,
+    "ratio": 1.0156
+   },
+   {
+    "frm": "r13:232,59,-154",
+    "to": "236,89,-29",
+    "gt_length": 192.38,
+    "l1_length": 192.38,
+    "ratio": 1
+   },
+   {
+    "frm": "r14:190,48,177",
+    "to": "93,44,-83",
+    "gt_length": 338.46,
+    "l1_length": 361.23,
+    "ratio": 1.0673
+   },
+   {
+    "frm": "r15:84,44,-59",
+    "to": "178,89,-178",
+    "gt_length": 450.45,
+    "l1_length": 466.25,
+    "ratio": 1.0351
+   },
+   {
+    "frm": "r16:205,48.5,-11",
+    "to": "1,46,58",
+    "gt_length": 380.74,
+    "l1_length": 411.04,
+    "ratio": 1.0796
+   },
+   {
+    "frm": "r17:284,44,54",
+    "to": "260,47,-96",
+    "gt_length": 175.73,
+    "l1_length": 189.35,
+    "ratio": 1.0775
+   },
+   {
+    "frm": "r18:151,46,189",
+    "to": "129,76,-24",
+    "gt_length": 304.77,
+    "l1_length": 316.81,
+    "ratio": 1.0395
+   },
+   {
+    "frm": "r19:241,59,-145",
+    "to": "224,40.875,51",
+    "gt_length": 246.49,
+    "l1_length": 257.54,
+    "ratio": 1.0448
+   },
+   {
+    "frm": "r20:190,45,78",
+    "to": "173,49,-90",
+    "gt_length": 179.12,
+    "l1_length": 191.57,
+    "ratio": 1.0695
+   },
+   {
+    "frm": "r21:15,48,69",
+    "to": "208,47,97",
+    "gt_length": 279.45,
+    "l1_length": 301.32,
+    "ratio": 1.0783
+   },
+   {
+    "frm": "r22:119,42.5,15",
+    "to": "57,50,-184",
+    "gt_length": 610.5,
+    "l1_length": 668.24,
+    "ratio": 1.0946
+   },
+   {
+    "frm": "r23:49,46,196",
+    "to": "47,47,-135",
+    "gt_length": 486.72,
+    "l1_length": 533.39,
+    "ratio": 1.0959
+   },
+   {
+    "frm": "r24:113,45,19",
+    "to": "218,48,-49",
+    "gt_length": 151.13,
+    "l1_length": 161.01,
+    "ratio": 1.0654
+   },
+   {
+    "frm": "r25:118,47.375,159",
+    "to": "148,80,-154",
+    "gt_length": 422.61,
+    "l1_length": 442.02,
+    "ratio": 1.0459
+   },
+   {
+    "frm": "r26:231,71,-157",
+    "to": "266,45,215",
+    "gt_length": 532.95,
+    "l1_length": 565.07,
+    "ratio": 1.0603
+   },
+   {
+    "frm": "r27:238,71,-159",
+    "to": "9,46,-153",
+    "gt_length": 813.58,
+    "l1_length": 876.31,
+    "ratio": 1.0771
+   },
+   {
+    "frm": "r28:147,66,-156",
+    "to": "70,44,-91",
+    "gt_length": 328.15,
+    "l1_length": 350.68,
+    "ratio": 1.0687
+   },
+   {
+    "frm": "r29:98,46,10",
+    "to": "2,45,-155",
+    "gt_length": 509.64,
+    "l1_length": 558.99,
+    "ratio": 1.0968
+   }
+  ]
+ },
+ "coverage": {
+  "reachable_cells_in_box": 116058,
+  "in_region": 66843,
+  "within8_of_l1": 47782,
+  "covered": 114625,
+  "coverage": 0.9877,
+  "metric": "planar-graph geodesic distance (3D step length) <= 8 from any L1 node / port cell or road polyline cell (polyline densified to every block)"
+ },
+ "size": {
+  "nodes": 902,
+  "nodes_by_kind": {
+   "end": 64,
+   "junction": 229,
+   "pass": 6,
+   "forced": 2,
+   "building": 115,
+   "grove": 395,
+   "plaza": 91
+  },
+  "junctions": 229,
+  "edges": 3108,
+  "edges_by_kind": {
+   "road": 2257,
+   "region_link": 70,
+   "teleport": 3,
+   "ladder": 2,
+   "region_adj": 776
+  },
+  "regions": 601,
+  "regions_by_kind": {
+   "building": 115,
+   "grove": 395,
+   "plaza": 91
+  },
+  "region_max_diam": 277.3,
+  "region_max_bbox_extent": 125,
+  "regions_diam_gt48": 36,
+  "regions_bbox_gt48": 11,
+  "ports_total": 1956,
+  "ports_max": 13,
+  "close_port_pairs_lt4": 147,
+  "regions_deg0": 1,
+  "junctions_within2_of_grove": 4,
+  "road_length_total": 37682.2,
+  "cross_pairs": 6676,
+  "cross_pairs_unreachable": 0
+ },
+ "main_street": {
+  "w4": {
+   "points": 2091,
+   "in_region": 677,
+   "near_road": 1331,
+   "kept": 0.9603,
+   "kept_outside_regions": 0.9413
+  },
+  "w6": {
+   "points": 1197,
+   "in_region": 325,
+   "near_road": 845,
+   "kept": 0.9774,
+   "kept_outside_regions": 0.969
+  },
+  "w8": {
+   "points": 735,
+   "in_region": 181,
+   "near_road": 538,
+   "kept": 0.9782,
+   "kept_outside_regions": 0.9711
+  }
+ },
+ "connectivity": {
+  "count": 2,
+  "sizes": [
+   901,
+   1
+  ],
+  "small": [
+   [
+    {
+     "id": 338,
+     "kind": "building",
+     "pos": [
+      56,
+      7,
+      24
+     ],
+     "cells": 122,
+     "deg": 0
+    }
+   ]
+  ]
+ },
+ "regions": [
+  {
+   "id": 311,
+   "kind": "building",
+   "cells": 6985,
+   "diam": 277.3,
+   "bbox_extent": 73,
+   "ports": 3,
+   "exits": 0,
+   "close_port_pairs": 0,
+   "deg": 3
+  },
+  {
+   "id": 306,
+   "kind": "building",
+   "cells": 1255,
+   "diam": 212,
+   "bbox_extent": 125,
+   "ports": 5,
+   "exits": 0,
+   "close_port_pairs": 1,
+   "deg": 5
+  },
+  {
+   "id": 319,
+   "kind": "building",
+   "cells": 1255,
+   "diam": 212,
+   "bbox_extent": 125,
+   "ports": 5,
+   "exits": 0,
+   "close_port_pairs": 0,
+   "deg": 5
+  },
+  {
+   "id": 291,
+   "kind": "building",
+   "cells": 1392,
+   "diam": 177.9,
+   "bbox_extent": 67,
+   "ports": 7,
+   "exits": 0,
+   "close_port_pairs": 0,
+   "deg": 8
+  },
+  {
+   "id": 330,
+   "kind": "building",
+   "cells": 1193,
+   "diam": 164.7,
+   "bbox_extent": 97,
+   "ports": 8,
+   "exits": 0,
+   "close_port_pairs": 0,
+   "deg": 9
+  },
+  {
+   "id": 396,
+   "kind": "building",
+   "cells": 991,
+   "diam": 153.9,
+   "bbox_extent": 53,
+   "ports": 4,
+   "exits": 0,
+   "close_port_pairs": 0,
+   "deg": 8
+  },
+  {
+   "id": 385,
+   "kind": "building",
+   "cells": 295,
+   "diam": 147.4,
+   "bbox_extent": 38,
+   "ports": 7,
+   "exits": 0,
+   "close_port_pairs": 0,
+   "deg": 8
+  },
+  {
+   "id": 379,
+   "kind": "building",
+   "cells": 600,
+   "diam": 140.3,
+   "bbox_extent": 45,
+   "ports": 13,
+   "exits": 0,
+   "close_port_pairs": 1,
+   "deg": 22
+  },
+  {
+   "id": 394,
+   "kind": "building",
+   "cells": 609,
+   "diam": 121.9,
+   "bbox_extent": 44,
+   "ports": 5,
+   "exits": 0,
+   "close_port_pairs": 0,
+   "deg": 9
+  },
+  {
+   "id": 372,
+   "kind": "building",
+   "cells": 462,
+   "diam": 111.1,
+   "bbox_extent": 26,
+   "ports": 7,
+   "exits": 0,
+   "close_port_pairs": 1,
+   "deg": 9
+  },
+  {
+   "id": 356,
+   "kind": "building",
+   "cells": 555,
+   "diam": 106,
+   "bbox_extent": 54,
+   "ports": 6,
+   "exits": 0,
+   "close_port_pairs": 0,
+   "deg": 11
+  },
+  {
+   "id": 357,
+   "kind": "building",
+   "cells": 532,
+   "diam": 89.9,
+   "bbox_extent": 61,
+   "ports": 7,
+   "exits": 0,
+   "close_port_pairs": 1,
+   "deg": 8
+  },
+  {
+   "id": 324,
+   "kind": "building",
+   "cells": 238,
+   "diam": 87.3,
+   "bbox_extent": 41,
+   "ports": 4,
+   "exits": 0,
+   "close_port_pairs": 2,
+   "deg": 6
+  },
+  {
+   "id": 320,
+   "kind": "building",
+   "cells": 884,
+   "diam": 78.8,
+   "bbox_extent": 31,
+   "ports": 1,
+   "exits": 0,
+   "close_port_pairs": 0,
+   "deg": 3
+  },
+  {
+   "id": 371,
+   "kind": "building",
+   "cells": 125,
+   "diam": 76.2,
+   "bbox_extent": 20,
+   "ports": 3,
+   "exits": 0,
+   "close_port_pairs": 0,
+   "deg": 4
+  }
+ ],
+ "build": {
+  "timing_ms": {
+   "load_ms": 298,
+   "reach_ms": 107,
+   "planar_full_ms": 95,
+   "roof_scan_ms": 230,
+   "floor_check_ms": 3,
+   "clearance_full_ms": 65,
+   "buildings_ms": 58,
+   "groves_ms": 45,
+   "hook_regions_ms": 14,
+   "outdoor_thin_ms": 224,
+   "outdoor_prune_ms": 148,
+   "plaza_ms": 38,
+   "exits_ms": 27,
+   "forced_ms": 23,
+   "graph_ms": 10,
+   "assemble_ms": 60,
+   "v2_total_ms": 1445,
+   "v3_post_ms": 2045,
+   "build_total_ms": 3490,
+   "span_ms": 5735,
+   "eval_ms": 8099,
+   "png_ms": 326
+  },
+  "rss_mb": 438
+ },
+ "eval_timing_ms": {
+  "gt_ms": 2,
+  "l1_build_ms": 699,
+  "routes_ms": 39,
+  "rand_gt_ms": 1,
+  "rand_routes_ms": 56,
+  "coverage_ms": 115,
+  "regions_ms": 62,
+  "main_street_ms": 18,
+  "total_ms": 996,
+  "load_ms": 641
+ },
+ "eval_rss_mb": 491
+}

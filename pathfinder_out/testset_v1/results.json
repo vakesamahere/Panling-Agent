@@ -1,0 +1,368 @@
+{
+ "load_s": 3.036396026611328,
+ "rows": [
+  {
+   "frm": "南门",
+   "to": "錢莊掌櫃",
+   "src": [
+    179,
+    47.0,
+    183
+   ],
+   "n_goal": 11,
+   "reachable": true,
+   "expanded": 35436,
+   "ms": 654.2776636779308,
+   "length": 163.8,
+   "cost": 163.3,
+   "kinds": {
+    "walk": 151
+   },
+   "max_y": 47.0,
+   "leaves_cells": 0,
+   "over_lower_floor_cells": 20,
+   "n_cells": 152,
+   "end": [
+    33,
+    46.5,
+    161
+   ],
+   "waypoints": 19,
+   "recorded": "皇城南门->熟食小販 + 熟食小販->南北雜貨批發 + 南北雜貨批發->錢莊",
+   "recorded_len": 167.7
+  },
+  {
+   "frm": "南门",
+   "to": "元素回收員",
+   "src": [
+    179,
+    47.0,
+    183
+   ],
+   "n_goal": 12,
+   "reachable": true,
+   "expanded": 10482,
+   "ms": 199.60524700582027,
+   "length": 203.9,
+   "cost": 203.5,
+   "kinds": {
+    "walk": 173,
+    "drop": 2,
+    "jump": 1
+   },
+   "max_y": 48.0,
+   "leaves_cells": 0,
+   "over_lower_floor_cells": 50,
+   "n_cells": 177,
+   "end": [
+    256,
+    48.0,
+    36
+   ],
+   "waypoints": 48,
+   "recorded": "皇城南门->元素回收員",
+   "recorded_len": 208.6
+  },
+  {
+   "frm": "南门",
+   "to": "人皇-軒轅氏",
+   "src": [
+    179,
+    47.0,
+    183
+   ],
+   "n_goal": 11,
+   "reachable": true,
+   "expanded": 89501,
+   "ms": 1622.2667023539543,
+   "length": 358.7,
+   "cost": 352.4,
+   "kinds": {
+    "walk": 347
+   },
+   "max_y": 67.0,
+   "leaves_cells": 0,
+   "over_lower_floor_cells": 195,
+   "n_cells": 348,
+   "end": [
+    179,
+    67.0,
+    -164
+   ],
+   "waypoints": 33
+  },
+  {
+   "frm": "錢莊掌櫃",
+   "to": "南门",
+   "src": [
+    33,
+    47.0,
+    163
+   ],
+   "n_goal": 13,
+   "reachable": true,
+   "expanded": 12938,
+   "ms": 194.77840512990952,
+   "length": 164.4,
+   "cost": 164.3,
+   "kinds": {
+    "walk": 149,
+    "drop": 2
+   },
+   "max_y": 47.5,
+   "leaves_cells": 0,
+   "over_lower_floor_cells": 23,
+   "n_cells": 152,
+   "end": [
+    177,
+    47.0,
+    183
+   ],
+   "waypoints": 36,
+   "recorded": "錢莊->南北雜貨批發 + 南北雜貨批發->熟食小販 + 熟食小販->皇城南门",
+   "recorded_len": 166.6
+  },
+  {
+   "frm": "錢莊掌櫃",
+   "to": "元素回收員",
+   "src": [
+    33,
+    47.0,
+    163
+   ],
+   "n_goal": 12,
+   "reachable": true,
+   "expanded": 28212,
+   "ms": 476.3664221391082,
+   "length": 319.0,
+   "cost": 318.2,
+   "kinds": {
+    "walk": 270,
+    "drop": 6,
+    "jump": 2
+   },
+   "max_y": 48.0,
+   "leaves_cells": 0,
+   "over_lower_floor_cells": 28,
+   "n_cells": 279,
+   "end": [
+    256,
+    48.0,
+    36
+   ],
+   "waypoints": 76
+  },
+  {
+   "frm": "錢莊掌櫃",
+   "to": "人皇-軒轅氏",
+   "src": [
+    33,
+    47.0,
+    163
+   ],
+   "n_goal": 11,
+   "reachable": true,
+   "expanded": 97787,
+   "ms": 1832.3658322915435,
+   "length": 437.0,
+   "cost": 433.5,
+   "kinds": {
+    "walk": 388,
+    "drop": 4,
+    "jump": 2
+   },
+   "max_y": 67.0,
+   "leaves_cells": 0,
+   "over_lower_floor_cells": 186,
+   "n_cells": 395,
+   "end": [
+    179,
+    67.0,
+    -164
+   ],
+   "waypoints": 78
+  },
+  {
+   "frm": "元素回收員",
+   "to": "南门",
+   "src": [
+    256,
+    48.0,
+    34
+   ],
+   "n_goal": 13,
+   "reachable": true,
+   "expanded": 24989,
+   "ms": 440.00246096402407,
+   "length": 203.7,
+   "cost": 203.0,
+   "kinds": {
+    "walk": 174,
+    "jump": 1,
+    "drop": 1
+   },
+   "max_y": 48.0,
+   "leaves_cells": 0,
+   "over_lower_floor_cells": 52,
+   "n_cells": 177,
+   "end": [
+    179,
+    47.0,
+    181
+   ],
+   "waypoints": 42,
+   "recorded": "元素回收員->皇城南门",
+   "recorded_len": 208.6
+  },
+  {
+   "frm": "元素回收員",
+   "to": "錢莊掌櫃",
+   "src": [
+    256,
+    48.0,
+    34
+   ],
+   "n_goal": 11,
+   "reachable": true,
+   "expanded": 70896,
+   "ms": 1264.2623148858547,
+   "length": 316.0,
+   "cost": 317.7,
+   "kinds": {
+    "walk": 270,
+    "door": 1,
+    "drop": 3,
+    "jump": 2
+   },
+   "max_y": 48.0,
+   "leaves_cells": 0,
+   "over_lower_floor_cells": 18,
+   "n_cells": 277,
+   "end": [
+    33,
+    46.5,
+    161
+   ],
+   "waypoints": 67
+  },
+  {
+   "frm": "元素回收員",
+   "to": "人皇-軒轅氏",
+   "src": [
+    256,
+    48.0,
+    34
+   ],
+   "n_goal": 11,
+   "reachable": true,
+   "expanded": 47059,
+   "ms": 845.0200222432613,
+   "length": 320.3,
+   "cost": 315.2,
+   "kinds": {
+    "walk": 292,
+    "door": 1,
+    "drop": 3
+   },
+   "max_y": 67.0,
+   "leaves_cells": 0,
+   "over_lower_floor_cells": 191,
+   "n_cells": 297,
+   "end": [
+    179,
+    67.0,
+    -164
+   ],
+   "waypoints": 53
+  },
+  {
+   "frm": "人皇-軒轅氏",
+   "to": "南门",
+   "src": [
+    178,
+    68.0,
+    -166
+   ],
+   "n_goal": 13,
+   "reachable": true,
+   "expanded": 82746,
+   "ms": 1519.3243408575654,
+   "length": 358.7,
+   "cost": 362.5,
+   "kinds": {
+    "walk": 346,
+    "drop": 1
+   },
+   "max_y": 68.0,
+   "leaves_cells": 0,
+   "over_lower_floor_cells": 246,
+   "n_cells": 348,
+   "end": [
+    179,
+    47.0,
+    181
+   ],
+   "waypoints": 42
+  },
+  {
+   "frm": "人皇-軒轅氏",
+   "to": "錢莊掌櫃",
+   "src": [
+    178,
+    68.0,
+    -166
+   ],
+   "n_goal": 11,
+   "reachable": true,
+   "expanded": 111291,
+   "ms": 1967.7894115447998,
+   "length": 437.1,
+   "cost": 443.4,
+   "kinds": {
+    "walk": 390,
+    "drop": 3,
+    "jump": 2
+   },
+   "max_y": 68.0,
+   "leaves_cells": 0,
+   "over_lower_floor_cells": 188,
+   "n_cells": 396,
+   "end": [
+    33,
+    46.5,
+    161
+   ],
+   "waypoints": 66
+  },
+  {
+   "frm": "人皇-軒轅氏",
+   "to": "元素回收員",
+   "src": [
+    178,
+    68.0,
+    -166
+   ],
+   "n_goal": 12,
+   "reachable": true,
+   "expanded": 39380,
+   "ms": 737.0055709034204,
+   "length": 323.6,
+   "cost": 328.4,
+   "kinds": {
+    "walk": 295,
+    "drop": 2,
+    "jump": 2
+   },
+   "max_y": 68.0,
+   "leaves_cells": 0,
+   "over_lower_floor_cells": 192,
+   "n_cells": 300,
+   "end": [
+    256,
+    48.0,
+    36
+   ],
+   "waypoints": 61
+  }
+ ]
+}

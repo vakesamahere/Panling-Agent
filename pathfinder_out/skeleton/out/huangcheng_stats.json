@@ -1,0 +1,220 @@
+{
+ "name": "huangcheng",
+ "box": {
+  "x0": 0,
+  "z0": -200,
+  "x1": 300,
+  "z1": 220
+ },
+ "opts": {
+  "pad": 24,
+  "borderDiag": false,
+  "endpoint": "anchor",
+  "pruneRule": "junction",
+  "pMin": 4,
+  "pK": 2,
+  "minComp": 10,
+  "selfLoopMin": 8,
+  "plazaD": 6,
+  "plazaMin": 40,
+  "plaza": true,
+  "corners": true,
+  "polyStep": 4,
+  "reach": true,
+  "seeds": [
+   [
+    179,
+    47,
+    183
+   ],
+   [
+    33,
+    47,
+    163
+   ],
+   [
+    256,
+    48,
+    34
+   ],
+   [
+    179,
+    68,
+    -166
+   ]
+  ],
+  "cycles": true,
+  "cycleMin": 16,
+  "cycleK": 4
+ },
+ "stats": {
+  "regions": [
+   "r.-1.-1",
+   "r.-1.0",
+   "r.0.-1",
+   "r.0.0"
+  ],
+  "cells": 307437,
+  "reach": {
+   "seeds": [
+    {
+     "at": [
+      179,
+      47,
+      183
+     ],
+     "cell": [
+      179,
+      47,
+      183
+     ]
+    },
+    {
+     "at": [
+      33,
+      47,
+      163
+     ],
+     "cell": [
+      33,
+      47,
+      163
+     ]
+    },
+    {
+     "at": [
+      256,
+      48,
+      34
+     ],
+     "cell": [
+      256,
+      48,
+      34
+     ]
+    },
+    {
+     "at": [
+      179,
+      68,
+      -166
+     ],
+     "cell": [
+      178,
+      68,
+      -166
+     ]
+    }
+   ],
+   "kept": 148968,
+   "dropped": 158469
+  },
+  "planar": {
+   "candidate": 873530,
+   "bidir": 862506,
+   "oneway": 11024,
+   "oneway_by_type": {
+    "drop": 10960,
+    "walk": 59,
+    "gate_open": 5
+   },
+   "multi_same_dir": 0,
+   "undirected_edges": 431253
+  },
+  "clearance": {
+   "boundary": 50410,
+   "dmax": 36.5
+  },
+  "thin": {
+   "deleted": 103954,
+   "skeleton": 45014,
+   "pops": 430844
+  },
+  "small_components": {
+   "dropped_cells": 389,
+   "components": 45
+  },
+  "prune": {
+   "rounds": 4,
+   "spurs": 1078,
+   "cells": 3188
+  },
+  "cycles": {
+   "rounds": 10,
+   "edges_removed": 1862,
+   "cells": 6751
+  },
+  "prune2": {
+   "rounds": 3,
+   "spurs": 145,
+   "cells": 468
+  },
+  "small_components_after_prune": {
+   "dropped_cells": 409,
+   "components": 45
+  },
+  "skeleton_after_prune": 33809,
+  "forced": {
+   "teleport": 15,
+   "teleport_external": 9,
+   "door": 318,
+   "ladder_components": 23,
+   "linked": 385,
+   "unlinked": 2,
+   "link_cells": 260
+  },
+  "plaza": {
+   "components": 28,
+   "used": 28,
+   "merged_nodes": 128
+  },
+  "merged_pass_nodes": 767,
+  "graph": {
+   "nodes": 1878,
+   "nodes_by_kind": {
+    "junction": 1460,
+    "end": 368,
+    "forced": 21,
+    "isolated": 1,
+    "plaza": 28
+   },
+   "edges": 2445,
+   "edges_by_kind": {
+    "road": 2416,
+    "teleport": 13,
+    "ladder": 16
+   },
+   "plaza_nodes": 28,
+   "road_length_total": 24670.8
+  },
+  "timing_ms": {
+   "load_ms": 228,
+   "reach_ms": 78,
+   "planar_ms": 52,
+   "clearance_ms": 55,
+   "thin_ms": 148,
+   "prune_ms": 267,
+   "forced_ms": 8,
+   "graph_ms": 10,
+   "plaza_output_ms": 22,
+   "png_ms": 170,
+   "json_ms": 2,
+   "total_ms": 1056
+  },
+  "levels": {
+   "cells_in_box": 116058,
+   "columns": 103555,
+   "multi_level_columns": 10328,
+   "max_levels": 6,
+   "skeleton_cells_in_box": 24884,
+   "skeleton_in_multi_level_columns": 6718,
+   "columns_with_skeleton_on_2plus_levels": 1183
+  },
+  "rss_mb": 367,
+  "png": {
+   "w": 903,
+   "h": 1263,
+   "scale": 3
+  }
+ }
+}

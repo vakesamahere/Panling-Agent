@@ -1,0 +1,303 @@
+{
+ "name": "renzu_village_oneway",
+ "box": {
+  "x0": 1570,
+  "z0": 60,
+  "x1": 1770,
+  "z1": 210
+ },
+ "opts": {
+  "pad": 24,
+  "borderDiag": false,
+  "endpoint": "anchor",
+  "pruneRule": "junction",
+  "pMin": 4,
+  "pK": 2,
+  "minComp": 10,
+  "selfLoopMin": 8,
+  "plazaD": 6,
+  "plazaMin": 40,
+  "plaza": true,
+  "corners": true,
+  "polyStep": 4,
+  "reach": true,
+  "seeds": [
+   [
+    1686,
+    143,
+    107
+   ],
+   [
+    1598,
+    132,
+    123
+   ],
+   [
+    1600,
+    140,
+    112
+   ],
+   [
+    1739,
+    160,
+    95
+   ],
+   [
+    1654,
+    153,
+    174
+   ],
+   [
+    1625,
+    136,
+    100
+   ],
+   [
+    1689,
+    140,
+    138
+   ],
+   [
+    1663,
+    181,
+    184
+   ],
+   [
+    1677,
+    134,
+    141
+   ]
+  ],
+  "cycles": true,
+  "cycleMin": 16,
+  "cycleK": 4,
+  "oneway": true
+ },
+ "stats": {
+  "regions": [
+   "r.3.0"
+  ],
+  "cells": 87978,
+  "reach": {
+   "seeds": [
+    {
+     "at": [
+      1686,
+      143,
+      107
+     ],
+     "cell": [
+      1686,
+      143,
+      107
+     ]
+    },
+    {
+     "at": [
+      1598,
+      132,
+      123
+     ],
+     "cell": [
+      1598,
+      132,
+      123
+     ]
+    },
+    {
+     "at": [
+      1600,
+      140,
+      112
+     ],
+     "cell": [
+      1600,
+      140,
+      112
+     ]
+    },
+    {
+     "at": [
+      1739,
+      160,
+      95
+     ],
+     "cell": [
+      1739,
+      160,
+      95
+     ]
+    },
+    {
+     "at": [
+      1654,
+      153,
+      174
+     ],
+     "cell": [
+      1654,
+      153,
+      174
+     ]
+    },
+    {
+     "at": [
+      1625,
+      136,
+      100
+     ],
+     "cell": [
+      1625,
+      136,
+      99
+     ]
+    },
+    {
+     "at": [
+      1689,
+      140,
+      138
+     ],
+     "cell": [
+      1689,
+      140.75,
+      138
+     ]
+    },
+    {
+     "at": [
+      1663,
+      181,
+      184
+     ],
+     "cell": [
+      1663,
+      181,
+      184
+     ]
+    },
+    {
+     "at": [
+      1677,
+      134,
+      141
+     ],
+     "cell": [
+      1677,
+      134,
+      141
+     ]
+    }
+   ],
+   "kept": 56097,
+   "dropped": 31881
+  },
+  "planar": {
+   "candidate": 235673,
+   "bidir": 220734,
+   "oneway": 14939,
+   "oneway_by_type": {
+    "drop": 14816,
+    "walk": 122,
+    "door_open": 1
+   },
+   "multi_same_dir": 0,
+   "oneway_added": 29878,
+   "undirected_edges": 125306
+  },
+  "clearance": {
+   "boundary": 14296,
+   "dmax": 33.5
+  },
+  "thin": {
+   "deleted": 42343,
+   "skeleton": 13754,
+   "pops": 125172
+  },
+  "small_components": {
+   "dropped_cells": 308,
+   "components": 15
+  },
+  "prune": {
+   "rounds": 3,
+   "spurs": 346,
+   "cells": 1179
+  },
+  "cycles": {
+   "rounds": 5,
+   "edges_removed": 135,
+   "cells": 773
+  },
+  "prune2": {
+   "rounds": 2,
+   "spurs": 7,
+   "cells": 40
+  },
+  "small_components_after_prune": {
+   "dropped_cells": 45,
+   "components": 13
+  },
+  "skeleton_after_prune": 11409,
+  "forced": {
+   "teleport": 11,
+   "teleport_external": 7,
+   "door": 333,
+   "ladder_components": 4,
+   "linked": 357,
+   "unlinked": 0,
+   "link_cells": 202
+  },
+  "plaza": {
+   "components": 6,
+   "used": 6,
+   "merged_nodes": 124
+  },
+  "merged_pass_nodes": 173,
+  "graph": {
+   "nodes": 869,
+   "nodes_by_kind": {
+    "junction": 618,
+    "end": 187,
+    "forced": 58,
+    "plaza": 6
+   },
+   "edges": 1049,
+   "edges_by_kind": {
+    "road": 1037,
+    "teleport": 9,
+    "ladder": 3
+   },
+   "plaza_nodes": 6,
+   "road_length_total": 11537.1
+  },
+  "timing_ms": {
+   "load_ms": 22,
+   "reach_ms": 31,
+   "planar_ms": 42,
+   "clearance_ms": 17,
+   "thin_ms": 47,
+   "prune_ms": 59,
+   "forced_ms": 5,
+   "graph_ms": 4,
+   "plaza_output_ms": 15,
+   "png_ms": 58,
+   "json_ms": 1,
+   "total_ms": 306
+  },
+  "levels": {
+   "cells_in_box": 40367,
+   "columns": 26527,
+   "multi_level_columns": 10896,
+   "max_levels": 6,
+   "skeleton_cells_in_box": 9418,
+   "skeleton_in_multi_level_columns": 5771,
+   "columns_with_skeleton_on_2plus_levels": 842
+  },
+  "rss_mb": 129,
+  "png": {
+   "w": 603,
+   "h": 453,
+   "scale": 3
+  }
+ }
+}

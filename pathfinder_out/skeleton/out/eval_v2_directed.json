@@ -1,0 +1,2713 @@
+{
+ "graph": "out/huangcheng_v2_graph.json",
+ "set": "huangcheng",
+ "eval_params": {
+  "attach_radius": 24,
+  "coverage_radius": 8,
+  "main_street_width": 6,
+  "main_street_radius": 3,
+  "port_link_radius": 12,
+  "cross_margin": 3,
+  "directed": true
+ },
+ "route": {
+  "pairs": 12,
+  "reachable": 12,
+  "ratio_median": 1.0959,
+  "ratio_max": 1.1216,
+  "ratio_min": 1.0336,
+  "ratio_p90": 1.1146,
+  "directed": true,
+  "roads_one_way": 0,
+  "roads_blocked": 0,
+  "ratio_mean": 1.0821,
+  "pass": true,
+  "rows": [
+   {
+    "frm": "南门",
+    "to": "錢莊掌櫃",
+    "gt_length": 163.78,
+    "l1_length": 182.55,
+    "ratio": 1.1146,
+    "l1_nodes": 11,
+    "attach_s_cost": 40.79,
+    "attach_t_cost": 32.75,
+    "gt_kinds": {
+     "walk": 151
+    }
+   },
+   {
+    "frm": "南门",
+    "to": "元素回收員",
+    "gt_length": 202.28,
+    "l1_length": 209.06,
+    "ratio": 1.0336,
+    "l1_nodes": 12,
+    "attach_s_cost": 11.41,
+    "attach_t_cost": 20.14,
+    "gt_kinds": {
+     "walk": 172,
+     "jump": 2,
+     "drop": 1
+    }
+   },
+   {
+    "frm": "南门",
+    "to": "人皇-軒轅氏",
+    "gt_length": 358.7,
+    "l1_length": 393.11,
+    "ratio": 1.0959,
+    "l1_nodes": 21,
+    "attach_s_cost": 47.83,
+    "attach_t_cost": 36.96,
+    "gt_kinds": {
+     "walk": 347
+    }
+   },
+   {
+    "frm": "錢莊掌櫃",
+    "to": "南门",
+    "gt_length": 164.37,
+    "l1_length": 184.36,
+    "ratio": 1.1216,
+    "l1_nodes": 11,
+    "attach_s_cost": 35.39,
+    "attach_t_cost": 39.96,
+    "gt_kinds": {
+     "walk": 149,
+     "drop": 2
+    }
+   },
+   {
+    "frm": "錢莊掌櫃",
+    "to": "元素回收員",
+    "gt_length": 316.4,
+    "l1_length": 332.66,
+    "ratio": 1.0514,
+    "l1_nodes": 16,
+    "attach_s_cost": 35.39,
+    "attach_t_cost": 20.14,
+    "gt_kinds": {
+     "walk": 270,
+     "drop": 4,
+     "jump": 3
+    }
+   },
+   {
+    "frm": "錢莊掌櫃",
+    "to": "人皇-軒轅氏",
+    "gt_length": 437,
+    "l1_length": 479.25,
+    "ratio": 1.0967,
+    "l1_nodes": 29,
+    "attach_s_cost": 35.39,
+    "attach_t_cost": 36.96,
+    "gt_kinds": {
+     "walk": 388,
+     "drop": 4,
+     "jump": 2
+    }
+   },
+   {
+    "frm": "元素回收員",
+    "to": "南门",
+    "gt_length": 202.28,
+    "l1_length": 209.06,
+    "ratio": 1.0336,
+    "l1_nodes": 12,
+    "attach_s_cost": 22.14,
+    "attach_t_cost": 9.41,
+    "gt_kinds": {
+     "walk": 173,
+     "jump": 1,
+     "drop": 1
+    }
+   },
+   {
+    "frm": "元素回收員",
+    "to": "錢莊掌櫃",
+    "gt_length": 316.03,
+    "l1_length": 332.02,
+    "ratio": 1.0506,
+    "l1_nodes": 16,
+    "attach_s_cost": 22.14,
+    "attach_t_cost": 32.75,
+    "gt_kinds": {
+     "walk": 271,
+     "drop": 3,
+     "jump": 2
+    }
+   },
+   {
+    "frm": "元素回收員",
+    "to": "人皇-軒轅氏",
+    "gt_length": 320.28,
+    "l1_length": 352.27,
+    "ratio": 1.0999,
+    "l1_nodes": 23,
+    "attach_s_cost": 22.14,
+    "attach_t_cost": 36.96,
+    "gt_kinds": {
+     "walk": 293,
+     "drop": 3
+    }
+   },
+   {
+    "frm": "人皇-軒轅氏",
+    "to": "南门",
+    "gt_length": 358.7,
+    "l1_length": 393.11,
+    "ratio": 1.0959,
+    "l1_nodes": 21,
+    "attach_s_cost": 38.96,
+    "attach_t_cost": 45.83,
+    "gt_kinds": {
+     "walk": 346,
+     "drop": 1
+    }
+   },
+   {
+    "frm": "人皇-軒轅氏",
+    "to": "錢莊掌櫃",
+    "gt_length": 437.05,
+    "l1_length": 478.62,
+    "ratio": 1.0951,
+    "l1_nodes": 29,
+    "attach_s_cost": 38.96,
+    "attach_t_cost": 32.75,
+    "gt_kinds": {
+     "walk": 390,
+     "drop": 3,
+     "jump": 2
+    }
+   },
+   {
+    "frm": "人皇-軒轅氏",
+    "to": "元素回收員",
+    "gt_length": 321.18,
+    "l1_length": 352.27,
+    "ratio": 1.0968,
+    "l1_nodes": 23,
+    "attach_s_cost": 38.96,
+    "attach_t_cost": 20.14,
+    "gt_kinds": {
+     "walk": 294,
+     "drop": 1,
+     "jump": 3
+    }
+   }
+  ]
+ },
+ "random": {
+  "pairs": 30,
+  "reachable": 26,
+  "min_geodesic": 80,
+  "seed": 12345,
+  "ratio_median": 1.1007,
+  "ratio_p90": 1.2225,
+  "ratio_max": 1.6782,
+  "gt_length_median": 304.8,
+  "rows": [
+   {
+    "frm": "r0:90,46,170",
+    "to": "172,89,-154",
+    "gt_length": 547.87,
+    "l1_length": 600.73,
+    "ratio": 1.0965
+   },
+   {
+    "frm": "r1:76,48,90",
+    "to": "298,44,118",
+    "gt_length": 245.66,
+    "l1_length": 262.03,
+    "ratio": 1.0666
+   },
+   {
+    "frm": "r2:93,44,-87",
+    "to": "229,46,123",
+    "gt_length": 324.7,
+    "l1_length": 370.59,
+    "ratio": 1.1413
+   },
+   {
+    "frm": "r3:123,48.5,126",
+    "to": "195,47,204",
+    "gt_length": 156.64,
+    "l1_length": 178.52,
+    "ratio": 1.1397
+   },
+   {
+    "frm": "r4:143,47,109",
+    "to": "186,48,-21",
+    "gt_length": 156.18,
+    "l1_length": 166.33,
+    "ratio": 1.065
+   },
+   {
+    "frm": "r5:176,47,119",
+    "to": "106,45,-81",
+    "gt_length": 295.34,
+    "l1_length": 336.9,
+    "ratio": 1.1407
+   },
+   {
+    "frm": "r6:44,46,112",
+    "to": "135,48,-111",
+    "gt_length": 320.13,
+    "l1_length": 365.11,
+    "ratio": 1.1405
+   },
+   {
+    "frm": "r7:118,48,-78",
+    "to": "173,44,42",
+    "gt_length": 166.86,
+    "l1_length": 179.94,
+    "ratio": 1.0784
+   },
+   {
+    "frm": "r8:223,42,14",
+    "to": "206,47,185",
+    "gt_length": 186.32,
+    "l1_length": 252.39,
+    "ratio": 1.3546
+   },
+   {
+    "frm": "r9:57,48,-166",
+    "to": "262,50,-101",
+    "gt_length": 800.55,
+    "l1_length": null,
+    "ratio": null
+   },
+   {
+    "frm": "r10:138,47,105",
+    "to": "200,66,-127",
+    "gt_length": 274.26,
+    "l1_length": 291.49,
+    "ratio": 1.0628
+   },
+   {
+    "frm": "r11:160,63,-195",
+    "to": "201,48,-99",
+    "gt_length": 154.58,
+    "l1_length": 161.79,
+    "ratio": 1.0467
+   },
+   {
+    "frm": "r12:252,46,9",
+    "to": "222,45.875,164",
+    "gt_length": 188.08,
+    "l1_length": 229.93,
+    "ratio": 1.2225
+   },
+   {
+    "frm": "r13:232,59,-154",
+    "to": "236,89,-29",
+    "gt_length": 192.38,
+    "l1_length": 192.38,
+    "ratio": 1
+   },
+   {
+    "frm": "r14:190,48,177",
+    "to": "93,44,-83",
+    "gt_length": 338.46,
+    "l1_length": 383.52,
+    "ratio": 1.1331
+   },
+   {
+    "frm": "r15:84,44,-59",
+    "to": "178,89,-178",
+    "gt_length": 450.45,
+    "l1_length": 466.84,
+    "ratio": 1.0364
+   },
+   {
+    "frm": "r16:205,48.5,-11",
+    "to": "1,46,58",
+    "gt_length": 380.74,
+    "l1_length": 413.69,
+    "ratio": 1.0865
+   },
+   {
+    "frm": "r17:284,44,54",
+    "to": "260,47,-96",
+    "gt_length": 175.73,
+    "l1_length": 192.36,
+    "ratio": 1.0946
+   },
+   {
+    "frm": "r18:151,46,189",
+    "to": "129,76,-24",
+    "gt_length": 304.77,
+    "l1_length": 334.5,
+    "ratio": 1.0975
+   },
+   {
+    "frm": "r19:241,59,-145",
+    "to": "224,40.875,51",
+    "gt_length": 246.49,
+    "l1_length": 277.51,
+    "ratio": 1.1258
+   },
+   {
+    "frm": "r20:190,45,78",
+    "to": "173,49,-90",
+    "gt_length": 179.12,
+    "l1_length": 193.61,
+    "ratio": 1.0809
+   },
+   {
+    "frm": "r21:15,48,69",
+    "to": "208,47,97",
+    "gt_length": 279.45,
+    "l1_length": 309.73,
+    "ratio": 1.1084
+   },
+   {
+    "frm": "r22:119,42.5,15",
+    "to": "57,50,-184",
+    "gt_length": 610.5,
+    "l1_length": null,
+    "ratio": null
+   },
+   {
+    "frm": "r23:49,46,196",
+    "to": "47,47,-135",
+    "gt_length": 486.72,
+    "l1_length": 541.56,
+    "ratio": 1.1127
+   },
+   {
+    "frm": "r24:113,45,19",
+    "to": "218,48,-49",
+    "gt_length": 151.13,
+    "l1_length": 171,
+    "ratio": 1.1314
+   },
+   {
+    "frm": "r25:118,47.375,159",
+    "to": "148,80,-154",
+    "gt_length": 422.61,
+    "l1_length": 466.51,
+    "ratio": 1.1039
+   },
+   {
+    "frm": "r26:231,71,-157",
+    "to": "266,45,215",
+    "gt_length": 532.95,
+    "l1_length": 894.41,
+    "ratio": 1.6782
+   },
+   {
+    "frm": "r27:238,71,-159",
+    "to": "9,46,-153",
+    "gt_length": 813.58,
+    "l1_length": null,
+    "ratio": null
+   },
+   {
+    "frm": "r28:147,66,-156",
+    "to": "70,44,-91",
+    "gt_length": 328.15,
+    "l1_length": 351.46,
+    "ratio": 1.071
+   },
+   {
+    "frm": "r29:98,46,10",
+    "to": "2,45,-155",
+    "gt_length": 509.64,
+    "l1_length": null,
+    "ratio": null
+   }
+  ]
+ },
+ "coverage": {
+  "reachable_cells_in_box": 116058,
+  "in_region": 59969,
+  "within8_of_l1": 53870,
+  "covered": 113839,
+  "coverage": 0.9809,
+  "metric": "planar-graph geodesic distance (3D step length) <= 8 from any L1 node / port cell or road polyline cell (polyline densified to every block)"
+ },
+ "size": {
+  "nodes": 864,
+  "nodes_by_kind": {
+   "end": 150,
+   "pass": 16,
+   "junction": 546,
+   "forced": 3,
+   "building": 115,
+   "grove": 12,
+   "plaza": 22
+  },
+  "junctions": 546,
+  "edges": 1381,
+  "edges_by_kind": {
+   "road": 1310,
+   "region_link": 54,
+   "teleport": 3,
+   "ladder": 14
+  },
+  "regions": 149,
+  "regions_by_kind": {
+   "building": 115,
+   "grove": 12,
+   "plaza": 22
+  },
+  "region_max_diam": 327.2,
+  "region_max_bbox_extent": 245,
+  "regions_diam_gt48": 47,
+  "regions_bbox_gt48": 21,
+  "ports_total": 726,
+  "ports_max": 42,
+  "close_port_pairs_lt4": 220,
+  "regions_deg0": 4,
+  "junctions_within2_of_grove": 102,
+  "road_length_total": 11959.3,
+  "cross_pairs": 7288,
+  "cross_pairs_unreachable": 4
+ },
+ "main_street": {
+  "w4": {
+   "points": 2091,
+   "in_region": 684,
+   "near_road": 1353,
+   "kept": 0.9742,
+   "kept_outside_regions": 0.9616
+  },
+  "w6": {
+   "points": 1197,
+   "in_region": 335,
+   "near_road": 836,
+   "kept": 0.9783,
+   "kept_outside_regions": 0.9698
+  },
+  "w8": {
+   "points": 735,
+   "in_region": 190,
+   "near_road": 532,
+   "kept": 0.9823,
+   "kept_outside_regions": 0.9761
+  }
+ },
+ "connectivity": {
+  "count": 34,
+  "sizes": [
+   684,
+   97,
+   13,
+   7,
+   5,
+   4,
+   4,
+   3,
+   3,
+   2,
+   2,
+   2,
+   2,
+   2,
+   2,
+   2,
+   2,
+   2,
+   2,
+   2
+  ],
+  "small": [
+   [
+    {
+     "id": 0,
+     "kind": "end",
+     "pos": [
+      -8,
+      43,
+      -130
+     ],
+     "cells": 1,
+     "deg": 1
+    },
+    {
+     "id": 2,
+     "kind": "end",
+     "pos": [
+      -7,
+      47,
+      -123
+     ],
+     "cells": 10,
+     "deg": 1
+    },
+    {
+     "id": 3,
+     "kind": "pass",
+     "pos": [
+      -6,
+      48,
+      -107
+     ],
+     "cells": 14,
+     "deg": 2
+    },
+    {
+     "id": 5,
+     "kind": "end",
+     "pos": [
+      -6,
+      57,
+      -71
+     ],
+     "cells": 1,
+     "deg": 1
+    },
+    {
+     "id": 6,
+     "kind": "junction",
+     "pos": [
+      -5,
+      52,
+      -198
+     ],
+     "cells": 15,
+     "deg": 3
+    },
+    {
+     "id": 8,
+     "kind": "junction",
+     "pos": [
+      -5,
+      57,
+      -55
+     ],
+     "cells": 16,
+     "deg": 3
+    },
+    {
+     "id": 9,
+     "kind": "junction",
+     "pos": [
+      -2,
+      57,
+      -67
+     ],
+     "cells": 8,
+     "deg": 3
+    },
+    {
+     "id": 10,
+     "kind": "end",
+     "pos": [
+      -4,
+      52,
+      -14
+     ],
+     "cells": 4,
+     "deg": 1
+    },
+    {
+     "id": 13,
+     "kind": "junction",
+     "pos": [
+      0,
+      56,
+      -29
+     ],
+     "cells": 9,
+     "deg": 3
+    },
+    {
+     "id": 15,
+     "kind": "pass",
+     "pos": [
+      -1,
+      48,
+      -166
+     ],
+     "cells": 3,
+     "deg": 2
+    },
+    {
+     "id": 16,
+     "kind": "pass",
+     "pos": [
+      0,
+      49,
+      -124
+     ],
+     "cells": 8,
+     "deg": 2
+    },
+    {
+     "id": 33,
+     "kind": "end",
+     "pos": [
+      0,
+      48,
+      -201
+     ],
+     "cells": 1,
+     "deg": 1
+    },
+    {
+     "id": 38,
+     "kind": "junction",
+     "pos": [
+      1,
+      50,
+      -159
+     ],
+     "cells": 9,
+     "deg": 3
+    },
+    {
+     "id": 39,
+     "kind": "junction",
+     "pos": [
+      1,
+      45,
+      -140
+     ],
+     "cells": 1,
+     "deg": 3
+    },
+    {
+     "id": 40,
+     "kind": "junction",
+     "pos": [
+      3,
+      48,
+      -165
+     ],
+     "cells": 6,
+     "deg": 3
+    },
+    {
+     "id": 41,
+     "kind": "junction",
+     "pos": [
+      2,
+      48,
+      -103
+     ],
+     "cells": 19,
+     "deg": 3
+    },
+    {
+     "id": 43,
+     "kind": "junction",
+     "pos": [
+      3,
+      48,
+      -168
+     ],
+     "cells": 1,
+     "deg": 3
+    },
+    {
+     "id": 44,
+     "kind": "end",
+     "pos": [
+      3,
+      51,
+      -145
+     ],
+     "cells": 1,
+     "deg": 1
+    },
+    {
+     "id": 46,
+     "kind": "junction",
+     "pos": [
+      4,
+      49,
+      -81
+     ],
+     "cells": 37,
+     "deg": 5
+    },
+    {
+     "id": 47,
+     "kind": "end",
+     "pos": [
+      4,
+      56,
+      -53
+     ],
+     "cells": 3,
+     "deg": 1
+    },
+    {
+     "id": 48,
+     "kind": "junction",
+     "pos": [
+      4,
+      56,
+      -31
+     ],
+     "cells": 2,
+     "deg": 4
+    },
+    {
+     "id": 49,
+     "kind": "junction",
+     "pos": [
+      4,
+      54,
+      -190
+     ],
+     "cells": 10,
+     "deg": 4
+    },
+    {
+     "id": 51,
+     "kind": "junction",
+     "pos": [
+      6,
+      56,
+      -25
+     ],
+     "cells": 5,
+     "deg": 4
+    },
+    {
+     "id": 52,
+     "kind": "end",
+     "pos": [
+      5,
+      49,
+      -184
+     ],
+     "cells": 1,
+     "deg": 1
+    },
+    {
+     "id": 53,
+     "kind": "junction",
+     "pos": [
+      5,
+      49,
+      -122
+     ],
+     "cells": 5,
+     "deg": 3
+    },
+    {
+     "id": 55,
+     "kind": "junction",
+     "pos": [
+      6,
+      57,
+      -43
+     ],
+     "cells": 13,
+     "deg": 3
+    },
+    {
+     "id": 56,
+     "kind": "junction",
+     "pos": [
+      6,
+      57,
+      -30
+     ],
+     "cells": 4,
+     "deg": 3
+    },
+    {
+     "id": 57,
+     "kind": "junction",
+     "pos": [
+      6,
+      53,
+      -61
+     ],
+     "cells": 1,
+     "deg": 3
+    },
+    {
+     "id": 58,
+     "kind": "end",
+     "pos": [
+      6,
+      57,
+      -18
+     ],
+     "cells": 3,
+     "deg": 1
+    },
+    {
+     "id": 60,
+     "kind": "junction",
+     "pos": [
+      7,
+      48,
+      -157
+     ],
+     "cells": 4,
+     "deg": 3
+    },
+    {
+     "id": 62,
+     "kind": "junction",
+     "pos": [
+      7,
+      51,
+      -75
+     ],
+     "cells": 1,
+     "deg": 3
+    },
+    {
+     "id": 63,
+     "kind": "end",
+     "pos": [
+      7,
+      60,
+      -70
+     ],
+     "cells": 3,
+     "deg": 1
+    },
+    {
+     "id": 64,
+     "kind": "junction",
+     "pos": [
+      7,
+      55,
+      -60
+     ],
+     "cells": 1,
+     "deg": 3
+    },
+    {
+     "id": 65,
+     "kind": "junction",
+     "pos": [
+      8,
+      55,
+      -29
+     ],
+     "cells": 3,
+     "deg": 3
+    },
+    {
+     "id": 66,
+     "kind": "junction",
+     "pos": [
+      10,
+      51,
+      -168
+     ],
+     "cells": 8,
+     "deg": 3
+    },
+    {
+     "id": 67,
+     "kind": "junction",
+     "pos": [
+      9,
+      55,
+      -58
+     ],
+     "cells": 21,
+     "deg": 5
+    },
+    {
+     "id": 68,
+     "kind": "junction",
+     "pos": [
+      10,
+      53,
+      -189
+     ],
+     "cells": 2,
+     "deg": 4
+    },
+    {
+     "id": 69,
+     "kind": "junction",
+     "pos": [
+      11,
+      53,
+      -140
+     ],
+     "cells": 3,
+     "deg": 3
+    },
+    {
+     "id": 70,
+     "kind": "junction",
+     "pos": [
+      11,
+      52,
+      -61
+     ],
+     "cells": 3,
+     "deg": 3
+    },
+    {
+     "id": 71,
+     "kind": "junction",
+     "pos": [
+      11,
+      53,
+      -182
+     ],
+     "cells": 1,
+     "deg": 3
+    },
+    {
+     "id": 72,
+     "kind": "junction",
+     "pos": [
+      14,
+      52,
+      -151
+     ],
+     "cells": 7,
+     "deg": 4
+    },
+    {
+     "id": 73,
+     "kind": "junction",
+     "pos": [
+      14,
+      51,
+      -81
+     ],
+     "cells": 13,
+     "deg": 4
+    },
+    {
+     "id": 74,
+     "kind": "end",
+     "pos": [
+      12,
+      51,
+      -145
+     ],
+     "cells": 1,
+     "deg": 1
+    },
+    {
+     "id": 75,
+     "kind": "junction",
+     "pos": [
+      14,
+      52,
+      -175
+     ],
+     "cells": 7,
+     "deg": 4
+    },
+    {
+     "id": 76,
+     "kind": "end",
+     "pos": [
+      13,
+      54,
+      -136
+     ],
+     "cells": 1,
+     "deg": 1
+    },
+    {
+     "id": 77,
+     "kind": "junction",
+     "pos": [
+      13,
+      49,
+      -101
+     ],
+     "cells": 4,
+     "deg": 4
+    },
+    {
+     "id": 78,
+     "kind": "junction",
+     "pos": [
+      13,
+      51,
+      -67
+     ],
+     "cells": 1,
+     "deg": 3
+    },
+    {
+     "id": 79,
+     "kind": "junction",
+     "pos": [
+      13,
+      52,
+      -62
+     ],
+     "cells": 1,
+     "deg": 3
+    },
+    {
+     "id": 80,
+     "kind": "junction",
+     "pos": [
+      14,
+      56,
+      -192
+     ],
+     "cells": 10,
+     "deg": 4
+    },
+    {
+     "id": 81,
+     "kind": "junction",
+     "pos": [
+      14,
+      54,
+      -182
+     ],
+     "cells": 1,
+     "deg": 3
+    },
+    {
+     "id": 82,
+     "kind": "junction",
+     "pos": [
+      15,
+      46,
+      -125
+     ],
+     "cells": 4,
+     "deg": 4
+    },
+    {
+     "id": 83,
+     "kind": "junction",
+     "pos": [
+      15,
+      52,
+      -164
+     ],
+     "cells": 4,
+     "deg": 3
+    },
+    {
+     "id": 84,
+     "kind": "end",
+     "pos": [
+      15,
+      55,
+      -147
+     ],
+     "cells": 1,
+     "deg": 1
+    },
+    {
+     "id": 85,
+     "kind": "end",
+     "pos": [
+      15,
+      53,
+      -120
+     ],
+     "cells": 1,
+     "deg": 1
+    },
+    {
+     "id": 86,
+     "kind": "junction",
+     "pos": [
+      17,
+      55,
+      -180
+     ],
+     "cells": 11,
+     "deg": 3
+    },
+    {
+     "id": 87,
+     "kind": "junction",
+     "pos": [
+      16,
+      50,
+      -86
+     ],
+     "cells": 1,
+     "deg": 3
+    },
+    {
+     "id": 88,
+     "kind": "junction",
+     "pos": [
+      16,
+      51,
+      -65
+     ],
+     "cells": 3,
+     "deg": 3
+    },
+    {
+     "id": 89,
+     "kind": "end",
+     "pos": [
+      17,
+      56,
+      -201
+     ],
+     "cells": 1,
+     "deg": 1
+    },
+    {
+     "id": 90,
+     "kind": "junction",
+     "pos": [
+      18,
+      54,
+      -168
+     ],
+     "cells": 4,
+     "deg": 5
+    },
+    {
+     "id": 91,
+     "kind": "junction",
+     "pos": [
+      17,
+      51,
+      -152
+     ],
+     "cells": 1,
+     "deg": 3
+    },
+    {
+     "id": 92,
+     "kind": "end",
+     "pos": [
+      17,
+      48,
+      -96
+     ],
+     "cells": 1,
+     "deg": 1
+    },
+    {
+     "id": 93,
+     "kind": "junction",
+     "pos": [
+      18,
+      54,
+      -172
+     ],
+     "cells": 1,
+     "deg": 3
+    },
+    {
+     "id": 94,
+     "kind": "junction",
+     "pos": [
+      18,
+      50,
+      -154
+     ],
+     "cells": 3,
+     "deg": 3
+    },
+    {
+     "id": 95,
+     "kind": "end",
+     "pos": [
+      18,
+      46,
+      -108
+     ],
+     "cells": 1,
+     "deg": 1
+    },
+    {
+     "id": 96,
+     "kind": "end",
+     "pos": [
+      19,
+      46,
+      -19
+     ],
+     "cells": 1,
+     "deg": 1
+    },
+    {
+     "id": 97,
+     "kind": "junction",
+     "pos": [
+      21,
+      52,
+      -173
+     ],
+     "cells": 1,
+     "deg": 3
+    },
+    {
+     "id": 98,
+     "kind": "end",
+     "pos": [
+      26,
+      59,
+      -201
+     ],
+     "cells": 7,
+     "deg": 1
+    },
+    {
+     "id": 101,
+     "kind": "end",
+     "pos": [
+      27,
+      55,
+      -188
+     ],
+     "cells": 1,
+     "deg": 1
+    },
+    {
+     "id": 103,
+     "kind": "junction",
+     "pos": [
+      28,
+      52,
+      -157
+     ],
+     "cells": 9,
+     "deg": 4
+    },
+    {
+     "id": 104,
+     "kind": "junction",
+     "pos": [
+      29,
+      59,
+      -199
+     ],
+     "cells": 2,
+     "deg": 3
+    },
+    {
+     "id": 107,
+     "kind": "junction",
+     "pos": [
+      30,
+      53,
+      -179
+     ],
+     "cells": 11,
+     "deg": 3
+    },
+    {
+     "id": 109,
+     "kind": "junction",
+     "pos": [
+      31,
+      53,
+      -167
+     ],
+     "cells": 1,
+     "deg": 3
+    },
+    {
+     "id": 111,
+     "kind": "junction",
+     "pos": [
+      34,
+      53,
+      -166
+     ],
+     "cells": 21,
+     "deg": 5
+    },
+    {
+     "id": 115,
+     "kind": "junction",
+     "pos": [
+      35,
+      61,
+      -197
+     ],
+     "cells": 3,
+     "deg": 3
+    },
+    {
+     "id": 117,
+     "kind": "junction",
+     "pos": [
+      36,
+      60,
+      -194
+     ],
+     "cells": 1,
+     "deg": 3
+    },
+    {
+     "id": 120,
+     "kind": "junction",
+     "pos": [
+      37,
+      53,
+      -150
+     ],
+     "cells": 1,
+     "deg": 3
+    },
+    {
+     "id": 123,
+     "kind": "end",
+     "pos": [
+      40,
+      58,
+      -206
+     ],
+     "cells": 9,
+     "deg": 1
+    },
+    {
+     "id": 124,
+     "kind": "junction",
+     "pos": [
+      41,
+      52,
+      -182
+     ],
+     "cells": 18,
+     "deg": 4
+    },
+    {
+     "id": 128,
+     "kind": "junction",
+     "pos": [
+      43,
+      52,
+      -156
+     ],
+     "cells": 3,
+     "deg": 3
+    },
+    {
+     "id": 133,
+     "kind": "junction",
+     "pos": [
+      44,
+      54,
+      -189
+     ],
+     "cells": 19,
+     "deg": 5
+    },
+    {
+     "id": 134,
+     "kind": "junction",
+     "pos": [
+      45,
+      52,
+      -159
+     ],
+     "cells": 3,
+     "deg": 3
+    },
+    {
+     "id": 137,
+     "kind": "junction",
+     "pos": [
+      46,
+      51,
+      -174
+     ],
+     "cells": 5,
+     "deg": 3
+    },
+    {
+     "id": 138,
+     "kind": "end",
+     "pos": [
+      46,
+      50,
+      -161
+     ],
+     "cells": 1,
+     "deg": 1
+    },
+    {
+     "id": 140,
+     "kind": "junction",
+     "pos": [
+      47,
+      52,
+      -157
+     ],
+     "cells": 1,
+     "deg": 3
+    },
+    {
+     "id": 142,
+     "kind": "junction",
+     "pos": [
+      50,
+      50,
+      -174
+     ],
+     "cells": 2,
+     "deg": 4
+    },
+    {
+     "id": 144,
+     "kind": "junction",
+     "pos": [
+      51,
+      52,
+      -163
+     ],
+     "cells": 11,
+     "deg": 4
+    },
+    {
+     "id": 146,
+     "kind": "junction",
+     "pos": [
+      52,
+      60,
+      -183
+     ],
+     "cells": 1,
+     "deg": 3
+    },
+    {
+     "id": 148,
+     "kind": "junction",
+     "pos": [
+      53,
+      57,
+      -187
+     ],
+     "cells": 3,
+     "deg": 3
+    },
+    {
+     "id": 149,
+     "kind": "junction",
+     "pos": [
+      54,
+      56,
+      -192
+     ],
+     "cells": 3,
+     "deg": 3
+    },
+    {
+     "id": 153,
+     "kind": "junction",
+     "pos": [
+      57,
+      52,
+      -196
+     ],
+     "cells": 3,
+     "deg": 3
+    },
+    {
+     "id": 154,
+     "kind": "junction",
+     "pos": [
+      57,
+      52,
+      -172
+     ],
+     "cells": 2,
+     "deg": 3
+    },
+    {
+     "id": 157,
+     "kind": "junction",
+     "pos": [
+      59,
+      53,
+      -168
+     ],
+     "cells": 3,
+     "deg": 3
+    },
+    {
+     "id": 158,
+     "kind": "end",
+     "pos": [
+      60,
+      50,
+      -176
+     ],
+     "cells": 1,
+     "deg": 1
+    },
+    {
+     "id": 160,
+     "kind": "end",
+     "pos": [
+      61,
+      58,
+      -186
+     ],
+     "cells": 1,
+     "deg": 1
+    },
+    {
+     "id": 717,
+     "kind": "building",
+     "pos": [
+      20,
+      50,
+      -150
+     ],
+     "cells": 18,
+     "deg": 1
+    },
+    {
+     "id": 726,
+     "kind": "building",
+     "pos": [
+      61,
+      55,
+      -194
+     ],
+     "cells": 16,
+     "deg": 3
+    },
+    {
+     "id": 830,
+     "kind": "grove",
+     "pos": [
+      9,
+      46,
+      -137
+     ],
+     "cells": 7597,
+     "deg": 31
+    }
+   ],
+   [
+    {
+     "id": 27,
+     "kind": "pass",
+     "pos": [
+      -1,
+      51,
+      191
+     ],
+     "cells": 3,
+     "deg": 2
+    },
+    {
+     "id": 28,
+     "kind": "pass",
+     "pos": [
+      -2,
+      50,
+      201
+     ],
+     "cells": 1,
+     "deg": 2
+    },
+    {
+     "id": 29,
+     "kind": "end",
+     "pos": [
+      -2,
+      50,
+      208
+     ],
+     "cells": 3,
+     "deg": 1
+    },
+    {
+     "id": 339,
+     "kind": "junction",
+     "pos": [
+      0,
+      50,
+      195
+     ],
+     "cells": 1,
+     "deg": 3
+    },
+    {
+     "id": 343,
+     "kind": "junction",
+     "pos": [
+      1,
+      50,
+      204
+     ],
+     "cells": 1,
+     "deg": 3
+    },
+    {
+     "id": 346,
+     "kind": "junction",
+     "pos": [
+      5,
+      50,
+      187
+     ],
+     "cells": 5,
+     "deg": 3
+    },
+    {
+     "id": 349,
+     "kind": "junction",
+     "pos": [
+      5,
+      51,
+      195
+     ],
+     "cells": 11,
+     "deg": 4
+    },
+    {
+     "id": 352,
+     "kind": "junction",
+     "pos": [
+      9,
+      51,
+      199
+     ],
+     "cells": 8,
+     "deg": 4
+    },
+    {
+     "id": 356,
+     "kind": "junction",
+     "pos": [
+      12,
+      51,
+      187
+     ],
+     "cells": 20,
+     "deg": 4
+    },
+    {
+     "id": 359,
+     "kind": "end",
+     "pos": [
+      8,
+      54,
+      178
+     ],
+     "cells": 1,
+     "deg": 1
+    },
+    {
+     "id": 364,
+     "kind": "junction",
+     "pos": [
+      11,
+      49,
+      192
+     ],
+     "cells": 3,
+     "deg": 3
+    },
+    {
+     "id": 372,
+     "kind": "junction",
+     "pos": [
+      15,
+      54,
+      190
+     ],
+     "cells": 1,
+     "deg": 3
+    },
+    {
+     "id": 373,
+     "kind": "end",
+     "pos": [
+      15,
+      54,
+      199
+     ],
+     "cells": 1,
+     "deg": 1
+    }
+   ],
+   [
+    {
+     "id": 102,
+     "kind": "end",
+     "pos": [
+      27,
+      47,
+      -82
+     ],
+     "cells": 1,
+     "deg": 1
+    },
+    {
+     "id": 118,
+     "kind": "end",
+     "pos": [
+      36,
+      48,
+      -83
+     ],
+     "cells": 1,
+     "deg": 1
+    },
+    {
+     "id": 155,
+     "kind": "end",
+     "pos": [
+      57,
+      48,
+      -90
+     ],
+     "cells": 1,
+     "deg": 1
+    },
+    {
+     "id": 718,
+     "kind": "building",
+     "pos": [
+      24,
+      48,
+      -99
+     ],
+     "cells": 42,
+     "deg": 1
+    },
+    {
+     "id": 723,
+     "kind": "building",
+     "pos": [
+      37,
+      53,
+      -72
+     ],
+     "cells": 216,
+     "deg": 2
+    },
+    {
+     "id": 725,
+     "kind": "building",
+     "pos": [
+      49,
+      48,
+      -105
+     ],
+     "cells": 25,
+     "deg": 2
+    },
+    {
+     "id": 842,
+     "kind": "plaza",
+     "pos": [
+      36,
+      48,
+      -99
+     ],
+     "cells": 361,
+     "deg": 4
+    }
+   ],
+   [
+    {
+     "id": 19,
+     "kind": "end",
+     "pos": [
+      -6,
+      56,
+      88
+     ],
+     "cells": 1,
+     "deg": 1
+    },
+    {
+     "id": 23,
+     "kind": "pass",
+     "pos": [
+      -3,
+      50,
+      102
+     ],
+     "cells": 10,
+     "deg": 2
+    },
+    {
+     "id": 340,
+     "kind": "junction",
+     "pos": [
+      2,
+      55,
+      94
+     ],
+     "cells": 23,
+     "deg": 3
+    },
+    {
+     "id": 353,
+     "kind": "end",
+     "pos": [
+      7,
+      55,
+      95
+     ],
+     "cells": 3,
+     "deg": 1
+    },
+    {
+     "id": 370,
+     "kind": "end",
+     "pos": [
+      14,
+      54,
+      110
+     ],
+     "cells": 1,
+     "deg": 1
+    }
+   ],
+   [
+    {
+     "id": 1,
+     "kind": "end",
+     "pos": [
+      -7,
+      47,
+      -136
+     ],
+     "cells": 2,
+     "deg": 1
+    },
+    {
+     "id": 12,
+     "kind": "end",
+     "pos": [
+      -2,
+      48,
+      -127
+     ],
+     "cells": 3,
+     "deg": 1
+    },
+    {
+     "id": 34,
+     "kind": "junction",
+     "pos": [
+      1,
+      48,
+      -132
+     ],
+     "cells": 3,
+     "deg": 3
+    },
+    {
+     "id": 61,
+     "kind": "end",
+     "pos": [
+      7,
+      53,
+      -135
+     ],
+     "cells": 3,
+     "deg": 1
+    }
+   ],
+   [
+    {
+     "id": 511,
+     "kind": "end",
+     "pos": [
+      127,
+      40.875,
+      21
+     ],
+     "cells": 1,
+     "deg": 1
+    },
+    {
+     "id": 548,
+     "kind": "junction",
+     "pos": [
+      168,
+      40.875,
+      31
+     ],
+     "cells": 3,
+     "deg": 3
+    },
+    {
+     "id": 806,
+     "kind": "building",
+     "pos": [
+      179,
+      40.875,
+      31
+     ],
+     "cells": 116,
+     "deg": 3
+    },
+    {
+     "id": 862,
+     "kind": "plaza",
+     "pos": [
+      226,
+      40.875,
+      28
+     ],
+     "cells": 988,
+     "deg": 1
+    }
+   ],
+   [
+    {
+     "id": 4,
+     "kind": "pass",
+     "pos": [
+      -3,
+      52,
+      -94
+     ],
+     "cells": 12,
+     "deg": 2
+    },
+    {
+     "id": 35,
+     "kind": "end",
+     "pos": [
+      0,
+      57,
+      -88
+     ],
+     "cells": 3,
+     "deg": 1
+    },
+    {
+     "id": 45,
+     "kind": "end",
+     "pos": [
+      3,
+      51,
+      -94
+     ],
+     "cells": 1,
+     "deg": 1
+    }
+   ],
+   [
+    {
+     "id": 764,
+     "kind": "building",
+     "pos": [
+      43,
+      44,
+      220
+     ],
+     "cells": 14,
+     "deg": 1
+    },
+    {
+     "id": 850,
+     "kind": "plaza",
+     "pos": [
+      6,
+      45,
+      223
+     ],
+     "cells": 488,
+     "deg": 1
+    },
+    {
+     "id": 851,
+     "kind": "plaza",
+     "pos": [
+      27,
+      44,
+      229
+     ],
+     "cells": 610,
+     "deg": 2
+    }
+   ],
+   [
+    {
+     "id": 7,
+     "kind": "end",
+     "pos": [
+      -5,
+      48,
+      -100
+     ],
+     "cells": 5,
+     "deg": 1
+    },
+    {
+     "id": 42,
+     "kind": "end",
+     "pos": [
+      2,
+      47,
+      -93
+     ],
+     "cells": 1,
+     "deg": 1
+    }
+   ],
+   [
+    {
+     "id": 14,
+     "kind": "end",
+     "pos": [
+      -1,
+      52,
+      -200
+     ],
+     "cells": 1,
+     "deg": 1
+    },
+    {
+     "id": 37,
+     "kind": "end",
+     "pos": [
+      1,
+      52,
+      -205
+     ],
+     "cells": 3,
+     "deg": 1
+    }
+   ],
+   [
+    {
+     "id": 17,
+     "kind": "end",
+     "pos": [
+      0,
+      53,
+      -75
+     ],
+     "cells": 4,
+     "deg": 1
+    },
+    {
+     "id": 36,
+     "kind": "end",
+     "pos": [
+      0,
+      51,
+      -79
+     ],
+     "cells": 1,
+     "deg": 1
+    }
+   ],
+   [
+    {
+     "id": 21,
+     "kind": "end",
+     "pos": [
+      -4,
+      55,
+      43
+     ],
+     "cells": 1,
+     "deg": 1
+    },
+    {
+     "id": 347,
+     "kind": "end",
+     "pos": [
+      5,
+      56,
+      31
+     ],
+     "cells": 1,
+     "deg": 1
+    }
+   ],
+   [
+    {
+     "id": 31,
+     "kind": "end",
+     "pos": [
+      -1,
+      51,
+      80
+     ],
+     "cells": 3,
+     "deg": 1
+    },
+    {
+     "id": 754,
+     "kind": "building",
+     "pos": [
+      8,
+      49,
+      78
+     ],
+     "cells": 15,
+     "deg": 1
+    }
+   ],
+   [
+    {
+     "id": 50,
+     "kind": "end",
+     "pos": [
+      4,
+      53,
+      -88
+     ],
+     "cells": 1,
+     "deg": 1
+    },
+    {
+     "id": 54,
+     "kind": "end",
+     "pos": [
+      5,
+      54,
+      -92
+     ],
+     "cells": 1,
+     "deg": 1
+    }
+   ],
+   [
+    {
+     "id": 100,
+     "kind": "end",
+     "pos": [
+      27,
+      60,
+      -211
+     ],
+     "cells": 28,
+     "deg": 1
+    },
+    {
+     "id": 106,
+     "kind": "end",
+     "pos": [
+      30,
+      57,
+      -199
+     ],
+     "cells": 1,
+     "deg": 1
+    }
+   ],
+   [
+    {
+     "id": 105,
+     "kind": "end",
+     "pos": [
+      29,
+      44.625,
+      -21
+     ],
+     "cells": 1,
+     "deg": 1
+    },
+    {
+     "id": 119,
+     "kind": "end",
+     "pos": [
+      36,
+      44.75,
+      -18
+     ],
+     "cells": 1,
+     "deg": 1
+    }
+   ],
+   [
+    {
+     "id": 108,
+     "kind": "end",
+     "pos": [
+      30,
+      43.875,
+      -22
+     ],
+     "cells": 1,
+     "deg": 1
+    },
+    {
+     "id": 186,
+     "kind": "end",
+     "pos": [
+      83,
+      43.875,
+      -35
+     ],
+     "cells": 1,
+     "deg": 1
+    }
+   ],
+   [
+    {
+     "id": 114,
+     "kind": "end",
+     "pos": [
+      34,
+      45.75,
+      -12
+     ],
+     "cells": 1,
+     "deg": 1
+    },
+    {
+     "id": 375,
+     "kind": "end",
+     "pos": [
+      25,
+      45.875,
+      20
+     ],
+     "cells": 1,
+     "deg": 1
+    }
+   ],
+   [
+    {
+     "id": 200,
+     "kind": "end",
+     "pos": [
+      92,
+      43.875,
+      -23
+     ],
+     "cells": 1,
+     "deg": 1
+    },
+    {
+     "id": 495,
+     "kind": "end",
+     "pos": [
+      116,
+      43.625,
+      18
+     ],
+     "cells": 1,
+     "deg": 1
+    }
+   ],
+   [
+    {
+     "id": 337,
+     "kind": "end",
+     "pos": [
+      0,
+      53,
+      56
+     ],
+     "cells": 1,
+     "deg": 1
+    },
+    {
+     "id": 348,
+     "kind": "end",
+     "pos": [
+      5,
+      52,
+      54
+     ],
+     "cells": 1,
+     "deg": 1
+    }
+   ],
+   [
+    {
+     "id": 351,
+     "kind": "end",
+     "pos": [
+      6,
+      50,
+      177
+     ],
+     "cells": 1,
+     "deg": 1
+    },
+    {
+     "id": 363,
+     "kind": "end",
+     "pos": [
+      9,
+      49,
+      176
+     ],
+     "cells": 1,
+     "deg": 1
+    }
+   ],
+   [
+    {
+     "id": 496,
+     "kind": "end",
+     "pos": [
+      117,
+      42.75,
+      7
+     ],
+     "cells": 1,
+     "deg": 1
+    },
+    {
+     "id": 501,
+     "kind": "end",
+     "pos": [
+      120,
+      41.75,
+      10
+     ],
+     "cells": 1,
+     "deg": 1
+    }
+   ],
+   [
+    {
+     "id": 520,
+     "kind": "end",
+     "pos": [
+      138,
+      47,
+      38
+     ],
+     "cells": 1,
+     "deg": 1
+    },
+    {
+     "id": 525,
+     "kind": "end",
+     "pos": [
+      140,
+      48,
+      36
+     ],
+     "cells": 3,
+     "deg": 1
+    }
+   ],
+   [
+    {
+     "id": 613,
+     "kind": "end",
+     "pos": [
+      219,
+      45.875,
+      179
+     ],
+     "cells": 3,
+     "deg": 1
+    },
+    {
+     "id": 636,
+     "kind": "end",
+     "pos": [
+      229,
+      45.875,
+      168
+     ],
+     "cells": 1,
+     "deg": 1
+    }
+   ],
+   [
+    {
+     "id": 682,
+     "kind": "end",
+     "pos": [
+      275,
+      44.875,
+      23
+     ],
+     "cells": 1,
+     "deg": 1
+    },
+    {
+     "id": 698,
+     "kind": "end",
+     "pos": [
+      287,
+      44.875,
+      39
+     ],
+     "cells": 1,
+     "deg": 1
+    }
+   ],
+   [
+    {
+     "id": 706,
+     "kind": "end",
+     "pos": [
+      295,
+      44.875,
+      38
+     ],
+     "cells": 1,
+     "deg": 1
+    },
+    {
+     "id": 710,
+     "kind": "end",
+     "pos": [
+      302,
+      44.875,
+      36
+     ],
+     "cells": 1,
+     "deg": 1
+    }
+   ],
+   [
+    {
+     "id": 827,
+     "kind": "building",
+     "pos": [
+      293,
+      53.5,
+      105
+     ],
+     "cells": 80,
+     "deg": 1
+    },
+    {
+     "id": 829,
+     "kind": "building",
+     "pos": [
+      304,
+      53,
+      110
+     ],
+     "cells": 101,
+     "deg": 1
+    }
+   ],
+   [
+    {
+     "id": 246,
+     "kind": "pass",
+     "pos": [
+      162,
+      63,
+      -209
+     ],
+     "cells": 1,
+     "deg": 2
+    }
+   ],
+   [
+    {
+     "id": 715,
+     "kind": "building",
+     "pos": [
+      15,
+      51,
+      -55
+     ],
+     "cells": 13,
+     "deg": 0
+    }
+   ]
+  ]
+ },
+ "regions": [
+  {
+   "id": 831,
+   "kind": "grove",
+   "cells": 7192,
+   "diam": 327.2,
+   "bbox_extent": 245,
+   "ports": 31,
+   "exits": 130,
+   "close_port_pairs": 8,
+   "deg": 31
+  },
+  {
+   "id": 739,
+   "kind": "building",
+   "cells": 6985,
+   "diam": 277.3,
+   "bbox_extent": 73,
+   "ports": 3,
+   "exits": 3,
+   "close_port_pairs": 0,
+   "deg": 3
+  },
+  {
+   "id": 830,
+   "kind": "grove",
+   "cells": 7597,
+   "diam": 271.8,
+   "bbox_extent": 211,
+   "ports": 30,
+   "exits": 76,
+   "close_port_pairs": 8,
+   "deg": 31
+  },
+  {
+   "id": 855,
+   "kind": "plaza",
+   "cells": 11004,
+   "diam": 230.3,
+   "bbox_extent": 204,
+   "ports": 4,
+   "exits": 17,
+   "close_port_pairs": 0,
+   "deg": 4
+  },
+  {
+   "id": 734,
+   "kind": "building",
+   "cells": 1255,
+   "diam": 212,
+   "bbox_extent": 125,
+   "ports": 5,
+   "exits": 5,
+   "close_port_pairs": 1,
+   "deg": 5
+  },
+  {
+   "id": 747,
+   "kind": "building",
+   "cells": 1255,
+   "diam": 212,
+   "bbox_extent": 125,
+   "ports": 5,
+   "exits": 5,
+   "close_port_pairs": 0,
+   "deg": 5
+  },
+  {
+   "id": 719,
+   "kind": "building",
+   "cells": 1392,
+   "diam": 177.9,
+   "bbox_extent": 67,
+   "ports": 7,
+   "exits": 11,
+   "close_port_pairs": 0,
+   "deg": 8
+  },
+  {
+   "id": 837,
+   "kind": "grove",
+   "cells": 2441,
+   "diam": 168.1,
+   "bbox_extent": 124,
+   "ports": 42,
+   "exits": 78,
+   "close_port_pairs": 11,
+   "deg": 44
+  },
+  {
+   "id": 758,
+   "kind": "building",
+   "cells": 1193,
+   "diam": 164.7,
+   "bbox_extent": 97,
+   "ports": 8,
+   "exits": 9,
+   "close_port_pairs": 1,
+   "deg": 8
+  },
+  {
+   "id": 824,
+   "kind": "building",
+   "cells": 991,
+   "diam": 153.9,
+   "bbox_extent": 53,
+   "ports": 3,
+   "exits": 6,
+   "close_port_pairs": 0,
+   "deg": 5
+  },
+  {
+   "id": 813,
+   "kind": "building",
+   "cells": 295,
+   "diam": 147.4,
+   "bbox_extent": 38,
+   "ports": 8,
+   "exits": 9,
+   "close_port_pairs": 1,
+   "deg": 8
+  },
+  {
+   "id": 807,
+   "kind": "building",
+   "cells": 600,
+   "diam": 140.3,
+   "bbox_extent": 45,
+   "ports": 18,
+   "exits": 11,
+   "close_port_pairs": 7,
+   "deg": 20
+  },
+  {
+   "id": 822,
+   "kind": "building",
+   "cells": 609,
+   "diam": 121.9,
+   "bbox_extent": 44,
+   "ports": 8,
+   "exits": 5,
+   "close_port_pairs": 4,
+   "deg": 9
+  },
+  {
+   "id": 800,
+   "kind": "building",
+   "cells": 462,
+   "diam": 111.1,
+   "bbox_extent": 26,
+   "ports": 10,
+   "exits": 13,
+   "close_port_pairs": 4,
+   "deg": 11
+  },
+  {
+   "id": 784,
+   "kind": "building",
+   "cells": 555,
+   "diam": 106,
+   "bbox_extent": 54,
+   "ports": 7,
+   "exits": 7,
+   "close_port_pairs": 1,
+   "deg": 8
+  }
+ ],
+ "build": {
+  "timing_ms": {
+   "load_ms": 231,
+   "reach_ms": 78,
+   "planar_full_ms": 69,
+   "roof_scan_ms": 209,
+   "floor_check_ms": 4,
+   "clearance_full_ms": 71,
+   "buildings_ms": 37,
+   "groves_ms": 24,
+   "outdoor_thin_ms": 195,
+   "outdoor_prune_ms": 190,
+   "plaza_ms": 27,
+   "exits_ms": 19,
+   "forced_ms": 10,
+   "graph_ms": 7,
+   "assemble_ms": 33,
+   "png_ms": 119
+  }
+ },
+ "eval_timing_ms": {
+  "gt_ms": 1,
+  "l1_build_ms": 575,
+  "routes_ms": 34,
+  "rand_gt_ms": 1,
+  "rand_routes_ms": 71,
+  "coverage_ms": 79,
+  "regions_ms": 58,
+  "main_street_ms": 13,
+  "total_ms": 836,
+  "load_ms": 638
+ },
+ "eval_rss_mb": 465
+}

@@ -1,0 +1,1341 @@
+{
+"frm": "人族出生点",
+"to": "村莊大門",
+"frm_xyz": [
+1687,
+132,
+139
+],
+"to_xyz": [
+1598,
+132,
+123
+],
+"length": 124.1,
+"cost": 123.8,
+"kinds": {
+"swim": 1,
+"drop": 7,
+"walk": 94
+},
+"points": [
+{
+"x": 1687.5,
+"y": 132.5,
+"z": 139.5,
+"act": "start",
+"fb": "water"
+},
+{
+"x": 1686.5,
+"y": 133.0,
+"z": 139.5,
+"act": "swim",
+"fb": "double_stone_slab",
+"kind": "swim"
+},
+{
+"x": 1685.5,
+"y": 132.0,
+"z": 139.5,
+"act": "drop",
+"fb": "quartz_block",
+"kind": "drop"
+},
+{
+"x": 1684.5,
+"y": 132.0,
+"z": 138.5,
+"act": "walk",
+"fb": "quartz_block",
+"kind": "walk"
+},
+{
+"x": 1683.5,
+"y": 132.0,
+"z": 138.5,
+"act": "walk",
+"fb": "quartz_block",
+"kind": "walk"
+},
+{
+"x": 1679.5,
+"y": 134.0,
+"z": 138.5,
+"act": "walk",
+"fb": "quartz_block",
+"kind": "walk"
+},
+{
+"x": 1676.5,
+"y": 134.0,
+"z": 138.5,
+"act": "walk",
+"fb": "quartz_block",
+"kind": "walk"
+},
+{
+"x": 1670.5,
+"y": 137.0,
+"z": 138.5,
+"act": "walk",
+"fb": "quartz_block",
+"kind": "walk"
+},
+{
+"x": 1669.5,
+"y": 137.0,
+"z": 137.5,
+"act": "walk",
+"fb": "quartz_block",
+"kind": "walk"
+},
+{
+"x": 1668.5,
+"y": 137.0,
+"z": 137.5,
+"act": "walk",
+"fb": "quartz_block",
+"kind": "walk"
+},
+{
+"x": 1667.5,
+"y": 137.0,
+"z": 136.5,
+"act": "walk",
+"fb": "quartz_block",
+"kind": "walk"
+},
+{
+"x": 1666.5,
+"y": 137.0,
+"z": 136.5,
+"act": "walk",
+"fb": "quartz_block",
+"kind": "walk"
+},
+{
+"x": 1661.5,
+"y": 137.0,
+"z": 131.5,
+"act": "walk",
+"fb": "quartz_block",
+"kind": "walk"
+},
+{
+"x": 1660.5,
+"y": 137.0,
+"z": 131.5,
+"act": "walk",
+"fb": "quartz_block",
+"kind": "walk"
+},
+{
+"x": 1658.5,
+"y": 137.0,
+"z": 129.5,
+"act": "walk",
+"fb": "quartz_block",
+"kind": "walk"
+},
+{
+"x": 1657.5,
+"y": 137.0,
+"z": 129.5,
+"act": "walk",
+"fb": "quartz_block",
+"kind": "walk"
+},
+{
+"x": 1656.5,
+"y": 137.0,
+"z": 128.5,
+"act": "walk",
+"fb": "quartz_block",
+"kind": "walk"
+},
+{
+"x": 1655.5,
+"y": 137.0,
+"z": 128.5,
+"act": "walk",
+"fb": "quartz_block",
+"kind": "walk"
+},
+{
+"x": 1654.5,
+"y": 137.0,
+"z": 127.5,
+"act": "walk",
+"fb": "quartz_block",
+"kind": "walk"
+},
+{
+"x": 1653.5,
+"y": 137.5,
+"z": 127.5,
+"act": "walk",
+"fb": "stone_slab",
+"kind": "walk"
+},
+{
+"x": 1652.5,
+"y": 137.5,
+"z": 126.5,
+"act": "walk",
+"fb": "stone_slab",
+"kind": "walk"
+},
+{
+"x": 1651.5,
+"y": 138.0,
+"z": 126.5,
+"act": "walk",
+"fb": "quartz_block",
+"kind": "walk"
+},
+{
+"x": 1650.5,
+"y": 138.0,
+"z": 126.5,
+"act": "walk",
+"fb": "quartz_block",
+"kind": "walk"
+},
+{
+"x": 1648.5,
+"y": 138.0,
+"z": 124.5,
+"act": "walk",
+"fb": "quartz_block",
+"kind": "walk"
+},
+{
+"x": 1646.5,
+"y": 139.0,
+"z": 124.5,
+"act": "walk",
+"fb": "quartz_block",
+"kind": "walk"
+},
+{
+"x": 1642.5,
+"y": 139.0,
+"z": 124.5,
+"act": "walk",
+"fb": "double_stone_slab",
+"kind": "walk"
+},
+{
+"x": 1641.5,
+"y": 138.5,
+"z": 124.5,
+"act": "walk",
+"fb": "stone_slab",
+"kind": "walk"
+},
+{
+"x": 1641.5,
+"y": 138.5,
+"z": 123.5,
+"act": "walk",
+"fb": "stone_slab",
+"kind": "walk"
+},
+{
+"x": 1641.5,
+"y": 136.0,
+"z": 118.5,
+"act": "walk",
+"fb": "quartz_block",
+"kind": "walk"
+},
+{
+"x": 1637.5,
+"y": 136.0,
+"z": 114.5,
+"act": "walk",
+"fb": "stone_slab",
+"kind": "walk"
+},
+{
+"x": 1636.5,
+"y": 136.0,
+"z": 114.5,
+"act": "walk",
+"fb": "stone_slab",
+"kind": "walk"
+},
+{
+"x": 1635.5,
+"y": 136.0,
+"z": 113.5,
+"act": "walk",
+"fb": "stone_slab",
+"kind": "walk"
+},
+{
+"x": 1632.5,
+"y": 136.0,
+"z": 113.5,
+"act": "walk",
+"fb": "stone_slab",
+"kind": "walk"
+},
+{
+"x": 1631.5,
+"y": 136.0,
+"z": 112.5,
+"act": "walk",
+"fb": "quartz_block",
+"kind": "walk"
+},
+{
+"x": 1630.5,
+"y": 136.5,
+"z": 112.5,
+"act": "walk",
+"fb": "stone_slab",
+"kind": "walk"
+},
+{
+"x": 1629.5,
+"y": 136.5,
+"z": 112.5,
+"act": "walk",
+"fb": "stone_slab",
+"kind": "walk"
+},
+{
+"x": 1628.5,
+"y": 136.5,
+"z": 111.5,
+"act": "walk",
+"fb": "stone_slab",
+"kind": "walk"
+},
+{
+"x": 1627.5,
+"y": 137.0,
+"z": 111.5,
+"act": "walk",
+"fb": "quartz_block",
+"kind": "walk"
+},
+{
+"x": 1625.5,
+"y": 137.0,
+"z": 111.5,
+"act": "walk",
+"fb": "stone_slab",
+"kind": "walk"
+},
+{
+"x": 1624.5,
+"y": 137.0,
+"z": 110.5,
+"act": "walk",
+"fb": "quartz_block",
+"kind": "walk"
+},
+{
+"x": 1623.5,
+"y": 137.5,
+"z": 110.5,
+"act": "walk",
+"fb": "stone_slab",
+"kind": "walk"
+},
+{
+"x": 1622.5,
+"y": 137.5,
+"z": 110.5,
+"act": "walk",
+"fb": "stone_slab",
+"kind": "walk"
+},
+{
+"x": 1621.5,
+"y": 138.0,
+"z": 110.5,
+"act": "walk",
+"fb": "stone_slab",
+"kind": "walk"
+},
+{
+"x": 1620.5,
+"y": 138.0,
+"z": 110.5,
+"act": "walk",
+"fb": "stone_slab",
+"kind": "walk"
+},
+{
+"x": 1619.5,
+"y": 138.0,
+"z": 109.5,
+"act": "walk",
+"fb": "stone_slab",
+"kind": "walk"
+},
+{
+"x": 1617.5,
+"y": 138.0,
+"z": 109.5,
+"act": "walk",
+"fb": "stone_slab",
+"kind": "walk"
+},
+{
+"x": 1616.5,
+"y": 138.0,
+"z": 108.5,
+"act": "walk",
+"fb": "quartz_block",
+"kind": "walk"
+},
+{
+"x": 1615.5,
+"y": 138.0,
+"z": 108.5,
+"act": "walk",
+"fb": "quartz_block",
+"kind": "walk"
+},
+{
+"x": 1613.5,
+"y": 139.0,
+"z": 108.5,
+"act": "walk",
+"fb": "quartz_block",
+"kind": "walk"
+},
+{
+"x": 1607.5,
+"y": 139.0,
+"z": 108.5,
+"act": "walk",
+"fb": "quartz_block",
+"kind": "walk"
+},
+{
+"x": 1605.5,
+"y": 139.0,
+"z": 110.5,
+"act": "walk",
+"fb": "quartz_block",
+"kind": "walk"
+},
+{
+"x": 1605.5,
+"y": 136.0,
+"z": 111.5,
+"act": "drop",
+"fb": "dirt",
+"kind": "drop"
+},
+{
+"x": 1605.5,
+"y": 135.0,
+"z": 112.5,
+"act": "drop",
+"fb": "sandstone",
+"kind": "drop"
+},
+{
+"x": 1605.5,
+"y": 134.0,
+"z": 113.5,
+"act": "drop",
+"fb": "sandstone",
+"kind": "drop"
+},
+{
+"x": 1605.5,
+"y": 133.0,
+"z": 114.5,
+"act": "drop",
+"fb": "dirt",
+"kind": "drop"
+},
+{
+"x": 1603.5,
+"y": 133.0,
+"z": 116.5,
+"act": "walk",
+"fb": "dirt",
+"kind": "walk"
+},
+{
+"x": 1603.5,
+"y": 131.0,
+"z": 117.5,
+"act": "drop",
+"fb": "dirt",
+"kind": "drop"
+},
+{
+"x": 1603.5,
+"y": 130.0,
+"z": 118.5,
+"act": "drop",
+"fb": "dirt",
+"kind": "drop"
+},
+{
+"x": 1603.5,
+"y": 130.0,
+"z": 119.5,
+"act": "walk",
+"fb": "dirt",
+"kind": "walk"
+},
+{
+"x": 1601.5,
+"y": 130.0,
+"z": 121.5,
+"act": "walk",
+"fb": "stone_slab",
+"kind": "walk"
+},
+{
+"x": 1600.5,
+"y": 131.0,
+"z": 121.5,
+"act": "walk",
+"fb": "stone_brick_stairs",
+"kind": "walk"
+},
+{
+"x": 1598.5,
+"y": 132.0,
+"z": 121.5,
+"act": "end",
+"fb": "stonebrick"
+}
+],
+"cells": [
+{
+"x": 1687.5,
+"y": 132.5,
+"z": 139.5,
+"act": "start",
+"fb": "water"
+},
+{
+"x": 1686.5,
+"y": 133.0,
+"z": 139.5,
+"act": "swim",
+"fb": "double_stone_slab",
+"kind": "swim"
+},
+{
+"x": 1685.5,
+"y": 132.0,
+"z": 139.5,
+"act": "drop",
+"fb": "quartz_block",
+"kind": "drop"
+},
+{
+"x": 1684.5,
+"y": 132.0,
+"z": 138.5,
+"act": "walk",
+"fb": "quartz_block",
+"kind": "walk"
+},
+{
+"x": 1683.5,
+"y": 132.0,
+"z": 138.5,
+"act": "walk",
+"fb": "quartz_block",
+"kind": "walk"
+},
+{
+"x": 1682.5,
+"y": 132.5,
+"z": 138.5,
+"act": "walk",
+"fb": "stone_slab",
+"kind": "walk"
+},
+{
+"x": 1681.5,
+"y": 133.0,
+"z": 138.5,
+"act": "walk",
+"fb": "quartz_block",
+"kind": "walk"
+},
+{
+"x": 1680.5,
+"y": 133.5,
+"z": 138.5,
+"act": "walk",
+"fb": "stone_slab",
+"kind": "walk"
+},
+{
+"x": 1679.5,
+"y": 134.0,
+"z": 138.5,
+"act": "walk",
+"fb": "quartz_block",
+"kind": "walk"
+},
+{
+"x": 1678.5,
+"y": 134.0,
+"z": 138.5,
+"act": "walk",
+"fb": "quartz_block",
+"kind": "walk"
+},
+{
+"x": 1677.5,
+"y": 134.0,
+"z": 138.5,
+"act": "walk",
+"fb": "quartz_block",
+"kind": "walk"
+},
+{
+"x": 1676.5,
+"y": 134.0,
+"z": 138.5,
+"act": "walk",
+"fb": "quartz_block",
+"kind": "walk"
+},
+{
+"x": 1675.5,
+"y": 134.5,
+"z": 138.5,
+"act": "walk",
+"fb": "stone_slab",
+"kind": "walk"
+},
+{
+"x": 1674.5,
+"y": 135.0,
+"z": 138.5,
+"act": "walk",
+"fb": "quartz_block",
+"kind": "walk"
+},
+{
+"x": 1673.5,
+"y": 135.5,
+"z": 138.5,
+"act": "walk",
+"fb": "stone_slab",
+"kind": "walk"
+},
+{
+"x": 1672.5,
+"y": 136.0,
+"z": 138.5,
+"act": "walk",
+"fb": "quartz_block",
+"kind": "walk"
+},
+{
+"x": 1671.5,
+"y": 136.5,
+"z": 138.5,
+"act": "walk",
+"fb": "stone_slab",
+"kind": "walk"
+},
+{
+"x": 1670.5,
+"y": 137.0,
+"z": 138.5,
+"act": "walk",
+"fb": "quartz_block",
+"kind": "walk"
+},
+{
+"x": 1669.5,
+"y": 137.0,
+"z": 137.5,
+"act": "walk",
+"fb": "quartz_block",
+"kind": "walk"
+},
+{
+"x": 1668.5,
+"y": 137.0,
+"z": 137.5,
+"act": "walk",
+"fb": "quartz_block",
+"kind": "walk"
+},
+{
+"x": 1667.5,
+"y": 137.0,
+"z": 136.5,
+"act": "walk",
+"fb": "quartz_block",
+"kind": "walk"
+},
+{
+"x": 1666.5,
+"y": 137.0,
+"z": 136.5,
+"act": "walk",
+"fb": "quartz_block",
+"kind": "walk"
+},
+{
+"x": 1665.5,
+"y": 137.0,
+"z": 135.5,
+"act": "walk",
+"fb": "quartz_block",
+"kind": "walk"
+},
+{
+"x": 1664.5,
+"y": 137.0,
+"z": 134.5,
+"act": "walk",
+"fb": "quartz_block",
+"kind": "walk"
+},
+{
+"x": 1663.5,
+"y": 137.0,
+"z": 133.5,
+"act": "walk",
+"fb": "quartz_block",
+"kind": "walk"
+},
+{
+"x": 1662.5,
+"y": 137.0,
+"z": 132.5,
+"act": "walk",
+"fb": "quartz_block",
+"kind": "walk"
+},
+{
+"x": 1661.5,
+"y": 137.0,
+"z": 131.5,
+"act": "walk",
+"fb": "quartz_block",
+"kind": "walk"
+},
+{
+"x": 1660.5,
+"y": 137.0,
+"z": 131.5,
+"act": "walk",
+"fb": "quartz_block",
+"kind": "walk"
+},
+{
+"x": 1659.5,
+"y": 137.0,
+"z": 130.5,
+"act": "walk",
+"fb": "quartz_block",
+"kind": "walk"
+},
+{
+"x": 1658.5,
+"y": 137.0,
+"z": 129.5,
+"act": "walk",
+"fb": "quartz_block",
+"kind": "walk"
+},
+{
+"x": 1657.5,
+"y": 137.0,
+"z": 129.5,
+"act": "walk",
+"fb": "quartz_block",
+"kind": "walk"
+},
+{
+"x": 1656.5,
+"y": 137.0,
+"z": 128.5,
+"act": "walk",
+"fb": "quartz_block",
+"kind": "walk"
+},
+{
+"x": 1655.5,
+"y": 137.0,
+"z": 128.5,
+"act": "walk",
+"fb": "quartz_block",
+"kind": "walk"
+},
+{
+"x": 1654.5,
+"y": 137.0,
+"z": 127.5,
+"act": "walk",
+"fb": "quartz_block",
+"kind": "walk"
+},
+{
+"x": 1653.5,
+"y": 137.5,
+"z": 127.5,
+"act": "walk",
+"fb": "stone_slab",
+"kind": "walk"
+},
+{
+"x": 1652.5,
+"y": 137.5,
+"z": 126.5,
+"act": "walk",
+"fb": "stone_slab",
+"kind": "walk"
+},
+{
+"x": 1651.5,
+"y": 138.0,
+"z": 126.5,
+"act": "walk",
+"fb": "quartz_block",
+"kind": "walk"
+},
+{
+"x": 1650.5,
+"y": 138.0,
+"z": 126.5,
+"act": "walk",
+"fb": "quartz_block",
+"kind": "walk"
+},
+{
+"x": 1649.5,
+"y": 138.0,
+"z": 125.5,
+"act": "walk",
+"fb": "quartz_block",
+"kind": "walk"
+},
+{
+"x": 1648.5,
+"y": 138.0,
+"z": 124.5,
+"act": "walk",
+"fb": "quartz_block",
+"kind": "walk"
+},
+{
+"x": 1647.5,
+"y": 138.5,
+"z": 124.5,
+"act": "walk",
+"fb": "stone_slab",
+"kind": "walk"
+},
+{
+"x": 1646.5,
+"y": 139.0,
+"z": 124.5,
+"act": "walk",
+"fb": "quartz_block",
+"kind": "walk"
+},
+{
+"x": 1645.5,
+"y": 139.0,
+"z": 124.5,
+"act": "walk",
+"fb": "quartz_block",
+"kind": "walk"
+},
+{
+"x": 1644.5,
+"y": 139.0,
+"z": 124.5,
+"act": "walk",
+"fb": "quartz_block",
+"kind": "walk"
+},
+{
+"x": 1643.5,
+"y": 139.0,
+"z": 124.5,
+"act": "walk",
+"fb": "quartz_block",
+"kind": "walk"
+},
+{
+"x": 1642.5,
+"y": 139.0,
+"z": 124.5,
+"act": "walk",
+"fb": "double_stone_slab",
+"kind": "walk"
+},
+{
+"x": 1641.5,
+"y": 138.5,
+"z": 124.5,
+"act": "walk",
+"fb": "stone_slab",
+"kind": "walk"
+},
+{
+"x": 1641.5,
+"y": 138.5,
+"z": 123.5,
+"act": "walk",
+"fb": "stone_slab",
+"kind": "walk"
+},
+{
+"x": 1641.5,
+"y": 138.0,
+"z": 122.5,
+"act": "walk",
+"fb": "quartz_block",
+"kind": "walk"
+},
+{
+"x": 1641.5,
+"y": 137.5,
+"z": 121.5,
+"act": "walk",
+"fb": "stone_slab",
+"kind": "walk"
+},
+{
+"x": 1641.5,
+"y": 137.0,
+"z": 120.5,
+"act": "walk",
+"fb": "quartz_block",
+"kind": "walk"
+},
+{
+"x": 1641.5,
+"y": 136.5,
+"z": 119.5,
+"act": "walk",
+"fb": "stone_slab",
+"kind": "walk"
+},
+{
+"x": 1641.5,
+"y": 136.0,
+"z": 118.5,
+"act": "walk",
+"fb": "quartz_block",
+"kind": "walk"
+},
+{
+"x": 1640.5,
+"y": 136.0,
+"z": 117.5,
+"act": "walk",
+"fb": "quartz_block",
+"kind": "walk"
+},
+{
+"x": 1639.5,
+"y": 136.0,
+"z": 116.5,
+"act": "walk",
+"fb": "quartz_block",
+"kind": "walk"
+},
+{
+"x": 1638.5,
+"y": 136.0,
+"z": 115.5,
+"act": "walk",
+"fb": "stone_slab",
+"kind": "walk"
+},
+{
+"x": 1637.5,
+"y": 136.0,
+"z": 114.5,
+"act": "walk",
+"fb": "stone_slab",
+"kind": "walk"
+},
+{
+"x": 1636.5,
+"y": 136.0,
+"z": 114.5,
+"act": "walk",
+"fb": "stone_slab",
+"kind": "walk"
+},
+{
+"x": 1635.5,
+"y": 136.0,
+"z": 113.5,
+"act": "walk",
+"fb": "stone_slab",
+"kind": "walk"
+},
+{
+"x": 1634.5,
+"y": 136.0,
+"z": 113.5,
+"act": "walk",
+"fb": "stone_slab",
+"kind": "walk"
+},
+{
+"x": 1633.5,
+"y": 136.0,
+"z": 113.5,
+"act": "walk",
+"fb": "stone_slab",
+"kind": "walk"
+},
+{
+"x": 1632.5,
+"y": 136.0,
+"z": 113.5,
+"act": "walk",
+"fb": "stone_slab",
+"kind": "walk"
+},
+{
+"x": 1631.5,
+"y": 136.0,
+"z": 112.5,
+"act": "walk",
+"fb": "quartz_block",
+"kind": "walk"
+},
+{
+"x": 1630.5,
+"y": 136.5,
+"z": 112.5,
+"act": "walk",
+"fb": "stone_slab",
+"kind": "walk"
+},
+{
+"x": 1629.5,
+"y": 136.5,
+"z": 112.5,
+"act": "walk",
+"fb": "stone_slab",
+"kind": "walk"
+},
+{
+"x": 1628.5,
+"y": 136.5,
+"z": 111.5,
+"act": "walk",
+"fb": "stone_slab",
+"kind": "walk"
+},
+{
+"x": 1627.5,
+"y": 137.0,
+"z": 111.5,
+"act": "walk",
+"fb": "quartz_block",
+"kind": "walk"
+},
+{
+"x": 1626.5,
+"y": 137.0,
+"z": 111.5,
+"act": "walk",
+"fb": "quartz_block",
+"kind": "walk"
+},
+{
+"x": 1625.5,
+"y": 137.0,
+"z": 111.5,
+"act": "walk",
+"fb": "stone_slab",
+"kind": "walk"
+},
+{
+"x": 1624.5,
+"y": 137.0,
+"z": 110.5,
+"act": "walk",
+"fb": "quartz_block",
+"kind": "walk"
+},
+{
+"x": 1623.5,
+"y": 137.5,
+"z": 110.5,
+"act": "walk",
+"fb": "stone_slab",
+"kind": "walk"
+},
+{
+"x": 1622.5,
+"y": 137.5,
+"z": 110.5,
+"act": "walk",
+"fb": "stone_slab",
+"kind": "walk"
+},
+{
+"x": 1621.5,
+"y": 138.0,
+"z": 110.5,
+"act": "walk",
+"fb": "stone_slab",
+"kind": "walk"
+},
+{
+"x": 1620.5,
+"y": 138.0,
+"z": 110.5,
+"act": "walk",
+"fb": "stone_slab",
+"kind": "walk"
+},
+{
+"x": 1619.5,
+"y": 138.0,
+"z": 109.5,
+"act": "walk",
+"fb": "stone_slab",
+"kind": "walk"
+},
+{
+"x": 1618.5,
+"y": 138.0,
+"z": 109.5,
+"act": "walk",
+"fb": "stone_slab",
+"kind": "walk"
+},
+{
+"x": 1617.5,
+"y": 138.0,
+"z": 109.5,
+"act": "walk",
+"fb": "stone_slab",
+"kind": "walk"
+},
+{
+"x": 1616.5,
+"y": 138.0,
+"z": 108.5,
+"act": "walk",
+"fb": "quartz_block",
+"kind": "walk"
+},
+{
+"x": 1615.5,
+"y": 138.0,
+"z": 108.5,
+"act": "walk",
+"fb": "quartz_block",
+"kind": "walk"
+},
+{
+"x": 1614.5,
+"y": 138.5,
+"z": 108.5,
+"act": "walk",
+"fb": "stone_slab",
+"kind": "walk"
+},
+{
+"x": 1613.5,
+"y": 139.0,
+"z": 108.5,
+"act": "walk",
+"fb": "quartz_block",
+"kind": "walk"
+},
+{
+"x": 1612.5,
+"y": 139.0,
+"z": 108.5,
+"act": "walk",
+"fb": "quartz_block",
+"kind": "walk"
+},
+{
+"x": 1611.5,
+"y": 139.0,
+"z": 108.5,
+"act": "walk",
+"fb": "quartz_block",
+"kind": "walk"
+},
+{
+"x": 1610.5,
+"y": 139.0,
+"z": 108.5,
+"act": "walk",
+"fb": "quartz_block",
+"kind": "walk"
+},
+{
+"x": 1609.5,
+"y": 139.0,
+"z": 108.5,
+"act": "walk",
+"fb": "quartz_block",
+"kind": "walk"
+},
+{
+"x": 1608.5,
+"y": 139.0,
+"z": 108.5,
+"act": "walk",
+"fb": "quartz_block",
+"kind": "walk"
+},
+{
+"x": 1607.5,
+"y": 139.0,
+"z": 108.5,
+"act": "walk",
+"fb": "quartz_block",
+"kind": "walk"
+},
+{
+"x": 1606.5,
+"y": 139.0,
+"z": 109.5,
+"act": "walk",
+"fb": "quartz_block",
+"kind": "walk"
+},
+{
+"x": 1605.5,
+"y": 139.0,
+"z": 110.5,
+"act": "walk",
+"fb": "quartz_block",
+"kind": "walk"
+},
+{
+"x": 1605.5,
+"y": 136.0,
+"z": 111.5,
+"act": "drop",
+"fb": "dirt",
+"kind": "drop"
+},
+{
+"x": 1605.5,
+"y": 135.0,
+"z": 112.5,
+"act": "drop",
+"fb": "sandstone",
+"kind": "drop"
+},
+{
+"x": 1605.5,
+"y": 134.0,
+"z": 113.5,
+"act": "drop",
+"fb": "sandstone",
+"kind": "drop"
+},
+{
+"x": 1605.5,
+"y": 133.0,
+"z": 114.5,
+"act": "drop",
+"fb": "dirt",
+"kind": "drop"
+},
+{
+"x": 1604.5,
+"y": 133.0,
+"z": 115.5,
+"act": "walk",
+"fb": "dirt",
+"kind": "walk"
+},
+{
+"x": 1603.5,
+"y": 133.0,
+"z": 116.5,
+"act": "walk",
+"fb": "dirt",
+"kind": "walk"
+},
+{
+"x": 1603.5,
+"y": 131.0,
+"z": 117.5,
+"act": "drop",
+"fb": "dirt",
+"kind": "drop"
+},
+{
+"x": 1603.5,
+"y": 130.0,
+"z": 118.5,
+"act": "drop",
+"fb": "dirt",
+"kind": "drop"
+},
+{
+"x": 1603.5,
+"y": 130.0,
+"z": 119.5,
+"act": "walk",
+"fb": "dirt",
+"kind": "walk"
+},
+{
+"x": 1602.5,
+"y": 130.0,
+"z": 120.5,
+"act": "walk",
+"fb": "dirt",
+"kind": "walk"
+},
+{
+"x": 1601.5,
+"y": 130.0,
+"z": 121.5,
+"act": "walk",
+"fb": "stone_slab",
+"kind": "walk"
+},
+{
+"x": 1600.5,
+"y": 131.0,
+"z": 121.5,
+"act": "walk",
+"fb": "stone_brick_stairs",
+"kind": "walk"
+},
+{
+"x": 1599.5,
+"y": 131.5,
+"z": 121.5,
+"act": "walk",
+"fb": "stone_slab",
+"kind": "walk"
+},
+{
+"x": 1598.5,
+"y": 132.0,
+"z": 121.5,
+"act": "end",
+"fb": "stonebrick"
+}
+]
+}

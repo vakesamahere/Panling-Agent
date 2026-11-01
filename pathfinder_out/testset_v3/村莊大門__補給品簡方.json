@@ -1,0 +1,318 @@
+{
+"frm": "村莊大門",
+"to": "補給品簡方",
+"frm_xyz": [
+1598,
+132,
+123
+],
+"to_xyz": [
+1601.5,
+140,
+109.8
+],
+"length": 20.1,
+"cost": 39.8,
+"kinds": {
+"teleport": 2,
+"walk": 19
+},
+"points": [
+{
+"x": 1598.5,
+"y": 132.0,
+"z": 123.5,
+"act": "start",
+"fb": "stonebrick"
+},
+{
+"x": 220.5,
+"y": 48.0,
+"z": 34.5,
+"act": "teleport",
+"fb": "end_stone",
+"kind": "teleport",
+"tp_from": [
+1598,
+132.0,
+123
+],
+"tp_to": [
+220,
+48.0,
+34
+]
+},
+{
+"x": 220.5,
+"y": 49.0,
+"z": 32.5,
+"act": "walk",
+"fb": "quartz_stairs",
+"kind": "walk"
+},
+{
+"x": 220.5,
+"y": 49.0,
+"z": 31.5,
+"act": "walk",
+"fb": "end_stone",
+"kind": "walk"
+},
+{
+"x": 1595.5,
+"y": 140.0,
+"z": 123.5,
+"act": "teleport",
+"fb": "quartz_block",
+"kind": "teleport",
+"tp_from": [
+220,
+49.0,
+31
+],
+"tp_to": [
+1595,
+140.0,
+123
+]
+},
+{
+"x": 1595.5,
+"y": 140.0,
+"z": 111.5,
+"act": "walk",
+"fb": "quartz_block",
+"kind": "walk"
+},
+{
+"x": 1596.5,
+"y": 140.0,
+"z": 110.5,
+"act": "walk",
+"fb": "quartz_block",
+"kind": "walk"
+},
+{
+"x": 1597.5,
+"y": 140.0,
+"z": 110.5,
+"act": "walk",
+"fb": "quartz_block",
+"kind": "walk"
+},
+{
+"x": 1598.5,
+"y": 140.0,
+"z": 109.5,
+"act": "walk",
+"fb": "quartz_block",
+"kind": "walk"
+},
+{
+"x": 1599.5,
+"y": 140.0,
+"z": 109.5,
+"act": "end",
+"fb": "quartz_block"
+}
+],
+"cells": [
+{
+"x": 1598.5,
+"y": 132.0,
+"z": 123.5,
+"act": "start",
+"fb": "stonebrick",
+"tp_trigger": true
+},
+{
+"x": 220.5,
+"y": 48.0,
+"z": 34.5,
+"act": "teleport",
+"fb": "end_stone",
+"kind": "teleport",
+"tp_from": [
+1598,
+132.0,
+123
+],
+"tp_to": [
+220,
+48.0,
+34
+]
+},
+{
+"x": 220.5,
+"y": 48.5,
+"z": 33.5,
+"act": "walk",
+"fb": "stone_slab",
+"kind": "walk"
+},
+{
+"x": 220.5,
+"y": 49.0,
+"z": 32.5,
+"act": "walk",
+"fb": "quartz_stairs",
+"kind": "walk"
+},
+{
+"x": 220.5,
+"y": 49.0,
+"z": 31.5,
+"act": "walk",
+"fb": "end_stone",
+"kind": "walk",
+"tp_trigger": true
+},
+{
+"x": 1595.5,
+"y": 140.0,
+"z": 123.5,
+"act": "teleport",
+"fb": "quartz_block",
+"kind": "teleport",
+"tp_from": [
+220,
+49.0,
+31
+],
+"tp_to": [
+1595,
+140.0,
+123
+]
+},
+{
+"x": 1595.5,
+"y": 140.0,
+"z": 122.5,
+"act": "walk",
+"fb": "quartz_block",
+"kind": "walk"
+},
+{
+"x": 1595.5,
+"y": 140.0,
+"z": 121.5,
+"act": "walk",
+"fb": "quartz_block",
+"kind": "walk"
+},
+{
+"x": 1595.5,
+"y": 140.0,
+"z": 120.5,
+"act": "walk",
+"fb": "quartz_block",
+"kind": "walk"
+},
+{
+"x": 1595.5,
+"y": 140.0,
+"z": 119.5,
+"act": "walk",
+"fb": "quartz_block",
+"kind": "walk"
+},
+{
+"x": 1595.5,
+"y": 140.0,
+"z": 118.5,
+"act": "walk",
+"fb": "quartz_block",
+"kind": "walk"
+},
+{
+"x": 1595.5,
+"y": 140.0,
+"z": 117.5,
+"act": "walk",
+"fb": "quartz_block",
+"kind": "walk"
+},
+{
+"x": 1595.5,
+"y": 140.0,
+"z": 116.5,
+"act": "walk",
+"fb": "quartz_block",
+"kind": "walk"
+},
+{
+"x": 1595.5,
+"y": 140.0,
+"z": 115.5,
+"act": "walk",
+"fb": "quartz_block",
+"kind": "walk"
+},
+{
+"x": 1595.5,
+"y": 140.0,
+"z": 114.5,
+"act": "walk",
+"fb": "quartz_block",
+"kind": "walk"
+},
+{
+"x": 1595.5,
+"y": 140.0,
+"z": 113.5,
+"act": "walk",
+"fb": "quartz_block",
+"kind": "walk"
+},
+{
+"x": 1595.5,
+"y": 140.0,
+"z": 112.5,
+"act": "walk",
+"fb": "quartz_block",
+"kind": "walk"
+},
+{
+"x": 1595.5,
+"y": 140.0,
+"z": 111.5,
+"act": "walk",
+"fb": "quartz_block",
+"kind": "walk"
+},
+{
+"x": 1596.5,
+"y": 140.0,
+"z": 110.5,
+"act": "walk",
+"fb": "quartz_block",
+"kind": "walk"
+},
+{
+"x": 1597.5,
+"y": 140.0,
+"z": 110.5,
+"act": "walk",
+"fb": "quartz_block",
+"kind": "walk"
+},
+{
+"x": 1598.5,
+"y": 140.0,
+"z": 109.5,
+"act": "walk",
+"fb": "quartz_block",
+"kind": "walk"
+},
+{
+"x": 1599.5,
+"y": 140.0,
+"z": 109.5,
+"act": "end",
+"fb": "quartz_block"
+}
+]
+}

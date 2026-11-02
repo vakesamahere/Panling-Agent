@@ -6,6 +6,8 @@ const DN = path.join(ROOT, 'memory', 'dash_now.json'), DH = path.join(ROOT, 'log
 const PAGE = path.join(ROOT, 'web', 'dash.html');
 const PORT = +(process.env.DASH_PORT || 3010), HOST = process.env.DASH_HOST || '127.0.0.1';
 const BOT_PORT = +(process.env.DASH_BOT_PORT || 3002); // botEval 目标（线上号 3002；本地测试 DASH_BOT_PORT=3001）
+// 观战（prismarine-viewer）端口：线上号 3008、本地号 3007，和 bot.js 里的 VIEW_PORT 对应
+const VIEW_PORT = +(process.env.DASH_VIEW_PORT || (BOT_PORT === 3002 ? 3008 : 3007));
 
 function history(hours, raw) {
   const since = Date.now() - hours * 3600e3;
@@ -150,6 +152,7 @@ http.createServer((req, res) => {
     const hrs = on / 3600e3;
     return json({ since: L.length ? L[0].t : null, hrs, gain, kills, perHour: hrs > 0.05 ? gain / hrs : null, killsPerHour: hrs > 0.05 ? kills / hrs : null });
   }
+  if (u.pathname === '/api/view') return json({ ok: true, port: VIEW_PORT }); // 观战页端口，前端用它拼 iframe/新窗口地址
   if (u.pathname === '/api/history') return json(history(Math.min(72, +(u.searchParams.get('h') || 12))));
   if (u.pathname === '/' || u.pathname === '/index.html') { res.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8' }); return fs.createReadStream(PAGE).pipe(res); }
   res.writeHead(404); res.end();

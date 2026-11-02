@@ -10,7 +10,7 @@ const zlib = require('zlib');
 const ETN = ['walk', 'jump', 'drop', 'swim', 'water_enter', 'water_exit', 'ladder_climb', 'ladder_exit', 'teleport', 'door_open', 'gate_open'];
 const T_TRAP = 64;
 let PLANNING = 0; // >0 while plan() runs: no eviction, so one search never reloads a region
-let TICK = 0, DIR = null, IDX = null, REG = {}, OFFS = [], BYKEY = new Map(), TPT = [], NAMES = {}, OPTS = {};
+let TICK = 0, DIR = null, IDX = null, REG = {}, OFFS = [], BYKEY = new Map(), TPT = [], TELE = [], NAMES = {}, OPTS = {};
 
 function load(dir, opts = {}) {
   DIR = dir; OPTS = Object.assign({ maxRegions: 12 }, opts);
@@ -18,6 +18,7 @@ function load(dir, opts = {}) {
   REG = {}; OFFS = IDX.regions.map((r, i) => [r.offset, i]).sort((a, b) => a[0] - b[0]);
   BYKEY = new Map(IDX.regions.map((r, i) => [r.rx + ',' + r.rz, i]));
   TPT = IDX.teleport_targets; NAMES = IDX.block_names;
+  try { TELE = JSON.parse(fs.readFileSync(path.join(dir, 'teleport_edges.json'), 'utf8')); } catch { TELE = []; }
   return IDX;
 }
 
@@ -48,7 +49,7 @@ function readRegion(i) {
   const head = new Int32Array(512 * 512).fill(-1), nxt = new Int32Array(n).fill(-1);
   for (let k = n - 1; k >= 0; k--) { const c = (x[k] - R.x0) * 512 + (z[k] - R.z0); nxt[k] = head[c]; head[c] = k; }
   if (!PLANNING) trimCache(OPTS.maxRegions - 1);
-  REG[i] = { R, n, m, off, x, z, f, fb, y, t, ptr, dst, cost, et, doors, head, nxt, used: ++TICK };
+  REG[i] = { key: i, R, n, m, off, x, z, f, fb, y, t, ptr, dst, cost, et, doors, head, nxt, used: ++TICK };
   return REG[i];
 }
 
@@ -57,7 +58,7 @@ function trimCache(keep) {
   const keys = Object.keys(REG);
   if (keys.length <= keep) return;
   keys.sort((a, b) => REG[a].used - REG[b].used);
-  for (let j = 0; j < keys.length - keep; j++) delete REG[keys[j]];
+  for (let j = 0; j < keys.length - keep; j++) { delete REG[keys[j]]; INDEG.delete(+keys[j]); }
 }
 
 function regionOf(id) { // binary search region by global id
@@ -110,6 +111,22 @@ function point(c, act, door) {
   return p;
 }
 
+// A goal cell must be enterable: it needs an incoming edge. Cells with no edges at all (e.g. the water
+// surface of a fountain, where a place can be recorded) are unreachable and would make the search burn
+// maxNodes before failing. Dead ends (in-edges, no out-edges) are legitimate goals and stay.
+const INDEG = new Map(); // region index -> Set of destination cell ids
+function hasInEdge(c) {
+  const r = regionOf(c.id);
+  let set = INDEG.get(r.key);
+  if (!set) { set = new Set(); for (let e = 0; e < r.m; e++) set.add(r.dst[e]); INDEG.set(r.key, set); }
+  return set.has(c.id);
+}
+function isolated(c) { return !hasInEdge(c) && !hasEdge(c); }
+function hasEdge(c) { const r = regionOf(c.id); const k = c.id - r.off; return r.ptr[k + 1] > r.ptr[k]; }
+// A place can be recorded on a surface that is not standable at all: 進村點 (1689,140,138) is the top of a
+// fountain, and the cell there has no edges in either direction, so it can never be a goal. Such cells are
+// skipped; if a whole ring has only those, the search widens and finally tries the same column at other
+// heights (the teleport landing in the graph is 16 blocks lower, in the pool).
 // from/to: [x,y,z] or {x,y,z}. Goal = every cell within 2 blocks horizontally / 1 vertically of `to` (fallback 3/3).
 // Regions touched during one search stay loaded (may exceed maxRegions temporarily); trimmed after it ends.
 function plan(from, to, opts = {}) {
@@ -121,16 +138,42 @@ function planSearch(from, to, opts = {}) {
   const P = (p) => (Array.isArray(p) ? p : [p.x, p.y, p.z]);
   const [fx, fy, fz] = P(from), [tx, ty, tz] = P(to);
   const src = nearestCell(fx, fy, fz);
-  let goals = cellsNear(tx, ty, tz, 2.0, 1.0); if (!goals.length) goals = cellsNear(tx, ty, tz, 3.0, 3.0);
+  // Goal = enterable cells near `to`. If the recorded coordinate sits on a surface that cannot be entered
+  // (see enterable()), widen the ring, and finally try the same column at other heights: a place recorded
+  // above a fountain has its walkable/swimmable counterpart a few blocks lower.
+  const ring = (x, y, z, rh, dy) => cellsNear(x, y, z, rh, dy).filter((c) => !isolated(c));
+  // If the exact recorded coordinate is not standable (no cell there at all, or only a dead one), the place is
+  // not a floor: 進村點 is the landing point of a teleport, 16 blocks above the pool it drops you into, and the
+  // ledge around it can only be entered by dropping from above. Then look down/up the same column first.
+  const exact = cellsNear(tx, ty, tz, 0.6, 1.0);
+  const exactDead = exact.length > 0 && exact.every(isolated);
+  let goals = [], colFallback = false;
+  if (exactDead) {
+    for (let dy = 1; dy <= 32 && !goals.length; dy++) {
+      for (const s of [-1, 1]) { goals = ring(tx, ty + s * dy, tz, 0.6, 0.4); if (goals.length) { colFallback = true; break; } }
+    }
+  }
+  for (const [rh, dy] of [[2, 1], [3, 3], [5, 5]]) { if (goals.length) break; goals = ring(tx, ty, tz, rh, dy); }
   const fail = (why, exp = 0) => { const a = []; a.info = { reachable: false, why, expanded: exp, ms: Number(process.hrtime.bigint() - t0) / 1e6 }; return a; };
   if (!src || !goals.length) return fail('no standable cell near endpoint');
   const G = new Set(goals.map((c) => c.id)); const gx = goals.map((c) => c.x), gz = goals.map((c) => c.z);
   const hd = (x, z) => { let b = Infinity; for (let j = 0; j < gx.length; j++) b = Math.min(b, Math.hypot(x - gx[j], z - gz[j])); return b; };
-  // Straight-line distance to the goal is the tightest admissible bound available here.
-  // The old bound also considered teleports (nearest landing to goal + 10) but ignored the walk to the
-  // teleport source, which capped it at 26-41 and turned A* into Dijkstra. Measured: dropping it cut
-  // 110 random pairs from 87.0s to 43.7s with identical route costs (see bench_h.js / cmp_h.js).
-  const h = (x, z) => hd(x, z);
+  // Teleports cost 10 but jump far, so straight-line distance overestimates every teleport route and A* prunes
+  // it (measured: 村莊大門->補給品簡方 46.6 with hd() only, 20.1 with the teleport term below). Add a bound for
+  // the teleport edges whose landing is near the goal:
+  //   h(n) = min( hd(n), min over such edges t of hd(n, src_t) + 10 + hd(dst_t, goal) )
+  // Every term lower-bounds a real route, so h stays admissible. Sources come from data/teleport_edges.json;
+  // only a handful of landings are ever near a goal, so the loop stays short. (An earlier attempt used
+  // teleport_targets and the *landing* as the source, which is neither tight nor correct.)
+  const tpc = [];
+  for (const q of TELE) { // [sx, sf, sz, dx, df, dz]
+    let dg = Infinity; for (let j = 0; j < gx.length; j++) dg = Math.min(dg, Math.hypot(q[3] - gx[j], q[5] - gz[j]));
+    if (dg > 96) continue;
+    tpc.push([q[0], q[2], 10 + dg]);
+  }
+  const h = tpc.length
+    ? (x, z) => { let b = hd(x, z); for (let j = 0; j < tpc.length; j++) { const q = tpc[j]; const v = Math.hypot(x - q[0], z - q[1]) + q[2]; if (v < b) b = v; } return b; }
+    : (x, z) => hd(x, z);
   const dist = new Map([[src.id, 0]]), prev = new Map([[src.id, [-1, -1, null]]]); const pq = new Heap();
   pq.push(h(src.x, src.z), 0, src.id); let exp = 0, end = -1, gend = 0;
   while (pq.size) {
@@ -166,6 +209,7 @@ function planSearch(from, to, opts = {}) {
     out[j].tp_from = [cs[j - 1].x, cs[j - 1].f / 16, cs[j - 1].z]; out[j].tp_to = [cs[j].x, cs[j].f / 16, cs[j].z]; out[j - 1].tp_trigger = true;
   }
   out.info = { reachable: true, cost: gend, length, kinds, expanded: exp, ms: Number(process.hrtime.bigint() - t0) / 1e6, regionsLoaded: Object.keys(REG).length };
+  if (colFallback) out.info.goalFallback = 'column';
   return out;
 }
 

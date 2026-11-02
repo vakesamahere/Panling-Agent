@@ -90,6 +90,23 @@ module.exports = (bot, h) => {
   const mid0 = (p, q) => ({ x: (p.x + q.x) / 2, y: Math.max(p.y, q.y), z: (p.z + q.z) / 2 });
   // 有威胁的怪：r 格内且能看到我
   const threatNear = (r) => Object.values(bot.entities).some((e) => isMob(e) && e.position.distanceTo(me()) < r && seeFrom(me(), e));
+  // 箭上限：弓是无限的，捡到的箭只会越堆越多。箭数到 h.home.cfg.maxArrow（看板可改，0=不限）就不再去捡地上的箭；多出来的回城时在元素回收員那扔（home.js），刷怪点不扔
+  const maxArrow = () => +((h.home && h.home.cfg && h.home.cfg.maxArrow) || 0);
+  const arrowFull = () => maxArrow() > 0 && h.count('arrow') >= maxArrow();
+  // 1.8 的掉落物 getDroppedItem() 会抛错；物品在 metadata[10] = {blockId, itemCount}
+  const ARROW_ID = bot.registry.itemsByName.arrow.id;
+  const isArrowDrop = (e) => { const m = e.metadata && e.metadata[10]; if (m && m.blockId != null) return m.blockId === ARROW_ID; try { const it = e.getDroppedItem(); return !!it && it.name === 'arrow'; } catch { return false; } };
+  async function tossArrows() {
+    const cap = maxArrow(); if (!(cap > 0)) return;
+    let extra = h.count('arrow') - cap; if (extra <= 0) return;
+    const arr = bot.inventory.items().filter((i) => i.name === 'arrow' && !i.customName).sort((a, b) => a.count - b.count);
+    for (const i of arr) {
+      if (extra <= 0) break;
+      const n = Math.min(i.count, extra);
+      try { if (n === i.count) await bot.tossStack(i); else await bot.toss(i.type, null, n); extra -= n; } catch (e) { log('toss arrow err ' + String(e.message).slice(0, 30)); break; }
+    }
+    log('toss arrows -> ' + h.count('arrow'));
+  }
   async function tossJunk() {
     return; // 用户要求：任何东西都不扔
     if (bot.inventory.emptySlotCount() > cfg.keepFree) return;
@@ -104,6 +121,7 @@ module.exports = (bot, h) => {
     let best = null, bd = Infinity; const o = from || me();
     for (const e of Object.values(bot.entities)) {
       if (!isDrop(e) || lowDrop(e)) continue;
+      if (arrowFull() && isArrowDrop(e)) continue; // 箭满了不去捡（也不会去捡刚扔掉的）
       if (cfg.anchor && hd(e.position, cfg.anchor) > (cfg.lootLeash || 20)) continue;
       const d = e.position.distanceTo(o);
       if (d < (maxD || cfg.lootR) && d < bd) { bd = d; best = e; }
@@ -220,7 +238,7 @@ module.exports = (bot, h) => {
   // 掉落物捡取：1.8 走到掉落物 1 格内自动拾取
   bot.on('playerCollect', (collector, item) => { if (collector === bot.entity) log('collect ' + (item.name || 'item')); });
 
-  return {
+  return { tossArrows, nearestDrop,
     cfg, st, log,
     start(opts = {}) {
       Object.assign(cfg, opts);

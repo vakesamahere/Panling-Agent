@@ -22,9 +22,12 @@ module.exports = function (bot, h) {
     dodge: true, // 看到朝我飞的箭 → 横向冲刺闪开
     dodgeMs: 450,
     fleePts: null, // [{x,z}] 撤退空地点
+    bowName: '', // 指定用哪把弓：名字里包含这个字符串（看板可选）。空 = 默认优先 北斗 那把
     whitelistNames: null, // optional array: only target entities whose customName includes one of these
     filter: null, // optional fn(entity)->bool extra filter
   };
+  // 用哪把弓从 memory/home_cfg.json 读（看板可改），重载本模块后仍然生效
+  try { const f = require('../paths').mem('home_cfg.json'); const j = JSON.parse(require('fs').readFileSync(f, 'utf8')); if (j.bowName) cfg.bowName = String(j.bowName); } catch {}
   const st = { on: false, target: null, charging: 0, aimed: false, meleeCd: 0, eating: false, hist: new Map(), lastShot: null };
   const stats = { shots: 0, hits: 0, kills: 0, melee: 0, deaths: 0, started: 0 };
 
@@ -118,7 +121,16 @@ module.exports = function (bot, h) {
 
   const findItem = (pred) => bot.inventory.items().find(pred);
   const hasArrows = () => !!findItem((i) => i.name === 'arrow');
-  const bow = () => findItem((i) => i.name === 'bow' && /北斗/.test(i.customName || '')) || findItem((i) => i.name === 'bow');
+  const clean = (s) => String(s || '').replace(/§./g, '');
+  // 背包里所有弓（给看板列出来选）
+  const bows = () => bot.inventory.items().filter((i) => i.name === 'bow').map((i) => ({ slot: i.slot, name: clean(i.customName) || i.displayName || '弓', count: i.count }));
+  // 用哪把弓：cfg.bowName 里给了名字就只用名字匹配的；没给就老规矩，优先 北斗
+  const bow = () => {
+    const want = clean(cfg.bowName).trim();
+    const any = () => findItem((i) => i.name === 'bow' && /北斗/.test(clean(i.customName))) || findItem((i) => i.name === 'bow');
+    // 选的那把不在包里（扔了/用坏了）就退回默认那把，别让号空手站着
+    return (want && findItem((i) => i.name === 'bow' && clean(i.customName).includes(want))) || any();
+  };
   const melee = () => findItem((i) => /sword|netherbrick|axe/.test(i.name)) ;
   async function hold(item) {
     if (item && (!bot.heldItem || bot.heldItem.slot !== item.slot)) { try { await bot.equip(item, 'hand'); } catch {} }
@@ -334,6 +346,6 @@ module.exports = function (bot, h) {
     stop() { st.on = false; stopCharge(); bot.clearControlStates(); return 'off'; },
     state: () => ({ on: st.on, flees: st.flees || 0, dodges: st.dodges || 0, multiFlees: st.multiFlees || 0, leashStops: st.leashStops || 0, seenArrows: st.seenArrows || 0, target: st.target && { id: st.target.id, n: st.target.name, d: +st.target.position.distanceTo(bot.entity.position).toFixed(1) }, charging: st.charging, hp: bot.health, food: bot.food, ...stats }),
     resetStats() { Object.assign(stats, { shots: 0, hits: 0, kills: 0, melee: 0, deaths: 0 }); },
-    solvePitch, simArrow,
+    solvePitch, simArrow, bows, bow,
   };
 };

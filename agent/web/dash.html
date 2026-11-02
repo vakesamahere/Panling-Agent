@@ -61,6 +61,9 @@ table{width:100%;border-collapse:collapse;font-size:13px}td,th{padding:4px 6px;b
     <div class="row"><span>血 / 饱食 / 饱和</span><b id="lHp">—</b></div>
     <div class="row"><span>经验等级</span><b id="lXp">—</b></div>
     <div class="row"><span>手持</span><b id="lHeld">—</b></div>
+    <div class="row"><span>用哪把弓</span><select id="bowSel" style="max-width:190px"></select></div>
+    <div class="row"><button id="bowSave">保存弓</button></div>
+    <div class="sub" id="bowMsg">背包里的弓，选好点下面保存；战斗时优先用这把。</div>
     <div class="row"><span>头 / 胸 / 腿 / 脚</span><b id="lArm" style="text-align:right">—</b></div>
     <div class="row"><span>刷怪 / 战斗 / 回城</span><b id="lSt">—</b></div>
     <div class="row"><span>当前任务</span><b id="lJob">—</b></div></div>
@@ -206,10 +209,21 @@ async function live(){try{LIVE=await (await fetch('/api/live')).json()}catch{LIV
     txt('lPos',`${b.pos.x}, ${b.pos.y}, ${b.pos.z}`);txt('lYaw',`${b.yaw}° / ${b.dim}`);txt('lHp',`${b.hp} / ${b.food} / ${b.sat}`);txt('lXp',b.xp==null?'—':b.xp);
     txt('lHeld',b.held?`${zh(b.held)} ×${b.held.c}（快捷栏 ${b.quick+1}）`:'空手');
     $('lArm').innerHTML=b.armor.map(a=>a?esc(zh(a)):'—').join('<br>');
-    txt('lSt',`${b.farm?'开':'关'} / ${b.combat?'开':'关'} / ${b.home||'—'}`);txt('lJob',b.job?`${b.job.w}（${b.job.s}）`:'无');renderBag()}
+    txt('lSt',`${b.farm?'开':'关'} / ${b.combat?'开':'关'} / ${b.home||'—'}`);txt('lJob',b.job?`${b.job.w}（${b.job.s}）`:'无');renderBag();renderBows(b.bows||[],b.bowName||'')}
   const E=LIVE&&LIVE.ender;txt('endT',LIVE&&LIVE.enderT?'（'+LIVE.enderT.slice(4,21)+' 快照）':'');
   $('endTb').tBodies[0].innerHTML=E?Object.entries(E).sort((a,b)=>b[1]-a[1]).map(([k,v])=>`<tr><td>${esc(ZH[k]||k)}</td><td>${v}</td></tr>`).join(''):'<tr><td colspan=2>还没有记录</td></tr>'}
 $('bagMerge').onchange=renderBag;
+// 弓：背包里有的弓列出来选；保存写进 home_cfg.json 并立刻作用到战斗层
+let BOWS=[];
+function renderBows(list,cur){BOWS=list;const s=$('bowSel');const opts=[['','默认（优先北斗那把）']].concat(list.map(b=>[b.name,b.name+'（'+b.count+' 把，格'+b.slot+'）']));
+  const sig=opts.map(o=>o[0]).join('|');if(s.dataset.sig!==sig){s.dataset.sig=sig;s.innerHTML=opts.map(([v,t])=>`<option value="${esc(v)}">${esc(t)}</option>`).join('')}
+  if(s.dataset.saved!=='1')s.value=cur||'';
+  if(!list.length)txt('bowMsg','背包里没看到弓（可能拿在手上或不在线）')}
+$('bowSel').onchange=()=>{$('bowSel').dataset.saved='0';txt('bowMsg','选好了，点「保存弓」生效')};
+$('bowSave').onclick=async()=>{const k=key();if(!k)return;$('bowSave').disabled=true;
+  try{const r=await (await fetch('/api/cfg?k='+encodeURIComponent(k)+'&v='+encodeURIComponent(JSON.stringify({bowName:$('bowSel').value})),{method:'POST'})).json();
+    if(r.ok){$('bowSel').dataset.saved='1';txt('bowMsg','✓ 已保存'+(r.live?'，号上已生效':'（号不在线，下次上线生效）'))}else txt('bowMsg','✗ '+(r.err||'失败'))}catch{txt('bowMsg','✗ 请求失败')}
+  $('bowSave').disabled=false};
 $('rbtn').onclick=async()=>{$('rbtn').disabled=true;$('rbtn').textContent='…';await Promise.all([live(),now(),loadHist(),avg()]);$('rbtn').disabled=false;$('rbtn').textContent='🔄 刷新'};
 live();setInterval(live,10000);
 window.onresize=()=>{draw();drawRate()};now();loadHist();setInterval(now,5000);setInterval(loadHist,30000);

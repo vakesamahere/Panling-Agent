@@ -16,7 +16,7 @@ module.exports = (bot, h) => {
     wang: process.env.ONLINE !== '1', wangMin: 120, wangAt: [-283, 54, 397], wangNpc: '王員外', wangClearR: 14, wangWaitMs: 90000,
     elemMode: { rotten_flesh: 'sell', bone: 'sell', string: 'sell', blaze_rod: 'sell', magma_cream: 'sell' } };
   // 元素模式启动时就从 home_cfg.json 读（其余阈值照旧由 farm_start.js / 看板 Object.assign 进来）
-  try { const c = JSON.parse(require('fs').readFileSync(require('../paths').mem('home_cfg.json'), 'utf8')); if (c.elemMode) Object.assign(cfg.elemMode, c.elemMode); } catch {}
+  try { const c = JSON.parse(require('fs').readFileSync(require('../paths').mem('home_cfg.json'), 'utf8')); if (c.elemMode) Object.assign(cfg.elemMode, c.elemMode); if (c.maxArrow != null) cfg.maxArrow = c.maxArrow; } catch {}
 
   async function follow(k) {
     st.step = k; const t0 = Date.now();
@@ -114,6 +114,20 @@ module.exports = (bot, h) => {
   // 自己的交易流程（替代 mineflayer bot.trade：它会抓到带名字的同类物品，出错时料留在交易格里，关窗后服务器会把它们掉在地上）
   // 只用无名字的普通堆放料；关窗前把交易格/鼠标上的东西全部放回背包
   // opts.input(x)：自定义"哪些背包物品可作料"（默认 同 type/meta 且无名字）；list 的 k 可以是函数 (trades)=>idx
+  // 扔掉超过 cfg.maxArrow 的普通箭（先扔小组），朝 at 方向扔；返回扔掉的数量
+  async function tossArrows(at) {
+    let extra = h.count('arrow') - cfg.maxArrow; if (!(cfg.maxArrow > 0) || extra <= 0) return 0;
+    st.step = 'tossArrow'; const n0 = extra;
+    if (at) { try { await bot.lookAt(at, true); } catch {} }
+    const arr = bot.inventory.items().filter((i) => i.name === 'arrow' && !i.customName).sort((a, b) => a.count - b.count);
+    for (const i of arr) {
+      if (extra <= 0) break;
+      const n = Math.min(i.count, extra);
+      if (n === i.count) await bot.tossStack(i); else await bot.toss(i.type, null, n);
+      extra -= n; await h.sleep(250);
+    }
+    return n0 - Math.max(0, extra);
+  }
   async function tradeNpc(name, list, tag, out, opts = {}) {
     st.step = tag;
     let v; try { v = await h.town.reach(name); } catch (e) { out.push(tag + ' err ' + errs(e)); return 0; }
@@ -184,9 +198,12 @@ module.exports = (bot, h) => {
     if (bot.inventory.emptySlotCount() < 3) { try { out.push('merged ' + (await compact())); } catch (e) { out.push('merge err ' + errs(e)); } }
     // 1. 元素回收員：模式为 sell 的元素（普通物品）按 5 的倍数卖掉
     const sell = ELEM.filter((n) => elemMode(n) === 'sell').map((n) => [pickElem(n, 'sell'), Math.floor(plain(n) / 5)]).filter((x) => x[1] > 0);
-    if (sell.length) {
+    const extraArrow = () => (cfg.maxArrow > 0 ? h.count('arrow') - cfg.maxArrow : 0);
+    if (sell.length || extraArrow() > 0) {
       await follow('皇城南门->元素回收員'); chk();
-      await tradeNpc('元素回收員', sell, 'elem', out);
+      if (sell.length) await tradeNpc('元素回收員', sell, 'elem', out);
+      // 箭超上限：在城里扔掉（刷怪点捡不到），朝回收員柜台后面扔
+      if (extraArrow() > 0) { try { out.push('toss arrow ' + (await tossArrows(new Vec3(256.5, 48.5, 32.5)))); } catch (e) { out.push('toss arrow err ' + errs(e)); } }
       await follow('元素回收員->皇城南门'); chk();
     }
     // 2-3. 錢莊：煤和王員外货进末影箱，然后换钱
@@ -349,5 +366,5 @@ module.exports = (bot, h) => {
     }
   }
   function wangBg(opts) { st.wangJob = { state: 'run', t: Date.now(), out: [] }; wang(st.wangJob.out, opts).then((r) => { st.wangJob.state = 'done'; st.wangJob.r = r; }); return 'started'; }
-  return { cfg, st, run, shop, needShop, compact, tradeNpc, wang, wangBg, wangDue, goodsN };
+  return { cfg, st, run, shop, tossArrows, needShop, compact, tradeNpc, wang, wangBg, wangDue, goodsN };
 };

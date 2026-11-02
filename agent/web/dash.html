@@ -71,6 +71,7 @@ table{width:100%;border-collapse:collapse;font-size:13px}td,th{padding:4px 6px;b
   <div class="card"><h2>回城补给设置</h2>
     <div class="row"><span>箭少于这个数就回城</span><input id="cf_minArrow" type="number" style="width:80px"></div>
     <div class="row"><span>回城时把箭买到</span><input id="cf_buyArrowTo" type="number" style="width:80px"></div>
+    <div class="row"><span>箭超过这个数就扔掉多的（0=不限）</span><input id="cf_maxArrow" type="number" style="width:80px"></div>
     <div class="row"><span>食物少于这个数就回城</span><input id="cf_minFood" type="number" style="width:80px"></div>
     <div class="row"><span>回城时把食物买到</span><input id="cf_buyFoodTo" type="number" style="width:80px"></div>
     <div class="row"><span>空格子少于这个数就回城</span><input id="cf_minFree" type="number" style="width:80px"></div>
@@ -180,7 +181,7 @@ $('obtn').onclick=e=>{if(!OFFLINE&&!confirm('下线后不会自动重连，要�
 document.querySelector('.ctl').onclick=e=>{const b=e.target.closest('button');if(!b||!b.dataset.a)return;const a=b.dataset.a;if(a==='suicide'&&!confirm('喝鶴頂丹自杀？会在奈何桥复活，扣等级。'))return;
   const v=a==='route'?$('rSel').value:a==='goto'?$('gIn').value.trim():null;if((a==='route'||a==='goto')&&!v)return;act(a,v,b)};
 (async()=>{try{const r=await (await fetch('/api/routes')).json();$('rSel').innerHTML=r.routes.map(x=>`<option>${x}</option>`).join('');$('pList').innerHTML=r.places.map(x=>`<option value="${x}">`).join('')}catch{}})();
-const CFK=['minArrow','buyArrowTo','minFood','buyFoodTo','minFree'];
+const CFK=['minArrow','buyArrowTo','maxArrow','minFood','buyFoodTo','minFree'];
 const CFE=[['rotten_flesh','金元素(腐肉)'],['bone','木元素(骨頭)'],['string','水元素(線)'],['blaze_rod','火元素(烈焰棒)'],['magma_cream','土元素(岩漿膏)']];
 $('cfElem').innerHTML=CFE.map(([k,n])=>`<div class="row"><span>${n}</span><select id="ce_${k}"><option value="sell">卖</option><option value="refine">精炼</option></select></div>`).join('');
 const setElem=em=>{for(const [k] of CFE)$('ce_'+k).value=(em&&em[k]==='refine')?'refine':'sell'};

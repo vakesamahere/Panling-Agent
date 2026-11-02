@@ -99,7 +99,7 @@ http.createServer((req, res) => {
   }
   // 回城补给阈值：GET 读；POST ?k=口令&v=JSON 写 memory/home_cfg.json 并立刻应用到在线的号
   if (u.pathname === '/api/cfg') {
-    const CF = F('home_cfg.json'); const KEYS = ['minArrow', 'buyArrowTo', 'minFood', 'buyFoodTo', 'minFree']; const ELEMS = ['rotten_flesh', 'bone', 'string', 'blaze_rod', 'magma_cream'];
+    const CF = F('home_cfg.json'); const KEYS = ['minArrow', 'buyArrowTo', 'maxArrow', 'minFood', 'buyFoodTo', 'minFree']; const ELEMS = ['rotten_flesh', 'bone', 'string', 'blaze_rod', 'magma_cream'];
     let cur = {}; try { cur = JSON.parse(fs.readFileSync(CF, 'utf8')); } catch {}
     if (req.method !== 'POST') return json(cur);
     let key = ''; try { key = fs.readFileSync(F('dash_key.txt'), 'utf8').trim(); } catch {}
@@ -117,7 +117,8 @@ http.createServer((req, res) => {
       }
       cur.elemMode = em;
     }
-    if (cur.buyArrowTo < cur.minArrow) cur.buyArrowTo = cur.minArrow; if (cur.buyFoodTo < cur.minFood) cur.buyFoodTo = cur.minFood;
+    if (cur.buyArrowTo < cur.minArrow) cur.buyArrowTo = cur.minArrow; if (cur.maxArrow > 0 && cur.maxArrow < cur.buyArrowTo) cur.maxArrow = cur.buyArrowTo; // 上限低于买到数会买了就扔
+    if (cur.buyFoodTo < cur.minFood) cur.buyFoodTo = cur.minFood;
     fs.writeFileSync(CF, JSON.stringify(cur)); wlog('cfg ' + JSON.stringify(cur));
     return botEval('Object.assign(h.home.cfg,' + JSON.stringify(cur) + ');return "live"').then((r) => json({ ok: true, cfg: cur, live: !!r.ok }));
   }

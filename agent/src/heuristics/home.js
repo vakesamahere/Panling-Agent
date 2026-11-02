@@ -150,13 +150,16 @@ module.exports = (bot, h) => {
         if (bot.supportFeature('useMCTrSel')) bot._client.writeChannel('MC|TrSel', k); else bot._client.write('select_trade', { slot: k });
         await sleep(200);
         for (let t = 0; t < times; t++) {
-          // 放料到 0 号格，凑够 price
-          for (let g = 0; g < 6 && (!w.slots[0] || w.slots[0].count < price); g++) {
-            const src = inv().filter((x) => x && x.type === T.inputItem1.type && x.metadata === T.inputItem1.metadata && (opts.input ? opts.input(x) : !x.customName)).sort((a, b) => b.count - a.count)[0];
-            if (!src) break;
-            await bot.clickWindow(src.slot, 0, 0);
-            while (w.selectedItem && (!w.slots[0] || w.slots[0].count < price)) await bot.clickWindow(0, 1, 0);
-            if (w.selectedItem) await bot.clickWindow(src.slot, 0, 0);
+          // 放料到 0 号格，凑够 price：用 transfer 一次精确搬 price 个（实测左键拾起+右键逐格放
+          // 在这个服务器的交易窗里只能放进 1 个就停，导致点产物格被服务端拒绝）
+          if (!w.slots[0] || w.slots[0].count < price) {
+            const need = price - (w.slots[0] ? w.slots[0].count : 0);
+            const pool = inv().filter((x) => x && x.type === T.inputItem1.type && x.metadata === T.inputItem1.metadata && (opts.input ? opts.input(x) : !x.customName));
+            if (!pool.length || pool.reduce((a, x) => a + x.count, 0) < need) break;
+            try {
+              await bot.transfer({ window: w, itemType: T.inputItem1.type, metadata: T.inputItem1.metadata, count: need, sourceStart: w.inventoryStart, sourceEnd: w.inventoryEnd, destStart: 0, destEnd: 1 });
+            } catch (e) { out.push(tag + ' fill ' + errs(e)); }
+            await sleep(400);
           }
           if (!w.slots[0] || w.slots[0].count < price) break;
           if (bot.inventory.emptySlotCount() < 1 && !inv().some((x) => x && x.type === T.outputItem.type && (x.customName || null) === (T.outputItem.customName || null) && x.count + T.outputItem.count <= x.stackSize)) { out.push(tag + ' bag full'); break; }

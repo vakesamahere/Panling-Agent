@@ -1,1 +1,1 @@
-{"minArrow":64,"buyArrowTo":64,"minFood":24,"buyFoodTo":60,"minFree":3,"elemMode":{"rotten_flesh":"sell","bone":"sell","string":"sell","blaze_rod":"sell","magma_cream":"sell"},"maxArrow":320}
+{"minArrow":64,"buyArrowTo":64,"minFood":24,"buyFoodTo":60,"minFree":3,"elemMode":{"rotten_flesh":"sell","bone":"sell","string":"sell","blaze_rod":"sell","magma_cream":"sell"},"maxArrow":320,"wangMin":40,"wang":true}

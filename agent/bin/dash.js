@@ -112,14 +112,21 @@ http.createServer((req, res) => {
   }
   // 回城补给阈值：GET 读；POST ?k=口令&v=JSON 写 memory/home_cfg.json 并立刻应用到在线的号
   if (u.pathname === '/api/cfg') {
-    const CF = F('home_cfg.json'); const KEYS = ['minArrow', 'buyArrowTo', 'maxArrow', 'minFood', 'buyFoodTo', 'minFree']; const ELEMS = ['rotten_flesh', 'bone', 'string', 'blaze_rod', 'magma_cream'];
+    const CF = F('home_cfg.json'); const KEYS = ['minArrow', 'buyArrowTo', 'maxArrow', 'minFood', 'buyFoodTo', 'minFree', 'wangMin']; const ELEMS = ['rotten_flesh', 'bone', 'string', 'blaze_rod', 'magma_cream'];
     let cur = {}; try { cur = JSON.parse(fs.readFileSync(CF, 'utf8')); } catch {}
-    if (req.method !== 'POST') return json(cur);
+    if (cur.wangMin == null) cur.wangMin = 120; // 和 home.js 默认一致
+    // GET：wang 没存过时问在线的号要真实值（线上号默认关、本地号默认开），不在线就按关显示
+    if (req.method !== 'POST') {
+      if (cur.wang != null) return json(cur);
+      return botEval('return h.home&&h.home.cfg?{wang:!!h.home.cfg.wang,wangMin:h.home.cfg.wangMin||120}:null').then((r) => json(Object.assign({}, cur, { wang: !!(r.ok && r.r && r.r.wang) })));
+    }
     let key = ''; try { key = fs.readFileSync(F('dash_key.txt'), 'utf8').trim(); } catch {}
     if (!key || u.searchParams.get('k') !== key) return json({ ok: false, err: '口令不对', badKey: true });
     let v; try { v = JSON.parse(u.searchParams.get('v') || '{}'); } catch { return json({ ok: false, err: 'bad json' }); }
     if (v.bowName != null) { if (typeof v.bowName !== 'string' || v.bowName.length > 64) return json({ ok: false, err: 'bowName 要短字符串' }); cur.bowName = v.bowName; }
     for (const k of KEYS) if (v[k] != null) { const n = Math.round(+v[k]); if (!(n >= 0 && n <= 2304)) return json({ ok: false, err: k + ' 要在 0-2304 之间' }); cur[k] = n; }
+    // 王員外开关：true = 王員外货物攒够就走去沙漠马贼营地换金元宝；false = 存錢莊末影箱
+    if (v.wang != null) cur.wang = !!v.wang;
     // 每种元素：sell 卖回收員 / refine 精煉師做精練元素存末影箱
     if (v.elemMode != null) {
       if (typeof v.elemMode !== 'object' || Array.isArray(v.elemMode)) return json({ ok: false, err: 'elemMode 要是对象' });
@@ -134,7 +141,7 @@ http.createServer((req, res) => {
     if (cur.buyArrowTo < cur.minArrow) cur.buyArrowTo = cur.minArrow; if (cur.maxArrow > 0 && cur.maxArrow < cur.buyArrowTo) cur.maxArrow = cur.buyArrowTo; // 上限低于买到数会买了就扔
     if (cur.buyFoodTo < cur.minFood) cur.buyFoodTo = cur.minFood;
     fs.writeFileSync(CF, JSON.stringify(cur)); wlog('cfg ' + JSON.stringify(cur));
-    return botEval('Object.assign(h.home.cfg,' + JSON.stringify(cur) + ');if(h.combat&&h.combat.cfg&&h.combat.cfg.bowName!==undefined)h.combat.cfg.bowName=' + JSON.stringify(cur.bowName || '') + ';return "live"').then((r) => json({ ok: true, cfg: cur, live: !!r.ok }));
+    return botEval('Object.assign(h.home.cfg,' + JSON.stringify(cur) + ');if(h.home&&h.home.cfg&&typeof h.home.cfg.wang==="boolean")h.home.cfg.wang=' + JSON.stringify(!!cur.wang) + ';if(h.combat&&h.combat.cfg&&h.combat.cfg.bowName!==undefined)h.combat.cfg.bowName=' + JSON.stringify(cur.bowName || '') + ';return "live"').then((r) => json({ ok: true, cfg: cur, live: !!r.ok }));
   }
   if (u.pathname === '/api/avg') {
     // 全部记录：净增资产 / 在线时长（相邻两点间隔 >2 分钟算离线，不计入时长也不计入收益）

@@ -3,6 +3,7 @@
 const fs = require('fs');
 const { Vec3 } = require('vec3');
 const FILE = require('../paths').mem('routes_recorded.json');
+const GEN = require('../paths').mem('routes_generated.json');
 
 module.exports = (bot, h) => {
   const st = { log: [], last: null };
@@ -14,6 +15,10 @@ module.exports = (bot, h) => {
   const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
   function load() { try { return JSON.parse(fs.readFileSync(FILE, 'utf8')); } catch { return {}; } }
+  // 离线烘好的固定路线（memory/routes_generated.json，由 pathfinder_out/node/gen_route_*.js 生成）：
+  // 和录制的路线同格式，录制版优先（人走的路更靠中心、更顺）
+  function loadGen() { try { return JSON.parse(fs.readFileSync(GEN, 'utf8')); } catch { return {}; } }
+  function all() { return Object.assign({}, loadGen(), load()); }
   // 拆成腿：相邻点水平 >8 视为传送（前一腿最后一点=压力板）
   function legsOf(pts) {
     const legs = [[pts[0]]];
@@ -25,7 +30,7 @@ module.exports = (bot, h) => {
   }
   // 所有可用折线：正向整条（可跨传送）；反向只用不含传送的腿（传送不可逆）
   function lines() {
-    const d = load(), out = [];
+    const d = all(), out = [];
     for (const [k, v] of Object.entries(d)) {
       out.push({ key: k, pts: v.pts });
       const rk = v.to + '->' + v.from;
@@ -34,7 +39,7 @@ module.exports = (bot, h) => {
     return out;
   }
   function places() {
-    const d = load(), p = {};
+    const d = all(), p = {};
     for (const v of Object.values(d)) { const a = v.pts[0], b = v.pts[v.pts.length - 1]; p[v.from] = p[v.from] || a; p[v.to] = p[v.to] || b; }
     return p;
   }
@@ -94,7 +99,7 @@ module.exports = (bot, h) => {
   }
   // 纯追踪：盯前方 lookahead 格，只向前推进索引；传送腿尾踩板等传送
   async function follow(src, opts = {}) {
-    const pts = Array.isArray(src) ? src : (load()[src] || {}).pts;
+    const pts = Array.isArray(src) ? src : (all()[src] || {}).pts;
     if (!pts || pts.length < 2) return { ok: false, err: 'no-route' };
     const legs = legsOf(pts);
     const t0 = Date.now(), res = { ok: false, setbacks: 0, stalls: 0, fallbacks: 0, tps: 0, legs: legs.length };
@@ -107,12 +112,20 @@ module.exports = (bot, h) => {
       if (bot.pathfinder) bot.pathfinder.stop();
       for (let li = 0; li < legs.length; li++) {
         const leg = legs[li], last = li < legs.length - 1; // last=该腿尾是传送板
-        let idx = 0, lastProg = Date.now(), lastIdx = 0, lastP = pos().clone(), sameStalls = 0;
-        // 先接上：离第一个点远就 goto
-        if (hd(pos(), leg[0]) > 3) {
+        // 起始索引：第一条腿允许从离我最近的点接上（战斗打断后重试不用走回头路）；后续腿必须从头走
+        let idx = 0;
+        if (li === 0) {
+          let bi = 0, bd = Infinity;
+          for (let k = 0; k < leg.length; k++) { const d = hd(pos(), leg[k]) + Math.abs(pos().y - leg[k].y) * 0.5; if (d < bd) { bd = d; bi = k; } }
+          if (bd < 8 && bi >= leg.length - 3) idx = leg.length - 1; // 已经在这条腿终点（比如反向任务）：直接算走完
+          else if (bd < 40 && bi < leg.length - 2) { idx = bi; res.joined = bi; }
+        }
+        let lastProg = Date.now(), lastIdx = idx, lastP = pos().clone(), sameStalls = 0;
+        // 先接上：离接入点远就 goto
+        if (hd(pos(), leg[idx]) > 3) {
           const far = false; // 不再用旧寻路接入
-          try { if (far) await h._travelOrig(leg[0].x, leg[0].y, leg[0].z, { range: 2 }); else await h.goto(leg[0].x, leg[0].y, leg[0].z, 1.5, 10000); } catch { res.fallbacks++; }
-          if (hd(pos(), leg[0]) > 6) log('join far ' + Math.round(hd(pos(), leg[0])) + ', follow anyway');
+          try { if (far) await h._travelOrig(leg[idx].x, leg[idx].y, leg[idx].z, { range: 2 }); else await h.goto(leg[idx].x, leg[idx].y, leg[idx].z, 1.5, 10000); } catch { res.fallbacks++; }
+          if (hd(pos(), leg[idx]) > 6) log('join far ' + Math.round(hd(pos(), leg[idx])) + ', follow anyway');
         }
         const deadline = Date.now() + Math.max(90000, leg.length * 1500);
         while (true) {
@@ -163,6 +176,8 @@ module.exports = (bot, h) => {
           if (idx > lastIdx || hd(P, lastP) > 0.8) { lastIdx = idx; lastP = P.clone(); lastProg = Date.now(); sameStalls = 0; }
           else if (Date.now() - lastProg > (last && idx >= leg.length - 3 ? 2500 : 1500)) {
             res.stalls++; sameStalls++; stop(); log('stall leg' + li + ' #' + idx + ' n' + sameStalls);
+            // 已经在整条路的终点附近：终点格可能是 NPC 围栏边的不可走格，卡住不等于没到
+            if (hd(P, pts[pts.length - 1]) < 7) { log('near-end accept ' + Math.round(hd(P, pts[pts.length - 1]) * 10) / 10); idx = leg.length - 1; break; }
             if (hostileNear(5) && h.combat) {
               const was = h.combat.state().on; if (!was) h.combat.start();
               for (let w = 0; w < 16 && hostileNear(5); w++) await sleep(500);
@@ -215,5 +230,5 @@ module.exports = (bot, h) => {
     return r;
   }
 
-  return { st, cfg, cornerAhead, load, legsOf, lines, places, resolve, bestSegment, follow, travel, list: () => Object.entries(load()).map(([k, v]) => k + ' ' + v.pts.length + 'pts ' + v.sec + 's') };
+  return { st, cfg, cornerAhead, load, loadGen, all, legsOf, lines, places, resolve, bestSegment, follow, travel, list: () => Object.entries(all()).map(([k, v]) => k + ' ' + v.pts.length + 'pts ' + v.sec + 's') };
 };

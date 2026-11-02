@@ -14,9 +14,13 @@ module.exports = (bot, h) => {
   const cfg = { anchor: { x: -164, y: 45, z: 673 }, farmR: 60, minArrow: 128, buyArrowTo: 448, minFood: 24, buyFoodTo: 60, minFree: 3, south: [179.6, 47, 175.9], goods: /王員外/, useGraph: false,
     // 王員外（沙漠马贼营地，命令方块 -283,49,394 召唤，村民在 -283,54,395）：40 货 → 9 金锭（第 3 页 idx2）
     wang: process.env.ONLINE !== '1', wangMin: 120, wangAt: [-283, 54, 397], wangNpc: '王員外', wangClearR: 14, wangWaitMs: 90000,
+    // 固定路线（memory/routes_generated.json，由 pathfinder_out/node/gen_route_wang.js 烘出来）：先走折线，坏了再 gmap
+    wangRoute: '馬賊刷怪點->王員外', wangBack: '王員外->馬賊刷怪點',
     elemMode: { rotten_flesh: 'sell', bone: 'sell', string: 'sell', blaze_rod: 'sell', magma_cream: 'sell' } };
   // 元素模式启动时就从 home_cfg.json 读（其余阈值照旧由 farm_start.js / 看板 Object.assign 进来）
-  try { const c = JSON.parse(require('fs').readFileSync(require('../paths').mem('home_cfg.json'), 'utf8')); if (c.elemMode) Object.assign(cfg.elemMode, c.elemMode); if (c.maxArrow != null) cfg.maxArrow = c.maxArrow; } catch {}
+  try { const c = JSON.parse(require('fs').readFileSync(require('../paths').mem('home_cfg.json'), 'utf8')); if (c.elemMode) Object.assign(cfg.elemMode, c.elemMode); if (c.maxArrow != null) cfg.maxArrow = c.maxArrow;
+    // 看板存的开关：wang / wangMin（没存过就用默认，线上号默认关）
+    if (typeof c.wang === 'boolean') cfg.wang = c.wang; if (c.wangMin != null) cfg.wangMin = +c.wangMin; } catch {}
 
   async function follow(k) {
     st.step = k; const t0 = Date.now();
@@ -317,12 +321,26 @@ module.exports = (bot, h) => {
     }
     const left = foes(r).length; log(tag + ' fight ' + Math.round((Date.now() - t0) / 1000) + 's left ' + left); return left;
   }
-  // 边走边打：combat 开着，有目标进 12 格就中止 gmap，打完再走
-  async function walkFight(goal, tag) {
+  // 边走边打：combat 开着，有目标进 12 格就中止，打完再走
+  // 路线优先：先走烘好的固定折线（routes_generated / routes_recorded）；战斗打断就地续走（follow 会从最近点接上），
+  // 只有“非战斗”的真失败（卡住/偏离/超时）才退回 gmap 重新规划
+  async function walkFight(goal, tag, routeKey) {
+    let routeFails = 0;
     for (let k = 0; k < 8; k++) {
       chkW(); st.step = tag;
       if (!h.combat.state().on) h.combat.start({ approach: false });
       const near = () => { const t = h.combat.state().target; return !!(t && t.d < 12); };
+      if (routeKey && h.routes && routeFails < 2) {
+        const r = await h.routes.follow(routeKey, { abort: near });
+        if (r.ok) return true;
+        log(tag + ' route ' + r.err);
+        if (/aborted/.test(r.err || '')) { await fightClear(16, 30000, tag); continue; } // 打架打断：不算失败，接着续走
+        const rp = (h.routes.load()[routeKey] || h.routes.loadGen()[routeKey]);
+        const e = rp && rp.pts[rp.pts.length - 1];
+        if (e && Math.hypot(pos().x - e.x, pos().z - e.z) < 4) return true; // 已经到终点
+        routeFails++; // 卡住/偏离/超时：记一次，两次后退回 gmap
+        continue;
+      }
       const g = await h.gmap.go(goal, { tries: 2, abort: near });
       if (g.ok) return true;
       log(tag + ' ' + g.err);
@@ -343,7 +361,7 @@ module.exports = (bot, h) => {
     try {
       if (n0 < 40) return 'goods ' + n0 + ' <40';
       try { bot.pathfinder.stop(); } catch {} bot.clearControlStates();
-      if (!(await walkFight(cfg.wangAt, 'wang go'))) throw new Error('walk failed');
+      if (!(await walkFight(cfg.wangAt, 'wang go', cfg.wangRoute))) throw new Error('walk failed');
       await fightClear(cfg.wangClearR, cfg.wangWaitMs, 'wang arrive');
       if (bot.health < 8) throw new Error('low hp ' + Math.round(bot.health));
       const room = bot.inventory.emptySlotCount() * 64 + bot.inventory.items().filter((i) => i.name === 'gold_ingot' && !i.customName).reduce((a, i) => a + 64 - i.count, 0);
@@ -353,7 +371,7 @@ module.exports = (bot, h) => {
       const n = await tradeNpc(cfg.wangNpc, [[pick, times]], 'wang x' + times, out, { input: isGoods });
       log('wang traded ' + n + ' gold ' + g0 + '→' + ing());
       if (!opts.stay && cfg.anchor) {
-        if (!(await walkFight([cfg.anchor.x, cfg.anchor.y, cfg.anchor.z], 'wang back'))) throw new Error('walk back failed');
+        if (!(await walkFight([cfg.anchor.x, cfg.anchor.y, cfg.anchor.z], 'wang back', cfg.wangBack))) throw new Error('walk back failed');
         try { await h.goto(cfg.anchor.x, cfg.anchor.y, cfg.anchor.z, 1, 10000); } catch {}
       }
       st.wangFailAt = n ? 0 : Date.now();

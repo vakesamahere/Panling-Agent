@@ -259,7 +259,7 @@ bot.once('spawn', () => {
     const stub = { createCanvas: () => ({ getContext: () => ctx, width: 0, height: 0 }) };
     const origLoad = Module._load;
     Module._load = function (req, ...rest) { return req === 'canvas' ? stub : origLoad.call(this, req, ...rest); };
-    require('prismarine-viewer').mineflayer(bot, { port: VIEW_PORT, host: '127.0.0.1', firstPerson: false, viewDistance: 6 });
+    require('prismarine-viewer').mineflayer(bot, { port: VIEW_PORT, host: '127.0.0.1', firstPerson: process.env.VIEW_FP !== '0', viewDistance: 6 });
   } catch (e) { ev('error', { e: 'viewer: ' + e.message }); }
 });
 // safety + roomnav layers (command-block RPG maps: no voxel pathfinding in void rooms, swim up in water)

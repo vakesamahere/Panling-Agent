@@ -126,8 +126,11 @@ function planSearch(from, to, opts = {}) {
   if (!src || !goals.length) return fail('no standable cell near endpoint');
   const G = new Set(goals.map((c) => c.id)); const gx = goals.map((c) => c.x), gz = goals.map((c) => c.z);
   const hd = (x, z) => { let b = Infinity; for (let j = 0; j < gx.length; j++) b = Math.min(b, Math.hypot(x - gx[j], z - gz[j])); return b; };
-  let htp = Infinity; for (const q of TPT) htp = Math.min(htp, hd(q[0], q[2])); htp += 10;
-  const h = (x, z) => Math.min(hd(x, z), htp);
+  // Straight-line distance to the goal is the tightest admissible bound available here.
+  // The old bound also considered teleports (nearest landing to goal + 10) but ignored the walk to the
+  // teleport source, which capped it at 26-41 and turned A* into Dijkstra. Measured: dropping it cut
+  // 110 random pairs from 87.0s to 43.7s with identical route costs (see bench_h.js / cmp_h.js).
+  const h = (x, z) => hd(x, z);
   const dist = new Map([[src.id, 0]]), prev = new Map([[src.id, [-1, -1, null]]]); const pq = new Heap();
   pq.push(h(src.x, src.z), 0, src.id); let exp = 0, end = -1, gend = 0;
   while (pq.size) {
@@ -167,4 +170,4 @@ function planSearch(from, to, opts = {}) {
 }
 
 function memoryMB() { return process.memoryUsage().rss / 1e6; }
-module.exports = { load, nearestCell, cellsNear, plan, cell, column, memoryMB, ETN };
+module.exports = { load, nearestCell, cellsNear, plan, cell, column, memoryMB, ETN, regionOf, trimCache };

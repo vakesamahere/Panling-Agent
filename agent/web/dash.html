@@ -225,6 +225,6 @@ $('bowSave').onclick=async()=>{const k=key();if(!k)return;$('bowSave').disabled=
     if(r.ok){$('bowSel').dataset.saved='1';txt('bowMsg','✓ 已保存'+(r.live?'，号上已生效':'（号不在线，下次上线生效）'))}else txt('bowMsg','✗ '+(r.err||'失败'))}catch{txt('bowMsg','✗ 请求失败')}
   $('bowSave').disabled=false};
 $('rbtn').onclick=async()=>{$('rbtn').disabled=true;$('rbtn').textContent='…';await Promise.all([live(),now(),loadHist(),avg()]);$('rbtn').disabled=false;$('rbtn').textContent='🔄 刷新'};
-live();setInterval(live,10000);
-window.onresize=()=>{draw();drawRate()};now();loadHist();setInterval(now,5000);setInterval(loadHist,30000);
+live();setInterval(live,5000);
+window.onresize=()=>{draw();drawRate()};now();loadHist();setInterval(now,2000);setInterval(loadHist,30000);
 </script></body></html>

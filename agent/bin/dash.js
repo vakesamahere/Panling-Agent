@@ -28,6 +28,16 @@ function botEval(body) {
     r2.end(body);
   });
 }
+// 轻量实时探测：看板 /api/now 直接问号（1.5 秒内复用上次结果），不再等 watchdog 的 30 秒快照
+const LPROBE = "const c=h.combat.state(),f=h.farm.state(),p=bot.entity.position;let ar=0;for(const i of bot.inventory.items())if(i.name==='arrow')ar+=i.count;"
+  + "return {t:Date.now(),online:true,hp:bot.health,food:bot.food,x:+p.x.toFixed(1),y:+p.y.toFixed(1),z:+p.z.toFixed(1),arrow:ar,free:bot.inventory.emptySlotCount(),"
+  + "target:c.target&&c.target.n,kills:c.kills,shots:c.shots||0,hits:c.hits||0,dodges:c.dodges||0,flees:c.flees||0,setbacks:h.setbacks||0,"
+  + "farm:f.on,combatOn:!!c.on,home:h.home&&h.home.st.state,step:h.home&&h.home.st.step,ctl:h.ctlJob?{s:h.ctlJob.s,what:h.ctlJob.what}:null};";
+let LP = { t: 0, r: null };
+function liveProbe() {
+  if (Date.now() - LP.t < 1500) return Promise.resolve(LP.r);
+  return botEval(LPROBE).then((r) => { const v = r.ok ? r.r : null; LP = { t: Date.now(), r: v }; return v; });
+}
 const HALT = "try{if(h.ctlJob)h.ctlJob.cancel=true}catch{};try{h.farm.stop()}catch{};try{h.combat.stop()}catch{};try{if(h.home&&h.home.st.state==='run')h.home.st.abort=true}catch{};try{bot.pathfinder.stop()}catch{};bot.clearControlStates();";
 // 后台任务：h.ctlJob {what,s:run/done/err,r,cancel}；abort 让录制路线/离线图寻路中途停下
 const JOB = (what, code) => `if(h.ctlJob&&h.ctlJob.s==='run')return 'busy: '+h.ctlJob.what;${HALT}const J=h.ctlJob={what:${JSON.stringify(what)},s:'run',t:Date.now(),cancel:false};const abort=()=>J.cancel;
@@ -80,7 +90,10 @@ async function ctl(req, u, json) {
 http.createServer((req, res) => {
   const u = new URL(req.url, 'http://x');
   const json = (o) => { res.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8', 'Cache-Control': 'no-store' }); res.end(JSON.stringify(o)); };
-  if (u.pathname === '/api/now') { let o = {}; try { o = JSON.parse(fs.readFileSync(DN, 'utf8')); } catch {} o.serverT = Date.now(); o.resetT = resetT(); o.paused = fs.existsSync(F('pause.flag')); o.offline = fs.existsSync(F('offline.flag')); o.autofarm = fs.existsSync(F('autofarm.flag')); return json(o); }
+  if (u.pathname === '/api/now') { let o = {}; try { o = JSON.parse(fs.readFileSync(DN, 'utf8')); } catch {}
+    o.resetT = resetT(); o.paused = fs.existsSync(F('pause.flag')); o.offline = fs.existsSync(F('offline.flag')); o.autofarm = fs.existsSync(F('autofarm.flag'));
+    // 号在线时用实时探测覆盖状态类字段（资产/历史/日志仍用 watchdog 的 30 秒快照）
+    return liveProbe().then((v) => { if (v) Object.assign(o, v); else if (!o.t) o.online = false; o.serverT = Date.now(); return json(o); }); }
   if (u.pathname === '/api/routes') { // 录好的路线名 + 地点名（给看板下拉框）
     let R = {}, P = {}; try { R = JSON.parse(fs.readFileSync(path.join(ROOT, 'memory', 'routes_recorded.json'), 'utf8')); } catch {}
     try { P = JSON.parse(fs.readFileSync(path.join(ROOT, 'memory', 'places.json'), 'utf8')); } catch {}

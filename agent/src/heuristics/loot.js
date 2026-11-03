@@ -12,7 +12,8 @@ module.exports = (bot, h, farm) => {
   const isDrop = (e) => e && e.type === 'object' && /^item$/i.test(e.name || '') && e.isValid !== false;
   const mobs = () => Object.values(bot.entities).filter(isMob);
   const L = {
-    cfg: { houses: [], walkSpd: 4.0, pPick: 0.15, outMobR: 7, meMobR: 7, lootLeash: 22, maxTrip: 25, pSpawnMax: 0.25 },
+    cfg: { houses: [], walkSpd: 4.0, pPick: 0.15, outMobR: 7, meMobR: 7, lootLeash: 22, maxTrip: 25, pSpawnMax: 0.25,
+      outMobRFree: 4, meMobRFree: 3, dangerRFree: 3.5 },
     gaps: {}, last: {}, firstSeen: new Map(), stats: { inTrips: 0, inOk: 0, inAborts: 0, outTrips: 0, outOk: 0, skipped: {} },
   };
   try { L.gaps = JSON.parse(fs.readFileSync(SPF, 'utf8')); } catch {}
@@ -102,12 +103,15 @@ module.exports = (bot, h, farm) => {
   }
 
   // —— 屋外 A：附近没怪就去捡，路上怪靠近 8 格就停下交给战斗层 ——
+  // 自由打怪（墓园 42 个刷怪籠）怪永远清不完：要求半径放小（只躲 3 格内贴脸的），否则永远 A:mob-near-me 不捡东西
   async function outside(list) {
+    const R = cfg.freeRoam ? (L.cfg.meMobRFree || 3) : L.cfg.meMobR;
+    const RD = cfg.freeRoam ? (L.cfg.outMobRFree || 4) : L.cfg.outMobR;
     const ms = mobs();
-    if (ms.some((m) => m.position.distanceTo(me()) < L.cfg.meMobR)) return skip('A:mob-near-me');
+    if (ms.some((m) => m.position.distanceTo(me()) < R)) return skip('A:mob-near-me');
     const t = h.combat.state().target;
-    if (t && t.d < 16) return skip('A:fighting');
-    const ok = list.filter((d) => !ms.some((m) => hd(m.position, d.e.position) < L.cfg.outMobR || hd(m.position, mid(me(), d.e.position)) < L.cfg.outMobR - 1));
+    if (t && t.d < (cfg.freeRoam ? 6 : 16)) return skip('A:fighting');
+    const ok = list.filter((d) => !ms.some((m) => hd(m.position, d.e.position) < RD || hd(m.position, mid(me(), d.e.position)) < RD - 1));
     if (!ok.length) return skip('A:mob-at-drop');
     for (let i = ok.length - 1; i >= 0; i--) {
       const q = ok[i].e.position, T = (2 * q.distanceTo(me())) / L.cfg.walkSpd + 1.5;
@@ -117,7 +121,7 @@ module.exports = (bot, h, farm) => {
     ok.sort((x, y) => (x.e.position.distanceTo(me()) - x.age / 30) - (y.e.position.distanceTo(me()) - y.age / 30));
     L.stats.outTrips++; st.mode = 'A';
     const inv0 = invCount();
-    const danger = () => mobs().some((m) => m.position.distanceTo(me()) < 8);
+    const danger = () => mobs().some((m) => m.position.distanceTo(me()) < (cfg.freeRoam ? (L.cfg.dangerRFree || 3.5) : 8));
     let tgt = ok[0].e;
     for (let n = 0; tgt && n < 8; n++) {
       const r = await stepTo(tgt, danger);

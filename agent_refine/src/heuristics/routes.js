@@ -108,6 +108,27 @@ module.exports = (bot, h) => {
     const ctl = (k, v) => bot.setControlState(k, v);
     const stop = () => { for (const k of ['forward', 'back', 'left', 'right', 'jump', 'sprint']) ctl(k, false); };
     const look = (t) => bot.lookAt(new Vec3(t.x, pos().y + 1.6, t.z), true).catch(() => {});
+    // 卡在方块里（服务器狂发 forcedMove、速度恒 0）：跳一下 + 往四周挤，嵌进草方块/台阶时只能这样出来
+    // 注意要查 AABB 覆盖的所有格子：0.6 宽的盒子会跨格，卡在台阶拐角时身体中心那格是空气，查单格永远查不出来
+    const inBlock = () => {
+      const p = pos();
+      for (let x = Math.floor(p.x - 0.3); x <= Math.floor(p.x + 0.3); x++)
+        for (let z = Math.floor(p.z - 0.3); z <= Math.floor(p.z + 0.3); z++)
+          for (let y = Math.floor(p.y + 0.05); y <= Math.floor(p.y + 1.7); y++) {
+            const b = bot.blockAt(new Vec3(x, y, z));
+            if (b && b.boundingBox === 'block') return true;
+          }
+      return false;
+    };
+    const unstick = async () => {
+      log('unstick (in block)');
+      for (const yaw of [0, Math.PI / 2, Math.PI, -Math.PI / 2, bot.entity.yaw]) {
+        try { await bot.look(yaw, 0, true); } catch {}
+        ctl('jump', true); ctl('forward', true); await sleep(400); ctl('forward', false); ctl('jump', false); await sleep(150);
+        if (!inBlock()) { log('unstuck'); return true; }
+      }
+      return false;
+    };
     try {
       if (bot.pathfinder) bot.pathfinder.stop();
       for (let li = 0; li < legs.length; li++) {
@@ -121,6 +142,7 @@ module.exports = (bot, h) => {
           else if (bd < 40 && bi < leg.length - 2) { idx = bi; res.joined = bi; }
         }
         let lastProg = Date.now(), lastIdx = idx, lastP = pos().clone(), sameStalls = 0;
+        if (inBlock()) await unstick();
         // 先接上：离接入点远就 goto
         if (hd(pos(), leg[idx]) > 3) {
           const far = false; // 不再用旧寻路接入
@@ -176,6 +198,7 @@ module.exports = (bot, h) => {
           if (idx > lastIdx || hd(P, lastP) > 0.8) { lastIdx = idx; lastP = P.clone(); lastProg = Date.now(); sameStalls = 0; }
           else if (Date.now() - lastProg > (last && idx >= leg.length - 3 ? 2500 : 1500)) {
             res.stalls++; sameStalls++; stop(); log('stall leg' + li + ' #' + idx + ' n' + sameStalls);
+            if (inBlock()) await unstick();
             // 已经在整条路的终点附近：终点格可能是 NPC 围栏边的不可走格，卡住不等于没到
             if (hd(P, pts[pts.length - 1]) < 7) { log('near-end accept ' + Math.round(hd(P, pts[pts.length - 1]) * 10) / 10); idx = leg.length - 1; break; }
             if (hostileNear(5) && h.combat) {
@@ -194,8 +217,13 @@ module.exports = (bot, h) => {
               ctl('forward', true); ctl('jump', true); await sleep(350); ctl('jump', false);
             } else {
               res.fallbacks++;
-              const k = Math.min(leg.length - 1, idx + 4);
-              try { await h.goto(leg[k].x, leg[k].y, leg[k].z, last && k === leg.length - 1 ? 0.3 : 1.2, 9000); } catch (e) { log('fb fail ' + String(e.message).slice(0, 30)); }
+              // 先回正到线上下一个点（贴墙/被树挡住时往 +4 点跑反而穿墙），再退一步到 +4 点
+              const k1 = Math.min(leg.length - 1, idx + 2);
+              try { await h.goto(leg[k1].x, leg[k1].y, leg[k1].z, 0.7, 6000); } catch (e) { log('fb near fail ' + String(e.message).slice(0, 30)); }
+              if (hd(pos(), leg[k1]) > 2.5) {
+                const k = Math.min(leg.length - 1, idx + 4);
+                try { await h.goto(leg[k].x, leg[k].y, leg[k].z, last && k === leg.length - 1 ? 0.3 : 1.2, 9000); } catch (e) { log('fb fail ' + String(e.message).slice(0, 30)); }
+              }
               if (sameStalls > 6) throw new Error('route-stuck leg' + li + ' #' + idx);
             }
             lastProg = Date.now(); lastP = pos().clone();

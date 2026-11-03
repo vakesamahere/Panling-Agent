@@ -11,5 +11,5 @@ Object.assign(h.farm.cfg,{junk:/^$/});
 if(h.loot&&h.loot.dispose)h.loot.dispose();
 delete require.cache[require.resolve('./heuristics/loot')];
 h.loot=require('./heuristics/loot')(bot,h,h.farm);
-{const p=PF.get(name)||{};h.loot.cfg.houses=p.houses||[];if(p.lootLeash)h.loot.cfg.lootLeash=p.lootLeash;}
+{const p=PF.get(name)||{};h.loot.cfg.houses=p.houses||[];if(p.lootLeash)h.loot.cfg.lootLeash=p.lootLeash;if(p.pSpawnMax!=null)h.loot.cfg.pSpawnMax=p.pSpawnMax;}
 return r+' '+name;

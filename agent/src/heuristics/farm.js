@@ -21,13 +21,12 @@ module.exports = (bot, h) => {
     const p = PF.get(name);
     if (!p) throw new Error('没有这个档案 ' + name);
     cfg.profile = name;
-    for (const k of ['leash', 'lootR', 'lootLeash', 'lowHp', 'okHp', 'town', 'patrol', 'spawners', 'anchor', 'retreat', 'kind']) if (p[k] !== undefined) cfg[k] = p[k];
+    for (const k of ['leash', 'lootR', 'lootLeash', 'lowHp', 'okHp', 'town', 'patrol', 'spawners', 'anchor', 'retreat', 'kind', 'farmR']) if (p[k] !== undefined) cfg[k] = p[k];
     cfg.freeRoam = p.kind === 'open';
     if (p.peek) { cfg.peek = !!p.peek.on; if (p.peek.only) cfg.peekOnly = new RegExp(p.peek.only); if (p.peek.pts) cfg.peekPts = p.peek.pts; if (p.peek.delay) cfg.peekDelay = p.peek.delay; }
     else cfg.peek = false;
     if (p.combat && h.combat && h.combat.cfg) Object.assign(h.combat.cfg, p.combat);
-    if (h.loot && h.loot.cfg) { h.loot.cfg.houses = p.houses || []; if (p.lootLeash) h.loot.cfg.lootLeash = p.lootLeash; if (p.pSpawnMax != null) h.loot.cfg.pSpawnMax = p.pSpawnMax; }
-    // 把「卖什么、卖给谁、回城走哪条路」同步给 home（它负责跑城镇流程）
+    if (h.loot && h.loot.cfg) { h.loot.cfg.houses = p.houses || []; if (p.lootLeash) h.loot.cfg.lootLeash = p.lootLeash; if (p.pSpawnMax != null) h.loot.cfg.pSpawnMax = p.pSpawnMax; }    // 把「卖什么、卖给谁、回城走哪条路」同步给 home（它负责跑城镇流程）
     if (h.home && h.home.cfg) {
       const H = h.home.cfg, s = p.sale || {};
       H.anchor = p.anchor || H.anchor;
@@ -165,6 +164,10 @@ module.exports = (bot, h) => {
   async function pick(e) {
     const inv0 = bot.inventory.items().reduce((a, i) => a + i.count, 0);
     const kite0 = h.combat.cfg.kite; h.combat.cfg.kite = false; // 捡东西途中不风筝（风筝会在屋里乱绕）
+    // 自由打怪（墓园这种 42 个刷怪籠的开放地）怪永远清不干净：
+    // 阈值从 10 格降到 cfg.pickSafeR（默认 6），并且最多等 6 秒就继续捡，不然永远 pick abort
+    const safeR = cfg.freeRoam ? (cfg.pickSafeR || 6) : 10;
+    const maxWait = cfg.freeRoam ? 12 : 16; // x500ms
     let tgt = e, n = 0;
     // 1.8 这服要踩到掉落物上才算捡：goto 到格子后再对准实体位置往前挤一下
     const stepOn = async (t) => {
@@ -177,11 +180,11 @@ module.exports = (bot, h) => {
     try {
       while (tgt && n++ < 12) {
         if (bot.health <= cfg.lowHp) { st.pickAborts = (st.pickAborts || 0) + 1; log('pick abort lowhp'); break; }
-        // 有怪看见我：站住别动，让战斗层射死（单怪秒不了我）；8s 还没完就撤
-        if (visMobs(10).length) {
+        // 有怪看见我：站住别动，让战斗层射死（单怪秒不了我）；太久就撤
+        if (visMobs(safeR).length) {
           bot.pathfinder.stop(); bot.clearControlStates();
-          let w = 0; while (w++ < 16 && visMobs(10).length && bot.health > cfg.lowHp) await sleep(500);
-          if (visMobs(10).length) { st.pickAborts = (st.pickAborts || 0) + 1; log('pick abort mobs'); break; }
+          let w = 0; while (w++ < maxWait && visMobs(safeR).length && bot.health > cfg.lowHp) await sleep(500);
+          if (visMobs(safeR).length && !cfg.freeRoam) { st.pickAborts = (st.pickAborts || 0) + 1; log('pick abort mobs'); break; }
           continue;
         }
         await stepOn(tgt);

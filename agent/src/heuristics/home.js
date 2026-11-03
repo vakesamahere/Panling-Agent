@@ -318,8 +318,7 @@ module.exports = (bot, h) => {
       }
       st.step = 'anchor';
       try { await h.goto(cfg.anchor.x, cfg.anchor.y, cfg.anchor.z, 1, 15000); } catch {}
-      st.state = 'done'; st.sec = Math.round((Date.now() - st.t0) / 1000); log('home in ' + st.sec + 's');
-      return 'ok ' + st.sec + 's';
+      st.state = 'done'; st.sec = Math.round((Date.now() - st.t0) / 1000); log('home in ' + st.sec + 's');      return 'ok ' + st.sec + 's';
     } catch (e) {
       st.state = 'err'; st.err = String(e.message || e); log('ERR ' + st.err); bot.clearControlStates();
       return 'err ' + st.err;
@@ -349,7 +348,15 @@ module.exports = (bot, h) => {
       chkW(); st.step = tag;
       if (!h.combat.state().on) h.combat.start({ approach: false });
       const near = () => { const t = h.combat.state().target; return !!(t && t.d < 12); };
-      if (routeKey && h.routes && routeFails < 2) {
+      // 录好的路线只在自己就在起点附近时才能用（短程微路线如「墓園->白骨精」起点就在墓园，
+      // 从皇城跑过来时硬套会直接被判 teleported-away）
+      let routeUsable = !!routeKey;
+      if (routeUsable && h.routes) {
+        const rp = (h.routes.load && h.routes.load()[routeKey]) || (h.routes.loadGen && h.routes.loadGen()[routeKey]);
+        const s0 = rp && rp.pts && rp.pts[0];
+        if (!s0) routeUsable = false; else if (Math.hypot(pos().x - s0.x, pos().z - s0.z) > 60) { routeUsable = false; log(tag + ' route far from start, gmap'); }
+      }
+      if (routeUsable && routeFails < 2) {
         const r = await h.routes.follow(routeKey, { abort: near });
         if (r.ok) return true;
         log(tag + ' route ' + r.err);

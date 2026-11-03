@@ -16,6 +16,11 @@ module.exports = (bot, h) => {
     wang: process.env.ONLINE !== '1', wangMin: 120, wangAt: [-283, 54, 397], wangNpc: '王員外', wangClearR: 14, wangWaitMs: 90000,
     // 固定路线（memory/routes_generated.json，由 pathfinder_out/node/gen_route_wang.js 烘出来）：先走折线，坏了再 gmap
     wangRoute: '馬賊刷怪點->王員外', wangBack: '王員外->馬賊刷怪點',
+    // —— 通用「卖货」：一条刷怪路线只产一种货，卖给一个 NPC ——
+    // saleNpc 为 null 时走原来的王員外/存末影箱逻辑；设了之后 goods 变成那种货，攒够 sellMin 就卖给 saleNpc
+    sellAtNpc: false, saleNpc: null, saleAt: null, saleRoute: null, saleBack: null, sellMin: 20, saleRatio: 20, saleOut: null,
+    // 回城走哪几条路（不同刷怪点回城路线不一样：馬賊→双房、墓园→直接回南门）
+    routeToSouth: '双房->皇城南门', routeFromSouth: '皇城南门->双房',
     elemMode: { rotten_flesh: 'sell', bone: 'sell', string: 'sell', blaze_rod: 'sell', magma_cream: 'sell' } };
   // 元素模式启动时就从 home_cfg.json 读（其余阈值照旧由 farm_start.js / 看板 Object.assign 进来）
   try { const c = JSON.parse(require('fs').readFileSync(require('../paths').mem('home_cfg.json'), 'utf8')); if (c.elemMode) Object.assign(cfg.elemMode, c.elemMode); if (c.maxArrow != null) cfg.maxArrow = c.maxArrow;
@@ -69,7 +74,8 @@ module.exports = (bot, h) => {
   const pickElem = (n, want) => (T) => T.findIndex((t) => t && t.inputItem1 && t.inputItem1.name === n && !t.inputItem1.customName && !t.inputItem2 && t.outputItem &&
     (want === 'sell' ? t.outputItem.name === 'gold_nugget' : t.outputItem.name === n && /精練/.test(String(t.outputItem.customName || ''))));
   const isGoods = (i) => cfg.goods.test(String(i.customName || '').replace(/§./g, ''));
-  const isStash = (i) => (isGoods(i) && !cfg.wang) || isRefined(i); // 煤不再存，拿去礦物收購商卖；cfg.wang 时货留着拿去王員外换金锭；精練元素存
+  // 货存末影箱的条件：货不是要去 NPC 换的（王員外货在 cfg.wang 开时留着；通用 saleNpc 模式的货一律留着去卖）
+  const isStash = (i) => (isGoods(i) && !cfg.wang && !cfg.sellAtNpc) || isRefined(i); // 煤不再存，拿去礦物收購商卖；cfg.wang/sellAtNpc 时货留着拿去换；精練元素存
   const nug = () => h.count('gold_nugget'), ing = () => h.count('gold_ingot'), note = () => h.count('iron_ingot');
   const wealth = () => nug() + 10 * ing() + 100 * note();
   const buyNeed = () => { // 买到目标还需要多少铜钱
@@ -289,17 +295,27 @@ module.exports = (bot, h) => {
         await follow('人族出生点->皇城南门'); chk();
       } else {
         st.mark = Date.now();
-        if (nearFarm) { await follow('双房->皇城南门'); chk(); }
-        else if (hd(pos(), { x: cfg.south[0], z: cfg.south[2] }) > 4) { // 不在刷怪点也不在奈何桥：离线图走到南门
-          st.step = 'gmap->皇城南门'; const g = await h.gmap.go(cfg.south, { tries: 2 }); log('gmap 南门 ' + (g.ok ? 'ok' : 'FAIL ' + g.err) + ' ' + (g.total || 0) + 's'); chk();
-          if (!g.ok) throw new Error('gmap to 南门 ' + g.err);
+        if (nearFarm) { for (const r of [].concat(cfg.routeToSouth || [])) { await follow(r); chk(); } }
+        else if (hd(pos(), { x: cfg.south[0], z: cfg.south[2] }) > 12) { // 不在刷怪点也不在奈何桥：离线图走到南门
+          st.step = 'gmap->皇城南门'; const g = await h.gmap.go(cfg.south, { tries: 2 }); log('gmap 南门 ' + (g.ok ? 'ok' : 'FAIL ' + g.err) + ' ' + (g.total || 0) + 's');
+          if (!g.ok) { // 离线图失败但就在南门附近：直接走过去（几格的活不该卡住整轮）
+            try { await h.goto(cfg.south[0], cfg.south[1], cfg.south[2], 3, 20000); } catch {}
+            if (hd(pos(), { x: cfg.south[0], z: cfg.south[2] }) > 14) throw new Error('gmap to 南门 ' + g.err);
+          }
         }
       }
       // 4. 补给
       // 每次回城都走完整流程：卖元素→存货→换钱→买箭/吃的，最后回到南门
       await shop();
       // 5. 南门 → 双房 → 站桩点
-      chk(); await follow('皇城南门->双房'); chk();
+      // fightOnArrive：最后一腿边走边打（墓园/营地这种一进去就有怪的地方，光走路会被弓箭手射死）
+      chk();
+      const legs = [].concat(cfg.routeFromSouth || []);
+      for (let i = 0; i < legs.length; i++) {
+        const lastLeg = i === legs.length - 1;
+        if (lastLeg && cfg.fightOnArrive) { if (!(await walkFight(cfg.anchor, 'anchor', legs[i]))) { await follow(legs[i]); chk(); } }
+        else { await follow(legs[i]); chk(); }
+      }
       st.step = 'anchor';
       try { await h.goto(cfg.anchor.x, cfg.anchor.y, cfg.anchor.z, 1, 15000); } catch {}
       st.state = 'done'; st.sec = Math.round((Date.now() - st.t0) / 1000); log('home in ' + st.sec + 's');
@@ -357,6 +373,46 @@ module.exports = (bot, h) => {
   let wDeath = 0; const chkW = () => { if (st.wangMark && wDeath > st.wangMark) throw new Error('died'); };
   bot.on('death', () => { wDeath = Date.now(); });
   const wangDue = () => cfg.wang && goodsN() >= Math.max(40, cfg.wangMin) && !(st.wangFailAt && Date.now() - st.wangFailAt < 600000);
+  // 通用卖货：墓园的怨氣的結晶 → 白骨精（或以后别的 NPC）。流程与王員外一样：走固定路线→清场→交易→回来
+  const sellDue = () => cfg.sellAtNpc && !!cfg.saleNpc && goodsN() >= Math.max(20, cfg.sellMin) && !(st.sellFailAt && Date.now() - st.sellFailAt < 600000);
+  async function sell(out = [], opts = {}) {
+    if (st.sellBusy) return 'busy';
+    if (!cfg.sellAtNpc || !cfg.saleNpc) return 'off';
+    st.sellBusy = true; st.sellMark = Date.now();
+    const n0 = goodsN(), t0 = Date.now(); const wasC = h.combat.state().on;
+    try {
+      if (!n0) return 'goods 0';
+      try { bot.pathfinder.stop(); } catch {} bot.clearControlStates();
+      if (!(await walkFight(cfg.saleAt, 'sell go', cfg.saleRoute))) throw new Error('walk failed');
+      if (cfg.wangClearR) await fightClear(cfg.wangClearR, cfg.wangWaitMs, 'sell arrive');
+      if (bot.health < 8) throw new Error('low hp ' + Math.round(bot.health));
+      const times = Math.max(1, Math.floor(n0 / (cfg.saleRatio || 20)));
+      h.combat.stop(); bot.clearControlStates(); await sleep(300);
+      // 选哪一项：输入是这种货（按 type+meta 匹配，同一类染料可能有多项）
+      const goods = bot.inventory.items().find(isGoods);
+      const gType = goods ? goods.type : null, gMeta = goods ? goods.metadata : null;
+      const pick = (T) => {
+        const outRe = cfg.saleOut ? new RegExp(cfg.saleOut) : /療癒|藥引|證明|妖/; // 档案指定要哪种产出（白骨精有好几页）
+        let k = T.findIndex((t) => t && t.inputItem1 && t.outputItem && (gType == null || t.inputItem1.type === gType) &&
+          (gMeta == null || t.inputItem1.metadata === gMeta) && outRe.test(String(t.outputItem.customName || t.outputItem.name || '')));
+        if (k < 0) k = T.findIndex((t) => t && t.inputItem1 && t.outputItem && (gType == null || t.inputItem1.type === gType));
+        return k;
+      };
+      const n = await tradeNpc(cfg.saleNpc, [[pick, times]], 'sell x' + times, out, { input: isGoods });
+      log('sell traded ' + n + ' goods ' + n0 + '→' + goodsN());
+      if (!opts.stay && cfg.anchor) {
+        if (!(await walkFight([cfg.anchor.x, cfg.anchor.y, cfg.anchor.z], 'sell back', cfg.saleBack))) throw new Error('walk back failed');
+        try { await h.goto(cfg.anchor.x, cfg.anchor.y, cfg.anchor.z, 1, 10000); } catch {}
+      }
+      st.sellFailAt = n ? 0 : Date.now();
+      return 'ok x' + n + ' goods ' + n0 + '→' + goodsN() + ' ' + Math.round((Date.now() - t0) / 1000) + 's';
+    } catch (e) {
+      st.sellFailAt = Date.now(); log('sell ERR ' + errs(e)); bot.clearControlStates();
+      return 'err ' + errs(e);
+    } finally {
+      st.sellBusy = false; if (wasC) h.combat.start({ approach: false }); else h.combat.stop();
+    }
+  }
   async function wang(out = [], opts = {}) {
     if (st.wangBusy) return 'busy';
     st.wangBusy = true; st.wangMark = Date.now();
@@ -387,5 +443,5 @@ module.exports = (bot, h) => {
     }
   }
   function wangBg(opts) { st.wangJob = { state: 'run', t: Date.now(), out: [] }; wang(st.wangJob.out, opts).then((r) => { st.wangJob.state = 'done'; st.wangJob.r = r; }); return 'started'; }
-  return { cfg, st, run, shop, tossArrows, needShop, compact, tradeNpc, wang, wangBg, wangDue, goodsN };
+  return { cfg, st, run, shop, tossArrows, needShop, compact, tradeNpc, wang, wangBg, wangDue, goodsN, sell, sellDue };
 };

@@ -2,14 +2,45 @@
 // h.farm.start({anchor:{x,y,z}, leash:14, lootR:14}) / stop() / state()
 // 依赖：h.combat（射击/风筝）、h.goto（走路）、bot.js 自动吃饭、h.resupply（本地物资）。
 const { Vec3 } = require('vec3');
+const PF = require('./profiles'); // 刷怪路线档案（memory/farm_profiles.json）
 module.exports = (bot, h) => {
   const cfg = { anchor: null, leash: 14, lootR: 14, tickMs: 700, retreat: null, lowHp: 10, okHp: 18,
+    profile: null, // 当前档案名（看板可切）
+    freeRoam: false, // 自由打怪：不站桩，沿 patrol 点游走（墓园这种没有安定点的开阔地）
+    patrol: [], // 自由打怪的巡逻点
     spawners: [], // [{n,x,y,z}] 刷出点；估计刷怪间隔，安全时机才进去捡
     spawnR: 9, // 掉落物离刷出点这么近 = 危险区
     minGap: 10, // 默认最短刷怪间隔(s)（1.8 原版 10-40s）
     walkSpd: 4, junk: /^(glass_bottle|carrot)$/, keepFree: 4 };
   const st = { on: false, busy: false, picked: 0, lootSeen: 0, returns: 0, since: 0, log: [] };
   const log = (s) => { st.log.push(new Date().toTimeString().slice(0, 8) + ' ' + s); if (st.log.length > 30) st.log.shift(); };
+
+  // ---- 档案：一条路线 = 站桩/巡逻点 + 刷怪籠 + 捡东西规则 + 战利品卖给谁 ----
+  // 切换档案会同时换掉：farm 的锚点/巡逻/血线、combat 的射程/风筝参数、loot 的屋子列表、home 的销售规则与回城路线
+  function applyProfile(name, extra) {
+    const p = PF.get(name);
+    if (!p) throw new Error('没有这个档案 ' + name);
+    cfg.profile = name;
+    for (const k of ['leash', 'lootR', 'lootLeash', 'lowHp', 'okHp', 'town', 'patrol', 'spawners', 'anchor', 'retreat', 'kind']) if (p[k] !== undefined) cfg[k] = p[k];
+    cfg.freeRoam = p.kind === 'open';
+    if (p.peek) { cfg.peek = !!p.peek.on; if (p.peek.only) cfg.peekOnly = new RegExp(p.peek.only); if (p.peek.pts) cfg.peekPts = p.peek.pts; if (p.peek.delay) cfg.peekDelay = p.peek.delay; }
+    else cfg.peek = false;
+    if (p.combat && h.combat && h.combat.cfg) Object.assign(h.combat.cfg, p.combat);
+    if (h.loot && h.loot.cfg) { h.loot.cfg.houses = p.houses || []; if (p.lootLeash) h.loot.cfg.lootLeash = p.lootLeash; if (p.pSpawnMax != null) h.loot.cfg.pSpawnMax = p.pSpawnMax; }
+    // 把「卖什么、卖给谁、回城走哪条路」同步给 home（它负责跑城镇流程）
+    if (h.home && h.home.cfg) {
+      const H = h.home.cfg, s = p.sale || {};
+      H.anchor = p.anchor || H.anchor;
+      if (s.goods) H.goods = new RegExp(s.goods);
+      H.sellAtNpc = s.kind === 'npc'; // true = 货卖给 NPC（不在錢莊存）
+      H.saleNpc = s.npc || null; H.saleAt = s.at || null; H.saleRoute = s.route || null; H.saleBack = s.back || null;
+      H.saleRatio = s.ratio || 40; H.saleOut = s.out || null; H.sellMin = s.min || H.saleRatio;
+      if (p.routes) { if (p.routes.toSouth) H.routeToSouth = p.routes.toSouth; if (p.routes.fromSouth) H.routeFromSouth = p.routes.fromSouth; }
+    }
+    log('profile ' + name + ' @' + (p.anchor ? p.anchor.x + ',' + p.anchor.z : '?') + (cfg.freeRoam ? ' 自由打怪' : ' 站桩'));
+    return p;
+  }
+
 
   // 1.8 掉落物实体：name 'item'（新版 prismarine）或 objectType 'Item'
   const isDrop = (e) => e && e.type === 'object' && /^item$/i.test(e.name || '') && e.isValid !== false;
@@ -122,7 +153,7 @@ module.exports = (bot, h) => {
     for (const e of Object.values(bot.entities)) {
       if (!isDrop(e) || lowDrop(e)) continue;
       if (arrowFull() && isArrowDrop(e)) continue; // 箭满了不去捡（也不会去捡刚扔掉的）
-      if (cfg.anchor && hd(e.position, cfg.anchor) > (cfg.lootLeash || 20)) continue;
+      if (cfg.anchor && !cfg.freeRoam && hd(e.position, cfg.anchor) > (cfg.lootLeash || 20)) continue;
       const d = e.position.distanceTo(o);
       if (d < (maxD || cfg.lootR) && d < bd) { bd = d; best = e; }
     }
@@ -157,23 +188,83 @@ module.exports = (bot, h) => {
         tgt = nearestDrop(me(), 8);
       }
     } finally { h.combat.cfg.kite = kite0; }
-    // 回固定站桩点（屋外）；卡住重试
-    for (let k = 0; k < 3 && cfg.anchor && hd(me(), cfg.anchor) > 2; k++) { try { await h.goto(cfg.anchor.x, cfg.anchor.y, cfg.anchor.z, 1, 8000); } catch {} }
+    // 回固定站桩点（屋外）；自由打怪不回（没有安定点）；卡住重试
+    for (let k = 0; k < 3 && cfg.anchor && !cfg.freeRoam && hd(me(), cfg.anchor) > 2; k++) { try { await h.goto(cfg.anchor.x, cfg.anchor.y, cfg.anchor.z, 1, 8000); } catch {} }
+    // 自由打怪：捡完不回站桩点，但离巡逻网太远就拉回来（不然会被引到刷怪区外面）
+    if (cfg.freeRoam) { let d = Infinity; for (const q of cfg.patrol || []) d = Math.min(d, hd(me(), q)); if (d > 30) { try { await roam(); } catch {} } }
     const inv1 = bot.inventory.items().reduce((a, i) => a + i.count, 0);
     if (inv1 > inv0) { st.picked += inv1 - inv0; return true; }
     return false;
   }
 
+  // 自由打怪：没有安定点/撤退点，靠两件事保命 ——
+  //  a) 沿巡逻点游走（一个笼子附近清完就去下一个，不站死在一堆怪中间）
+  //  b) 血线触发就地拉开距离回血（不跑到固定撤退点，因为没地方跑）
+  // 血够了就继续走；这里只负责「去哪」，打谁交给 combat 层
+  async function roam() {
+    const P = cfg.patrol || [];
+    if (!P.length) return false;
+    // 选下一个巡逻点：优先近的，但避开最近去过的那几个，免得来回抽抽
+    st.patrolI = st.patrolI || 0; st.patrolVisited = st.patrolVisited || [];
+    let best = -1, bs = -Infinity;
+    for (let i = 0; i < P.length; i++) {
+      const q = P[i], d = hd(me(), q);
+      if (d < 3) continue;
+      const last = st.patrolVisited.lastIndexOf(i), rec = last < 0 ? 99 : st.patrolVisited.length - last;
+      const s = -d * 0.35 + Math.min(20, rec) * 0.9; // 远一点没关系，但刚去过的先放放
+      if (s > bs) { bs = s; best = i; }
+    }
+    if (best < 0) return false;
+    const q = P[best];
+    st.patrolVisited.push(best); if (st.patrolVisited.length > 8) st.patrolVisited.shift();
+    st.patrolI = best; st.roams = (st.roams || 0) + 1;
+    log('roam → ' + Math.round(q.x) + ',' + Math.round(q.z));
+    try { await h.goto(q.x, q.y, q.z, 3, 25000); } catch (e) { log('roam fail ' + String(e.message).slice(0, 25)); }
+    return true;
+  }
+  // 自由打怪的低血处理：不跑撤退点，就地拉开距离（combat 的 flee 方向会选离怪最远的空地），
+  // 血回到 okHp 再继续。怪太多就一边退一边射，实在不行就回城（交给 far→home）。
+  async function freeHeal() {
+    if (bot.health > cfg.lowHp || bot.health <= 0) return false; // 0 = 已经死了/正在重生，别当低血处理
+    if (st.healing) return true;
+    st.healing = true; st.heals = (st.heals || 0) + 1; log('low hp ' + Math.round(bot.health) + ' → 就地拉开回血');
+    const t0 = Date.now();
+    try {
+      while (bot.health < cfg.okHp && Date.now() - t0 < 45000) {
+        const ms = Object.values(bot.entities).filter((e) => isMob(e) && e.position.distanceTo(me()) < 14);
+        if (!ms.length) break;
+        // 往「离所有怪最远、且不用穿过怪」的方向走 6 格
+        let bp = null, bsc = -Infinity;
+        for (let i = 0; i < 16; i++) {
+          const yaw = i * Math.PI / 8, q = { x: me().x - Math.sin(yaw) * 6, z: me().z - Math.cos(yaw) * 6 };
+          let md = Infinity, block = false;
+          for (const m of ms) { md = Math.min(md, hd(m.position, q)); if (hd(m.position, q) < 4) block = true; }
+          if (block) continue;
+          if (md > bsc) { bsc = md; bp = q; }
+        }
+        if (!bp) break;
+        try { await h.goto(bp.x, me().y, bp.z, 1, 6000); } catch {}
+        await sleep(600);
+      }
+    } finally { st.healing = false; }
+    log('healed ' + Math.round(bot.health));
+    return true;
+  }
+
   async function step() {
     if (!st.on || st.busy || !bot.entity) return;
+    if (bot.health <= 0) return; // 死了/正在重生：等 bot.js 的重生流程，不要这时做决策（之前会把 hp0 当低血、直接判 far 回城）
     st.busy = true;
     try {
-      // 0) 低血：停战斗，跑到撤退点（离刷怪笼 25+ 格、骷髅射不到）回血，满了再回来
-      if (cfg.retreat && bot.health <= cfg.lowHp && !st.healing) {
-        st.healing = true; st.heals = (st.heals || 0) + 1; h.combat.stop(); log('low hp ' + Math.round(bot.health) + ' → retreat');
-        try { await h.goto(cfg.retreat.x, cfg.retreat.y, cfg.retreat.z, 2, 20000); } catch (e) { log('retreat ' + String(e.message).slice(0, 25)); }
-        h.combat.start({ approach: false });
-        return;
+      // 0) 低血：站桩档案跑到撤退点回血；自由打怪档案就地拉开距离回血（墓园没有安定点）
+      if (bot.health <= cfg.lowHp && bot.health > 0 && !st.healing) {
+        if (!cfg.retreat) { if (await freeHeal()) return; }
+        else {
+          st.healing = true; st.heals = (st.heals || 0) + 1; h.combat.stop(); log('low hp ' + Math.round(bot.health) + ' → retreat');
+          try { await h.goto(cfg.retreat.x, cfg.retreat.y, cfg.retreat.z, 2, 20000); } catch (e) { log('retreat ' + String(e.message).slice(0, 25)); }
+          h.combat.start({ approach: false });
+          return;
+        }
       }
       if (st.healing) {
         // 在撤退点等回血；血不再涨（饱食满但服务器不回血）超过 15s 且已高于 lowHp+4，就不等了
@@ -187,7 +278,15 @@ module.exports = (bot, h) => {
       }
       // 死了/被传走：离站桩点很远 → 停战斗，走固定路线回来
       // 离站桩点远 或 箭/吃的不够 → 固定流程 h.home：自杀→奈何桥→录好的路→南门买→录好的路回来（不寻路）
-      const far = cfg.anchor && hd(me(), cfg.anchor) > 60;
+      // 自由打怪没有单一站桩点：看「离最近的巡逻点」多远，不然在墓园里走两步就被当成跑丢了
+      const nearPt = () => {
+        if (!cfg.anchor) return 0;
+        if (!cfg.freeRoam) return hd(me(), cfg.anchor);
+        let d = hd(me(), cfg.anchor);
+        for (const q of cfg.patrol || []) d = Math.min(d, hd(me(), q));
+        return d;
+      };
+      const far = nearPt() > (cfg.freeRoam ? 45 : 60);
       if (h.home && (far || (h.home.needShop() && !hostileNear(10)))) {
         h.combat.stop(); log((far ? 'far' : 'need supply') + ' → home.run'); st.travels = (st.travels || 0) + 1;
         const r = await h.home.run({ force: true, fromFarm: true }); log('home ' + r);
@@ -197,9 +296,10 @@ module.exports = (bot, h) => {
       }
       if (far) return;
       // 王員外货够一批（cfg.wang，默认 ≥120）→ 去沙漠马贼营地换金锭再回来
-      if (h.home && h.home.wangDue && h.home.wangDue() && !hostileNear(10) && !h.combat.state().target && !st.healing) {
-        h.combat.stop(); log('wang trip goods ' + h.home.goodsN());
-        const out = []; const r = await h.home.wang(out); log('wang ' + r + ' ' + out.join(' | ').slice(0, 80));
+      // 其他档案（如墓园）的货换成 home.cfg.saleNpc 那个 NPC，由 h.home.sellDue/sell 跑
+      if (h.home && h.home.sellDue && h.home.sellDue() && !hostileNear(10) && !h.combat.state().target && !st.healing) {
+        h.combat.stop(); log('sell trip ' + (h.home.cfg.saleNpc || '') + ' n' + h.home.goodsN());
+        const out = []; const r = await h.home.sell(out); log('sell ' + r + ' ' + out.join(' | ').slice(0, 80));
         h.combat.start({ approach: false }); return;
       }
       // 缺箭/缺面包/背包满 → 回皇城补给变卖（cfg.town=true 时），完了上面的 far→travel 会自己走回来
@@ -223,8 +323,10 @@ module.exports = (bot, h) => {
         const d = nearestDrop();
         if (d) { st.lootSeen++; const ok = await pick(d); if (ok) log('picked → ' + st.picked); return; }
       }
-      // 2) 漂离站桩点（被追/风筝退远）且没在打 → 走回去
-      if (cfg.anchor && !fighting && !st.healing) {
+      // 2) 漂离站桩点（被追/风筝退远）且没在打 → 走回去；自由打怪则去下一个巡逻点
+      if (cfg.freeRoam && !fighting && !st.healing) {
+        if (await roam()) return;
+      } else if (cfg.anchor && !fighting && !st.healing) {
         const a = cfg.anchor, p = me();
         if (Math.hypot(p.x - a.x, p.z - a.z) > (fighting ? cfg.leash : 2.5)) {
           st.returns++; log('return to anchor');
@@ -238,21 +340,32 @@ module.exports = (bot, h) => {
   // 掉落物捡取：1.8 走到掉落物 1 格内自动拾取
   bot.on('playerCollect', (collector, item) => { if (collector === bot.entity) log('collect ' + (item.name || 'item')); });
 
-  return { tossArrows, nearestDrop,
+  return { tossArrows, nearestDrop, applyProfile,
     cfg, st, log,
+    // start({profile:'墓園'}) 或 start()（用上次/默认档案）。档案里的值先铺上，opts 再覆盖
     start(opts = {}) {
+      const name = opts.profile || cfg.profile || PF.active();
+      if (name) { try { applyProfile(name); } catch (e) { log('profile err ' + String(e.message).slice(0, 40)); } }
       Object.assign(cfg, opts);
       if (!cfg.anchor) cfg.anchor = { x: Math.floor(me().x), y: Math.floor(me().y), z: Math.floor(me().z) };
-      st.on = true; st.since = Date.now();
+      st.on = true; st.since = Date.now(); st.patrolVisited = []; st.roams = 0;
       h.combat.start();
       if (!iv) iv = setInterval(() => step().catch((e) => { const m = String(e && e.message || e).slice(0, 60); if (m !== st.lastErr) { st.lastErr = m; log('ERR ' + m); } }), cfg.tickMs);
-      log('farm on @' + JSON.stringify(cfg.anchor));
+      log('farm on ' + (cfg.profile || '?') + ' @' + JSON.stringify(cfg.anchor));
       return 'on';
     },
     stop() { st.on = false; if (iv) { clearInterval(iv); iv = null; } h.combat.stop(); return 'off'; },
+    // 看板切换档案：停 → 换 → 重启（正在跑才重启）
+    switchTo(name) {
+      const was = st.on;
+      if (was) this.stop();
+      PF.setActive(name); applyProfile(name);
+      if (was) this.start({ profile: name });
+      return name;
+    },
     state() {
       const c = h.combat.state();
-      return { on: st.on, travels: st.travels || 0, townTrips: st.townTrips || 0, heals: st.heals || 0, healing: !!st.healing, min: +((Date.now() - st.since) / 60000).toFixed(1), anchor: cfg.anchor, picked: st.picked, returns: st.returns,
+      return { on: st.on, profile: cfg.profile, freeRoam: !!cfg.freeRoam, travels: st.travels || 0, townTrips: st.townTrips || 0, heals: st.heals || 0, healing: !!st.healing, min: +((Date.now() - st.since) / 60000).toFixed(1), anchor: cfg.anchor, picked: st.picked, returns: st.returns, roams: st.roams || 0,
         hp: Math.round(bot.health), food: bot.food, shots: c.shots, hits: c.hits, kills: c.kills, deaths: c.deaths,
         arrow: h.count('arrow'), free: bot.inventory.emptySlotCount(), peeks: st.peeks || 0, whyNo: st.whyNo, pickAborts: st.pickAborts || 0, spawners: cfg.spawners.map((sp) => sp.k + ':' + (sp.n || 0) + ' gap' + (sp.gaps && sp.gaps.length ? Math.round(Math.min(...sp.gaps)) + '-' + Math.round(Math.max(...sp.gaps)) : '?') + ' eta' + Math.round(eta(sp))), log: st.log.slice(-6) };
     },

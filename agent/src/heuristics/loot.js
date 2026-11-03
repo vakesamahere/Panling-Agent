@@ -12,7 +12,7 @@ module.exports = (bot, h, farm) => {
   const isDrop = (e) => e && e.type === 'object' && /^item$/i.test(e.name || '') && e.isValid !== false;
   const mobs = () => Object.values(bot.entities).filter(isMob);
   const L = {
-    cfg: { houses: [], walkSpd: 4.0, pPick: 0.15, outMobR: 7, meMobR: 7, lootLeash: 22, maxTrip: 25 },
+    cfg: { houses: [], walkSpd: 4.0, pPick: 0.15, outMobR: 7, meMobR: 7, lootLeash: 22, maxTrip: 25, pSpawnMax: 0.25 },
     gaps: {}, last: {}, firstSeen: new Map(), stats: { inTrips: 0, inOk: 0, inAborts: 0, outTrips: 0, outOk: 0, skipped: {} },
   };
   try { L.gaps = JSON.parse(fs.readFileSync(SPF, 'utf8')); } catch {}
@@ -61,15 +61,15 @@ module.exports = (bot, h, farm) => {
       return len;
     } catch { return null; }
   }
-  // 地上的掉落物（站桩点附近）
+  // 地上掉落物（站桩点附近；自由打怪时按自己位置算，否则沿巡逻点走远了就看不到东西）
   function drops() {
     const a = cfg.anchor;
-    return Object.values(bot.entities).filter((e) => isDrop(e) && hd(e.position, a) < L.cfg.lootLeash && e.position.y > me().y - 4)
+    return Object.values(bot.entities).filter((e) => isDrop(e) && (cfg.freeRoam ? e.position.distanceTo(me()) < (L.cfg.lootLeash || 20) : hd(e.position, a) < L.cfg.lootLeash) && e.position.y > me().y - 6)
       .map((e) => ({ e, ho: houseOf(e.position), age: (Date.now() - (L.firstSeen.get(e.id) || Date.now())) / 1000 }));
   }
   const skip = (w) => { L.stats.skipped[w] = (L.stats.skipped[w] || 0) + 1; st.whyNo = w; return false; };
   const goto = async (p, r, ms) => { try { await h.goto(p.x, p.y, p.z, r, ms); return true; } catch { return false; } };
-  const backTo = async () => { for (let k = 0; k < 3 && hd(me(), cfg.anchor) > 2; k++) await goto(cfg.anchor, 1, 8000); };
+  const backTo = async () => { if (cfg.freeRoam) return; for (let k = 0; k < 3 && hd(me(), cfg.anchor) > 2; k++) await goto(cfg.anchor, 1, 8000); };
   const mid = (p, q) => ({ x: (p.x + q.x) / 2, z: (p.z + q.z) / 2 });
   const invCount = () => bot.inventory.items().reduce((a, i) => a + i.count, 0);
 
@@ -111,7 +111,7 @@ module.exports = (bot, h, farm) => {
     if (!ok.length) return skip('A:mob-at-drop');
     for (let i = ok.length - 1; i >= 0; i--) {
       const q = ok[i].e.position, T = (2 * q.distanceTo(me())) / L.cfg.walkSpd + 1.5;
-      if ((cfg.spawners || []).some((sp) => hd(q, sp) < 4 && pSpawn(sp, T) > 0.25)) ok.splice(i, 1);
+      if ((cfg.spawners || []).some((sp) => hd(q, sp) < 4 && pSpawn(sp, T) > L.cfg.pSpawnMax)) ok.splice(i, 1);
     }
     if (!ok.length) return skip('A:near-spawn');
     ok.sort((x, y) => (x.e.position.distanceTo(me()) - x.age / 30) - (y.e.position.distanceTo(me()) - y.age / 30));

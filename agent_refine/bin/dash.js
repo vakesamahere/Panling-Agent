@@ -1,6 +1,6 @@
 // 看板：http://127.0.0.1:3010  状态只读；/api/ctl 控制（要口令）。读 memory/dash_now.json + logs/dash_history.jsonl（由 watchdog.js 每 30 秒写）
 // node bin/dash.js   （DASH_HOST=0.0.0.0 可让局域网/手机访问）
-const http = require('http'), fs = require('fs'), path = require('path');
+const http = require('http'), fs = require('fs'), path = require('path'), net = require('net');
 const ROOT = path.join(__dirname, '..');
 const DN = path.join(ROOT, 'memory', 'dash_now.json'), DH = path.join(ROOT, 'logs', 'dash_history.jsonl');
 const PAGE = path.join(ROOT, 'web', 'dash.html');
@@ -8,6 +8,27 @@ const PORT = +(process.env.DASH_PORT || 3010), HOST = process.env.DASH_HOST || '
 const BOT_PORT = +(process.env.DASH_BOT_PORT || 3002); // botEval 目标（线上号 3002；本地测试 DASH_BOT_PORT=3001）
 // 观战（prismarine-viewer）端口：线上号 3008、本地号 3007，和 bot.js 里的 VIEW_PORT 对应
 const VIEW_PORT = +(process.env.DASH_VIEW_PORT || (BOT_PORT === 3002 ? 3008 : 3007));
+const VIEW_PREFIX = '/view'; // 观战页挂到看板自己的路径下，这样只转发看板一个端口就够了
+function viewProxyPath(p) { return (p.slice(VIEW_PREFIX.length) || '/'); }
+function proxyView(req, res) {
+  const r2 = http.request({ host: '127.0.0.1', port: VIEW_PORT, path: viewProxyPath(req.url), method: req.method, headers: Object.assign({}, req.headers, { host: '127.0.0.1:' + VIEW_PORT }) }, (r) => {
+    res.writeHead(r.statusCode || 502, r.headers); r.pipe(res);
+  });
+  r2.on('error', () => { if (!res.headersSent) res.writeHead(502); res.end('观战进程没起（端口 ' + VIEW_PORT + '）'); });
+  r2.setTimeout(60000, () => { try { r2.destroy(); } catch {} });
+  req.pipe(r2);
+}
+function proxyViewUpgrade(req, socket, head) { // socket.io 的 ws 原样透传
+  const up = net.connect(VIEW_PORT, '127.0.0.1', () => {
+    let raw = 'GET ' + viewProxyPath(req.url) + ' HTTP/1.1\r\n';
+    for (let i = 0; i < req.rawHeaders.length; i += 2) raw += req.rawHeaders[i] + ': ' + req.rawHeaders[i + 1] + '\r\n';
+    up.write(raw + '\r\n');
+    if (head && head.length) up.write(head);
+    up.pipe(socket); socket.pipe(up);
+  });
+  up.on('error', () => socket.destroy());
+  socket.on('error', () => up.destroy());
+}
 
 function history(hours, raw) {
   const since = Date.now() - hours * 3600e3;
@@ -56,6 +77,8 @@ const ACTIONS = {
   stop: { okIfDown: '号不在线，已记下：上线后不自动刷', flag: () => { try { fs.unlinkSync(F('autofarm.flag')); } catch {} }, body: () => HALT + "return 'stopped'" },
   combat_on: { body: () => "h.combat.start({approach:false});return 'combat on'" },
   combat_off: { body: () => "h.combat.stop();bot.clearControlStates();return 'combat off'" },
+  // 切刷怪路线档案（路线与战利品处理方式绑定）：停 → 换 → 重启，loot/home/combat 一起换
+  profile: { flag: (q) => { try { require(path.join(ROOT, 'src', 'heuristics', 'profiles')).setActive(q.get('v')); } catch {} }, body: (q) => { const n = q.get('v') || ''; return `const n=${JSON.stringify(n)};let r='';try{r=h.farm.switchTo(n)}catch(e){return 'err '+String(e&&e.message||e)}const PF=require('./heuristics/profiles');const P=PF.get(n)||{};if(h.loot&&h.loot.cfg){h.loot.cfg.houses=P.houses||[];if(P.lootLeash)h.loot.cfg.lootLeash=P.lootLeash;}return r+' '+(h.farm.st.on?'开刷中':'已切换')`; } },
   farm_on: { okIfDown: '号不在线，已记下：上线后自动刷', flag: () => fs.writeFileSync(F('autofarm.flag'), new Date().toString()), body: () => fs.readFileSync(path.join(ROOT, 'scripts', 'eval', 'farm_start.js'), 'utf8') },
   farm_off: { okIfDown: '号不在线，已记下：上线后不自动刷', flag: () => { try { fs.unlinkSync(F('autofarm.flag')); } catch {} }, body: () => "try{h.farm.stop()}catch{};try{h.combat.stop()}catch{};bot.clearControlStates();return 'farm off'" },
   // 回城补给：走完整的补给流程（卖元素/存货/卖煤/换钱/买箭买牛排），最后回到刷怪点站桩（不开刷）
@@ -91,13 +114,16 @@ async function ctl(req, u, json) {
 
 http.createServer((req, res) => {
   const u = new URL(req.url, 'http://x');
+  if (u.pathname === VIEW_PREFIX || u.pathname.startsWith(VIEW_PREFIX + '/')) return proxyView(req, res);
   const json = (o) => { res.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8', 'Cache-Control': 'no-store' }); res.end(JSON.stringify(o)); };
   if (u.pathname === '/api/now') { let o = {}; try { o = JSON.parse(fs.readFileSync(DN, 'utf8')); } catch {}
     o.resetT = resetT(); o.paused = fs.existsSync(F('pause.flag')); o.offline = fs.existsSync(F('offline.flag')); o.autofarm = fs.existsSync(F('autofarm.flag'));
     // 号在线时用实时探测覆盖状态类字段（资产/历史/日志仍用 watchdog 的 30 秒快照）
     return liveProbe().then((v) => { if (v) Object.assign(o, v); else if (!o.t) o.online = false; o.serverT = Date.now(); return json(o); }); }
-  if (u.pathname === '/api/routes') { // 录好的路线名 + 地点名（给看板下拉框）
-    let R = {}, P = {}; try { R = JSON.parse(fs.readFileSync(path.join(ROOT, 'memory', 'routes_recorded.json'), 'utf8')); } catch {}
+  if (u.pathname === '/api/profiles') { // 刷怪路线档案列表（看板下拉）
+    try { const PF = require(path.join(ROOT, 'src', 'heuristics', 'profiles')); return json({ ok: true, list: PF.list() }); } catch (e) { return json({ ok: false, err: String(e.message || e).slice(0, 80), list: [] }); }
+  }
+  if (u.pathname === '/api/routes') { // 录好的路线名 + 地点名（给看板下拉框）    let R = {}, P = {}; try { R = JSON.parse(fs.readFileSync(path.join(ROOT, 'memory', 'routes_recorded.json'), 'utf8')); } catch {}
     try { P = JSON.parse(fs.readFileSync(path.join(ROOT, 'memory', 'places.json'), 'utf8')); } catch {}
     return json({ routes: Object.keys(R), places: Object.keys(P) });
   }
@@ -152,8 +178,11 @@ http.createServer((req, res) => {
     const hrs = on / 3600e3;
     return json({ since: L.length ? L[0].t : null, hrs, gain, kills, perHour: hrs > 0.05 ? gain / hrs : null, killsPerHour: hrs > 0.05 ? kills / hrs : null });
   }
-  if (u.pathname === '/api/view') return json({ ok: true, port: VIEW_PORT }); // 观战页端口，前端用它拼 iframe/新窗口地址
+  if (u.pathname === '/api/view') return json({ ok: true, port: VIEW_PORT, same: true }); // 前端优先用同源 /view/
   if (u.pathname === '/api/history') return json(history(Math.min(72, +(u.searchParams.get('h') || 12))));
   if (u.pathname === '/' || u.pathname === '/index.html') { res.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8' }); return fs.createReadStream(PAGE).pipe(res); }
   res.writeHead(404); res.end();
-}).listen(PORT, HOST, () => console.log(`dash http://${HOST}:${PORT}`));
+}).listen(PORT, HOST, () => console.log(`dash http://${HOST}:${PORT}  （观战 /view/ -> 127.0.0.1:${VIEW_PORT}）`)).on('upgrade', (req, socket, head) => { // 只转发观战那条 ws
+  if (req.url && (req.url === VIEW_PREFIX || req.url.startsWith(VIEW_PREFIX + '/'))) return proxyViewUpgrade(req, socket, head);
+  socket.destroy();
+});

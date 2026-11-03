@@ -47,7 +47,11 @@ module.exports = (bot, h) => {
     return n;
   }
   async function stash() {
-    const goods = bot.inventory.items().filter((i) => /王員外/.test(nm(i)));
+    // 只存「不去 NPC 换的货」：通用卖货模式（如墓园结晶→白骨精）下不存
+    const HG = h.home && h.home.cfg;
+    if (HG && HG.sellAtNpc) return 0;
+    const re = (HG && HG.goods) || /王員外/;
+    const goods = bot.inventory.items().filter((i) => re.test(nm(i)));
     if (!goods.length) return 0;
     await h.travel('錢莊');
     const ec = bot.findBlock({ matching: (b) => b && b.name === 'ender_chest', maxDistance: 8 });
@@ -55,7 +59,7 @@ module.exports = (bot, h) => {
     await h.goto(ec.position.x, ec.position.y, ec.position.z, 1.5, 8000).catch(() => {});
     await bot.lookAt(ec.position.offset(0.5, 0.5, 0.5));
     const w = await bot.openContainer(ec); let moved = 0;
-    try { for (let i = w.inventoryStart; i < w.inventoryEnd; i++) { const s = w.slots[i]; if (s && /王員外/.test(nm(s))) { await bot.clickWindow(i, 0, 1); moved += s.count; await h.sleep(80); } } }
+    try { for (let i = w.inventoryStart; i < w.inventoryEnd; i++) { const s = w.slots[i]; if (s && re.test(nm(s))) { await bot.clickWindow(i, 0, 1); moved += s.count; await h.sleep(80); } } }
     finally { w.close(); await h.sleep(400); }
     return moved;
   }

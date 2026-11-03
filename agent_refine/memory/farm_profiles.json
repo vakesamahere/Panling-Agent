@@ -177,6 +177,23 @@
    "fromSouth": [
     "皇城南门->双房"
    ]
+  },
+  "cfg": {
+   "minArrow": 128,
+   "buyArrowTo": 448,
+   "maxArrow": 0,
+   "minFood": 24,
+   "buyFoodTo": 60,
+   "minFree": 3,
+   "wangMin": 40,
+   "wang": true,
+   "elemMode": {
+    "rotten_flesh": "sell",
+    "bone": "sell",
+    "string": "sell",
+    "blaze_rod": "sell",
+    "magma_cream": "sell"
+   }
   }
  },
  "墓園": {
@@ -594,6 +611,23 @@
     "皇城南门->墓園"
    ]
   },
-  "pSpawnMax": 0.7
+  "pSpawnMax": 0.7,
+  "cfg": {
+   "minArrow": 64,
+   "buyArrowTo": 192,
+   "maxArrow": 0,
+   "minFood": 16,
+   "buyFoodTo": 48,
+   "minFree": 5,
+   "wangMin": 120,
+   "wang": false,
+   "elemMode": {
+    "rotten_flesh": "sell",
+    "bone": "sell",
+    "string": "sell",
+    "blaze_rod": "sell",
+    "magma_cream": "sell"
+   }
+  }
  }
 }

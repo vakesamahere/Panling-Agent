@@ -78,7 +78,7 @@ const ACTIONS = {
   combat_on: { body: () => "h.combat.start({approach:false});return 'combat on'" },
   combat_off: { body: () => "h.combat.stop();bot.clearControlStates();return 'combat off'" },
   // 切刷怪路线档案（路线与战利品处理方式绑定）：停 → 换 → 重启，loot/home/combat 一起换
-  profile: { flag: (q) => { try { require(path.join(ROOT, 'src', 'heuristics', 'profiles')).setActive(q.get('v')); } catch {} }, body: (q) => { const n = q.get('v') || ''; return `const n=${JSON.stringify(n)};let r='';try{r=h.farm.switchTo(n)}catch(e){return 'err '+String(e&&e.message||e)}const PF=require('./heuristics/profiles');const P=PF.get(n)||{};if(h.loot&&h.loot.cfg){h.loot.cfg.houses=P.houses||[];if(P.lootLeash)h.loot.cfg.lootLeash=P.lootLeash;}return r+' '+(h.farm.st.on?'开刷中':'已切换')`; } },
+  profile: { okIfDown: '号不在线，已记下：上线开刷时用这个档案', flag: (q) => { try { require(path.join(ROOT, 'src', 'heuristics', 'profiles')).setActive(q.get('v')); } catch {} }, body: (q) => { const n = q.get('v') || ''; return `const n=${JSON.stringify(n)};let r='';try{r=h.farm.switchTo(n)}catch(e){return 'err '+String(e&&e.message||e)}const PF=require('./heuristics/profiles');const P=PF.get(n)||{};if(h.loot&&h.loot.cfg){h.loot.cfg.houses=P.houses||[];if(P.lootLeash)h.loot.cfg.lootLeash=P.lootLeash;}return r+' '+(h.farm.st.on?'开刷中':'已切换')`; } },
   farm_on: { okIfDown: '号不在线，已记下：上线后自动刷', flag: () => fs.writeFileSync(F('autofarm.flag'), new Date().toString()), body: () => fs.readFileSync(path.join(ROOT, 'scripts', 'eval', 'farm_start.js'), 'utf8') },
   farm_off: { okIfDown: '号不在线，已记下：上线后不自动刷', flag: () => { try { fs.unlinkSync(F('autofarm.flag')); } catch {} }, body: () => "try{h.farm.stop()}catch{};try{h.combat.stop()}catch{};bot.clearControlStates();return 'farm off'" },
   // 回城补给：走完整的补给流程（卖元素/存货/卖煤/换钱/买箭买牛排），最后回到刷怪点站桩（不开刷）
@@ -113,6 +113,15 @@ async function ctl(req, u, json) {
 }
 
 http.createServer((req, res) => {
+  try { return handle(req, res); } catch (e) { // 单个请求炸了不能把整个看板带走
+    try { res.writeHead(500, { 'Content-Type': 'text/plain; charset=utf-8' }); res.end('dash error: ' + String(e && e.message || e)); } catch {}
+  }
+}).listen(PORT, HOST, () => console.log(`dash http://${HOST}:${PORT}  （观战 /view/ -> 127.0.0.1:${VIEW_PORT}）`)).on('upgrade', (req, socket, head) => { // 只转发观战那条 ws
+  if (req.url && (req.url === VIEW_PREFIX || req.url.startsWith(VIEW_PREFIX + '/'))) return proxyViewUpgrade(req, socket, head);
+  socket.destroy();
+});
+
+function handle(req, res) {
   const u = new URL(req.url, 'http://x');
   if (u.pathname === VIEW_PREFIX || u.pathname.startsWith(VIEW_PREFIX + '/')) return proxyView(req, res);
   const json = (o) => { res.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8', 'Cache-Control': 'no-store' }); res.end(JSON.stringify(o)); };
@@ -123,7 +132,8 @@ http.createServer((req, res) => {
   if (u.pathname === '/api/profiles') { // 刷怪路线档案列表（看板下拉）
     try { const PF = require(path.join(ROOT, 'src', 'heuristics', 'profiles')); return json({ ok: true, list: PF.list() }); } catch (e) { return json({ ok: false, err: String(e.message || e).slice(0, 80), list: [] }); }
   }
-  if (u.pathname === '/api/routes') { // 录好的路线名 + 地点名（给看板下拉框）    let R = {}, P = {}; try { R = JSON.parse(fs.readFileSync(path.join(ROOT, 'memory', 'routes_recorded.json'), 'utf8')); } catch {}
+  if (u.pathname === '/api/routes') { // 录好的路线名 + 地点名（给看板下拉框）
+    let R = {}, P = {}; try { R = JSON.parse(fs.readFileSync(path.join(ROOT, 'memory', 'routes_recorded.json'), 'utf8')); } catch {}
     try { P = JSON.parse(fs.readFileSync(path.join(ROOT, 'memory', 'places.json'), 'utf8')); } catch {}
     return json({ routes: Object.keys(R), places: Object.keys(P) });
   }
@@ -138,38 +148,44 @@ http.createServer((req, res) => {
     let L = {}; try { L = JSON.parse(fs.readFileSync(F('ledger.json'), 'utf8')); } catch {}
     return botEval(body).then((r) => json({ ok: !!r.ok, err: r.ok ? null : (r.err || r.e), bot: r.ok ? r.r : null, ender: L.ender || null, enderT: L.enderT || null }));
   }
-  // 回城补给阈值：GET 读；POST ?k=口令&v=JSON 写 memory/home_cfg.json 并立刻应用到在线的号
+  // 回城补给阈值：每个刷怪档案各一套（memory/farm_profiles.json 里 profile.cfg）；GET 读当前档案的；POST 写当前档案的
   if (u.pathname === '/api/cfg') {
-    const CF = F('home_cfg.json'); const KEYS = ['minArrow', 'buyArrowTo', 'maxArrow', 'minFood', 'buyFoodTo', 'minFree', 'wangMin']; const ELEMS = ['rotten_flesh', 'bone', 'string', 'blaze_rod', 'magma_cream'];
-    let cur = {}; try { cur = JSON.parse(fs.readFileSync(CF, 'utf8')); } catch {}
-    if (cur.wangMin == null) cur.wangMin = 120; // 和 home.js 默认一致
-    // GET：wang 没存过时问在线的号要真实值（线上号默认关、本地号默认开），不在线就按关显示
+    const PF = require(path.join(ROOT, 'src', 'heuristics', 'profiles'));
+    const PFF = path.join(ROOT, 'memory', 'farm_profiles.json');
+    const KEYS = ['minArrow', 'buyArrowTo', 'maxArrow', 'minFood', 'buyFoodTo', 'minFree', 'wangMin'];
+    const ELEMS = ['rotten_flesh', 'bone', 'string', 'blaze_rod', 'magma_cream'];
+    const DEF = { minArrow: 128, buyArrowTo: 448, maxArrow: 0, minFood: 24, buyFoodTo: 60, minFree: 3, wangMin: 120, wang: false, bowName: '', elemMode: {} };
+    const loadAll = () => { try { return JSON.parse(fs.readFileSync(PFF, 'utf8')); } catch { return {}; } };
+    const profName = () => PF.active();
+    const cfgOf = (A, n) => Object.assign({}, DEF, ELEMS.reduce((a, e) => ((a.elemMode = Object.assign({}, a.elemMode, { [e]: 'sell' })), a), {}), (A[n] && A[n].cfg) || {});
     if (req.method !== 'POST') {
-      if (cur.wang != null) return json(cur);
-      return botEval('return h.home&&h.home.cfg?{wang:!!h.home.cfg.wang,wangMin:h.home.cfg.wangMin||120}:null').then((r) => json(Object.assign({}, cur, { wang: !!(r.ok && r.r && r.r.wang) })));
+      const A = loadAll(), n = profName();
+      const c = cfgOf(A, n);
+      const P0 = (A[n] || {}); const sale = P0.sale || {};
+      return json(Object.assign({ profile: n, profiles: PF.list(), saleNpc: sale.npc || null, saleGoods: sale.goods || null, showWang: /王員外/.test(String(sale.npc || '')) }, c));
     }
     let key = ''; try { key = fs.readFileSync(F('dash_key.txt'), 'utf8').trim(); } catch {}
     if (!key || u.searchParams.get('k') !== key) return json({ ok: false, err: '口令不对', badKey: true });
     let v; try { v = JSON.parse(u.searchParams.get('v') || '{}'); } catch { return json({ ok: false, err: 'bad json' }); }
+    const A = loadAll(), n = v.profile || profName();
+    if (!A[n]) return json({ ok: false, err: '没有这个档案 ' + n });
+    const cur = cfgOf(A, n);
     if (v.bowName != null) { if (typeof v.bowName !== 'string' || v.bowName.length > 64) return json({ ok: false, err: 'bowName 要短字符串' }); cur.bowName = v.bowName; }
-    for (const k of KEYS) if (v[k] != null) { const n = Math.round(+v[k]); if (!(n >= 0 && n <= 2304)) return json({ ok: false, err: k + ' 要在 0-2304 之间' }); cur[k] = n; }
-    // 王員外开关：true = 王員外货物攒够就走去沙漠马贼营地换金元宝；false = 存錢莊末影箱
+    for (const k of KEYS) if (v[k] != null) { const x = Math.round(+v[k]); if (!(x >= 0 && x <= 2304)) return json({ ok: false, err: k + ' 要在 0-2304 之间' }); cur[k] = x; }
     if (v.wang != null) cur.wang = !!v.wang;
-    // 每种元素：sell 卖回收員 / refine 精煉師做精練元素存末影箱
     if (v.elemMode != null) {
       if (typeof v.elemMode !== 'object' || Array.isArray(v.elemMode)) return json({ ok: false, err: 'elemMode 要是对象' });
-      const em = Object.assign({}, ELEMS.reduce((a, e) => ((a[e] = 'sell'), a), {}), cur.elemMode || {});
       for (const [e, m] of Object.entries(v.elemMode)) {
         if (!ELEMS.includes(e)) return json({ ok: false, err: '未知元素 ' + e });
         if (m !== 'sell' && m !== 'refine') return json({ ok: false, err: e + ' 只能是 sell 或 refine' });
-        em[e] = m;
+        cur.elemMode[e] = m;
       }
-      cur.elemMode = em;
     }
-    if (cur.buyArrowTo < cur.minArrow) cur.buyArrowTo = cur.minArrow; if (cur.maxArrow > 0 && cur.maxArrow < cur.buyArrowTo) cur.maxArrow = cur.buyArrowTo; // 上限低于买到数会买了就扔
+    if (cur.buyArrowTo < cur.minArrow) cur.buyArrowTo = cur.minArrow; if (cur.maxArrow > 0 && cur.maxArrow < cur.buyArrowTo) cur.maxArrow = cur.buyArrowTo;
     if (cur.buyFoodTo < cur.minFood) cur.buyFoodTo = cur.minFood;
-    fs.writeFileSync(CF, JSON.stringify(cur)); wlog('cfg ' + JSON.stringify(cur));
-    return botEval('Object.assign(h.home.cfg,' + JSON.stringify(cur) + ');if(h.home&&h.home.cfg&&typeof h.home.cfg.wang==="boolean")h.home.cfg.wang=' + JSON.stringify(!!cur.wang) + ';if(h.combat&&h.combat.cfg&&h.combat.cfg.bowName!==undefined)h.combat.cfg.bowName=' + JSON.stringify(cur.bowName || '') + ';return "live"').then((r) => json({ ok: true, cfg: cur, live: !!r.ok }));
+    A[n].cfg = cur; fs.writeFileSync(PFF, JSON.stringify(A, null, 1)); wlog('cfg ' + n + ' ' + JSON.stringify(cur));
+    // 号在线且用的就是这个档案：立刻生效
+    return botEval(`const PF=require('./heuristics/profiles');const n=${JSON.stringify(n)};if(PF.active()!==n)return 'saved (当前是 '+PF.active()+')';if(h.farm&&h.farm.cfg&&h.farm.cfg.profile!==n)return 'saved';const c=${JSON.stringify(cur)};if(h.home&&h.home.cfg){Object.assign(h.home.cfg,c);h.home.cfg.wang=!!c.wang;h.home.cfg.bowName=c.bowName||''}if(h.combat&&h.combat.cfg)h.combat.cfg.bowName=c.bowName||'';return 'live'`).then((r) => json({ ok: true, profile: n, cfg: cur, live: !!(r.ok && r.r === 'live') }));
   }
   if (u.pathname === '/api/avg') {
     // 全部记录：净增资产 / 在线时长（相邻两点间隔 >2 分钟算离线，不计入时长也不计入收益）
@@ -182,7 +198,4 @@ http.createServer((req, res) => {
   if (u.pathname === '/api/history') return json(history(Math.min(72, +(u.searchParams.get('h') || 12))));
   if (u.pathname === '/' || u.pathname === '/index.html') { res.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8' }); return fs.createReadStream(PAGE).pipe(res); }
   res.writeHead(404); res.end();
-}).listen(PORT, HOST, () => console.log(`dash http://${HOST}:${PORT}  （观战 /view/ -> 127.0.0.1:${VIEW_PORT}）`)).on('upgrade', (req, socket, head) => { // 只转发观战那条 ws
-  if (req.url && (req.url === VIEW_PREFIX || req.url.startsWith(VIEW_PREFIX + '/'))) return proxyViewUpgrade(req, socket, head);
-  socket.destroy();
-});
+}

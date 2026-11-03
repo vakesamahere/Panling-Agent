@@ -36,6 +36,14 @@ module.exports = (bot, h) => {
       H.saleRatio = s.ratio || 40; H.saleOut = s.out || null; H.sellMin = s.min || H.saleRatio;
       if (p.routes) { if (p.routes.toSouth) H.routeToSouth = p.routes.toSouth; if (p.routes.fromSouth) H.routeFromSouth = p.routes.fromSouth; }
     }
+    // 档案自己的补给/买卖设置（每个刷怪点一套：墓园不用王員外、箭和食物阈值也不同）
+    if (p.cfg && h.home && h.home.cfg) {
+      const H = h.home.cfg;
+      for (const k of ['minArrow', 'buyArrowTo', 'maxArrow', 'minFood', 'buyFoodTo', 'minFree', 'wangMin']) if (p.cfg[k] != null) H[k] = +p.cfg[k];
+      if (typeof p.cfg.wang === 'boolean') H.wang = p.cfg.wang;
+      if (p.cfg.elemMode) Object.assign(H.elemMode, p.cfg.elemMode);
+      if (p.cfg.bowName != null) { H.bowName = p.cfg.bowName; if (h.combat && h.combat.cfg) h.combat.cfg.bowName = p.cfg.bowName; }
+    }
     log('profile ' + name + ' @' + (p.anchor ? p.anchor.x + ',' + p.anchor.z : '?') + (cfg.freeRoam ? ' 自由打怪' : ' 站桩'));
     return p;
   }

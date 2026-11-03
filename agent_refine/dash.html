@@ -1,0 +1,270 @@
+<!doctype html>
+<html lang="zh"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>盘灵古域 · 刷怪看板</title>
+<style>
+:root{--bg:#0f1115;--card:#181b22;--line:#262a33;--fg:#e6e6e6;--mut:#8b919c;--ok:#4ade80;--bad:#f87171;--warn:#fbbf24;--acc:#60a5fa}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--fg);font:14px/1.45 system-ui,-apple-system,"Microsoft YaHei",sans-serif}
+header{display:flex;align-items:center;gap:12px;padding:14px 18px;border-bottom:1px solid var(--line)}
+h1{font-size:16px;margin:0;font-weight:600}.dot{width:10px;height:10px;border-radius:50%;background:var(--mut)}
+.dot.on{background:var(--ok);box-shadow:0 0 8px var(--ok)}.dot.off{background:var(--bad)}
+#upd{margin-left:auto;color:var(--mut);font-size:12px}
+main{padding:16px;display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));max-width:1300px;margin:auto}
+.card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px}
+.card h2{font-size:12px;color:var(--mut);margin:0 0 8px;font-weight:500;letter-spacing:.5px}
+.big{font-size:34px;font-weight:700;line-height:1.1}.sub{color:var(--mut);font-size:12px}
+.pos{color:var(--ok)}.neg{color:var(--bad)}
+.row{display:flex;justify-content:space-between;padding:3px 0;border-bottom:1px dashed var(--line)}.row:last-child{border:0}
+.row b{font-weight:600}.wide{grid-column:1/-1}
+.bar{height:8px;background:#2a2f3a;border-radius:4px;overflow:hidden;margin-top:4px}.bar i{display:block;height:100%;background:var(--ok)}
+canvas{width:100%;height:220px;display:block}
+.log{font:12px/1.5 ui-monospace,Consolas,monospace;color:#c9cdd4;max-height:180px;overflow:auto;white-space:pre-wrap}
+table{width:100%;border-collapse:collapse;font-size:13px}td,th{padding:4px 6px;border-bottom:1px solid var(--line);text-align:right}th{color:var(--mut);font-weight:500}td:first-child,th:first-child{text-align:left}
+.tag{display:inline-block;padding:1px 8px;border-radius:10px;background:#263043;color:var(--acc);font-size:12px}
+.seg button{background:#232733;color:var(--fg);border:1px solid var(--line);border-radius:6px;padding:2px 8px;cursor:pointer}.seg button.act{border-color:var(--acc);color:var(--acc)}
+.hb{margin-left:8px;padding:5px 14px;border-radius:6px;border:1px solid var(--line);background:#232733;color:var(--fg);cursor:pointer;font-size:14px}
+.ctl button{background:#232733;color:var(--fg);border:1px solid var(--line);border-radius:6px;padding:5px 10px;margin:3px 4px 3px 0;cursor:pointer}
+.ctl button.on{border-color:var(--ok);color:var(--ok)}.ctl select,.ctl input{background:#11141a;color:var(--fg);border:1px solid var(--line);border-radius:6px;padding:4px 6px;max-width:100%}
+.vbox{position:relative;width:100%;height:340px;background:#0b0d11;border:1px solid var(--line);border-radius:8px;overflow:hidden}
+.vbox.big{height:max(340px,calc(100vh - 150px))}
+.vbox iframe{position:absolute;inset:0;width:100%;height:100%;border:0;display:block}
+#vHint{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;text-align:center;padding:20px}
+</style></head><body>
+<header><span id="dot" class="dot"></span><h1 id="ttl">vakesamahere · …</h1><span id="state" class="tag">…</span><span id="upd"></span><button id="rbtn" class="hb" title="立即刷新">🔄 刷新</button><button id="obtn" class="hb">…</button></header>
+<main>
+  <div class="card"><h2>总资产（背包+末影箱，折合铜钱）</h2><div id="gain" class="big">—</div><div id="gainSub" class="sub"></div></div>
+  <div class="card"><h2>收益速度</h2><div id="rate" class="big">—</div><div id="rateSub" class="sub"></div></div>
+  <div class="card"><h2 style="display:flex;justify-content:space-between">平均赚钱速度（自上次重置）<button id="rsBtn" style="font-size:11px;padding:1px 8px;border-radius:5px;border:1px solid var(--line);background:#232733;color:var(--fg);cursor:pointer">↺ 重置统计</button></h2><div id="avg" class="big">—</div><div id="avgSub" class="sub"></div></div>
+  <div class="card"><h2>击杀 / 死亡（累计）</h2><div id="kd" class="big">—</div><div id="kdSub" class="sub"></div></div>
+  <div class="card"><h2>状态</h2>
+    <div class="row"><span>血量</span><b id="hp">—</b></div><div class="bar"><i id="hpBar" style="width:0"></i></div>
+    <div class="row"><span>饱食</span><b id="food">—</b></div>
+    <div class="row"><span>箭</span><b id="arrow">—</b></div>
+    <div class="row"><span>空格子</span><b id="free">—</b></div>
+    <div class="row"><span>位置</span><b id="pos">—</b></div>
+    <div class="row"><span>当前目标</span><b id="target">—</b></div>
+    <div class="row"><span>命中率</span><b id="acc">—</b></div>
+  </div>
+  <div class="card"><h2>钱（背包）</h2>
+    <div class="row"><span>银票</span><b id="note">—</b></div><div class="row"><span>金锭 / 元宝</span><b id="ingot">—</b></div><div class="row"><span>金粒 / 铜钱</span><b id="nug">—</b></div>
+    <div class="row"><span>总资产折合</span><b id="worth">—</b></div>
+  </div>
+  <div class="card"><h2>重要掉落（背包里）</h2><div id="items"></div></div>
+  <div class="card wide"><h2 style="display:flex;justify-content:space-between">资产曲线（铜钱）<span class="seg" id="seg"><button data-h="0.0833">5min</button> <button data-h="0.25">15min</button> <button data-h="0.5">30min</button> <button data-h="1">1h</button> <button data-h="2">2h</button> <button data-h="6">6h</button> <button data-h="12" class="act">12h</button> <button data-h="24">24h</button></span></h2><canvas id="chart" style="cursor:crosshair"></canvas><div id="sel" class="sub" style="margin-top:6px">在曲线上按住拖动选一段时间，会算出这段赚了多少、平均每小时多少。</div></div>
+  <div class="card wide"><h2 style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap">赚钱速度曲线（铜钱/时）<span class="sub">每个点 = 往前 <b id="nLab">30 分钟</b> 的赚钱数 ÷ 这段时长 <input id="nSl" type="range" min="0" max="9" step="1" value="3" style="vertical-align:middle;width:180px"></span></h2><canvas id="rchart"></canvas></div>
+  <div class="card ctl"><h2>手动控制（会打断当前动作）</h2>
+    <div><button data-a="combat_on" id="cOn">⚔ 自动打怪 开</button><button data-a="combat_off">关</button></div>
+    <div><button data-a="farm_on" id="fOn">🏹 刷怪循环 开</button><button data-a="farm_off">关</button> <span id="afMsg" class="sub"></span></div>
+    <div style="margin-top:4px">刷怪路线：<select id="pSel"></select> <button data-a="profile">切换</button> <span id="pMsg" class="sub"></span></div>
+    <div><button data-a="home">🏠 回城补给</button><button data-a="stop">✋ 全停</button><button data-a="cancel">⏹ 取消任务</button><button data-a="suicide" style="border-color:var(--bad)">☠ 自杀</button></div>
+    <div style="margin-top:6px">录好的路线：<select id="rSel"></select> <button data-a="route">走</button></div>
+    <div style="margin-top:4px">寻路到：<input id="gIn" list="pList" placeholder="地点名 或 x y z" style="width:150px"><datalist id="pList"></datalist> <button data-a="goto">走</button></div>
+    <div id="ctlMsg" class="sub" style="margin-top:6px"></div>
+  </div>
+  <div class="card"><h2>人物（实时）<span id="liveT" class="sub" style="float:right"></span></h2>
+    <div class="row"><span>坐标</span><b id="lPos">—</b></div>
+    <div class="row"><span>朝向 / 维度</span><b id="lYaw">—</b></div>
+    <div class="row"><span>血 / 饱食 / 饱和</span><b id="lHp">—</b></div>
+    <div class="row"><span>经验等级</span><b id="lXp">—</b></div>
+    <div class="row"><span>手持</span><b id="lHeld">—</b></div>
+    <div class="row"><span>用哪把弓</span><select id="bowSel" style="max-width:190px"></select></div>
+    <div class="row"><button id="bowSave">保存弓</button></div>
+    <div class="sub" id="bowMsg">背包里的弓，选好点下面保存；战斗时优先用这把。</div>
+    <div class="row"><span>头 / 胸 / 腿 / 脚</span><b id="lArm" style="text-align:right">—</b></div>
+    <div class="row"><span>刷怪 / 战斗 / 回城</span><b id="lSt">—</b></div>
+    <div class="row"><span>当前任务</span><b id="lJob">—</b></div></div>
+  <div class="card"><h2>背包（<span id="bagN">—</span>）</h2><table id="bagT"><thead><tr><th>物品</th><th>数量</th><th>格</th></tr></thead><tbody></tbody></table>
+    <div class="sub" style="margin-top:6px"><label><input type="checkbox" id="bagMerge" checked> 同名合并</label></div></div>
+  <div class="card"><h2>末影箱 <span id="endT" class="sub"></span></h2><table id="endTb"><thead><tr><th>物品</th><th>数量</th></tr></thead><tbody></tbody></table>
+    <div class="sub" style="margin-top:6px">末影箱只能在号打开它时读到，这里是最近一次回城存货时的内容。</div></div>
+  <div class="card wide"><h2 style="display:flex;align-items:center;gap:10px">观战（实时 3D）
+      <span id="vMsg" class="sub" style="font-weight:400"></span>
+      <span style="margin-left:auto;display:flex;gap:6px">
+        <button id="vLoad" class="hb" style="margin:0">▶ 开始观战</button>
+        <button id="vBig" class="hb" style="margin:0">⤢ 大屏</button>
+        <button id="vOpen" class="hb" style="margin:0">↗ 新窗口</button>
+        <button id="vReload" class="hb" style="margin:0">🔄 重载</button>
+      </span></h2>
+    <div id="vBox" class="vbox"><div class="sub" id="vHint">点「开始观战」加载画面（第一人称跟随，3D 占用带宽，不看时别开）</div></div></div>
+  <div class="card"><h2>回城补给设置 <span id="cfProf" class="sub" style="font-weight:400"></span></h2>
+    <div class="row"><span>箭少于这个数就回城</span><input id="cf_minArrow" type="number" style="width:80px"></div>
+    <div class="row"><span>回城时把箭买到</span><input id="cf_buyArrowTo" type="number" style="width:80px"></div>
+    <div class="row"><span>箭超过这个数就扔掉多的（0=不限）</span><input id="cf_maxArrow" type="number" style="width:80px"></div>
+    <div class="row"><span>食物少于这个数就回城</span><input id="cf_minFood" type="number" style="width:80px"></div>
+    <div class="row"><span>回城时把食物买到</span><input id="cf_buyFoodTo" type="number" style="width:80px"></div>
+    <div class="row"><span>空格子少于这个数就回城</span><input id="cf_minFree" type="number" style="width:80px"></div>
+    <div id="cfWangBox"><div class="row"><span>王員外货物去换金元宝</span><select id="cf_wang"><option value="0">关（存錢莊末影箱）</option><option value="1">开（40 货 → 9 金元宝）</option></select></div>
+    <div class="row"><span>货物攒到这个数才去换</span><input id="cf_wangMin" type="number" style="width:80px"></div></div>
+    <div class="sub" style="margin-top:6px">元素：卖 = 元素回收員 5→3 铜钱；精炼 = 林記打鐵鋪 元素精煉師 5→1 精練元素，存錢莊末影箱</div>
+    <div id="cfElem"></div>
+    <div style="margin-top:8px"><button id="cfSave">保存</button> <span id="cfMsg" class="sub">1 组 = 64</span></div></div>
+  <div class="card"><h2>最近几轮（一次回城=一轮）</h2><table id="rounds"><thead><tr><th>结束</th><th>分钟</th><th>击杀</th><th>铜钱</th><th>铜钱/时</th></tr></thead><tbody></tbody></table></div>
+  <div class="card"><h2>回城流程</h2><div id="homeLog" class="log"></div></div>
+  <div class="card"><h2>刷怪日志</h2><div id="farmLog" class="log"></div></div>
+  <div class="card"><h2>告警</h2><div id="alerts" class="log"></div></div>
+</main>
+<script>
+const $=id=>document.getElementById(id);const fmt=n=>n==null?'—':Math.round(n).toLocaleString();
+const sign=n=>(n>=0?'+':'')+fmt(n);const yin=n=>(n/100).toFixed(2);
+let H=12,hist=[];const NS=[5,10,15,30,60,90,120,180,240,360];let nIdx=3;let selA=null,selB=null,drag=false;
+function txt(id,v){$(id).textContent=v}
+let RESET=0;
+async function now(){
+  let d;try{d=await (await fetch('/api/now')).json()}catch{txt('upd','看板服务连不上');return}
+  const age=Math.round((d.serverT-d.t)/1000);
+  $('dot').className='dot '+(d.online&&age<120?'on':'off');
+  txt('upd',d.t?`数据 ${new Date(d.t).toLocaleTimeString()}（${age}s 前）`:'还没有数据');
+  if((d.resetT||0)!==RESET){RESET=d.resetT||0;avg();loadHist()}
+  OFFLINE=!!d.offline;$('obtn').textContent=OFFLINE?'🔌 上线':'⏻ 下线';$('obtn').style.borderColor=OFFLINE?'var(--ok)':'var(--bad)';$('cOn').classList.toggle('on',!!d.combatOn);$('fOn').classList.toggle('on',!!d.farm);txt('afMsg',d.autofarm?'掉线重连后会自动接着刷':'掉线重连后只上线，不自动刷');if(d.ctl)txt('ctlMsg','任务：'+d.ctl.what+' · '+({run:'进行中',done:'完成',err:'失败',cancelled:'已取消'}[d.ctl.s]||d.ctl.s)+(d.ctl.r?' · '+(typeof d.ctl.r==='string'?d.ctl.r:JSON.stringify(d.ctl.r)):''));
+  if(OFFLINE){txt('state','已下线（不自动重连）');}
+  else if(!d.online){txt('state','离线 '+(d.err||''));}
+  else if(!d.online){txt('state','离线 '+(d.err||''));}
+  else{const st=d.home==='run'?('回城中：'+(d.step||'')):(d.farm?'刷怪中':'已停');txt('state',st+' · '+(d.zone||''));}
+  if(d.worth!=null){$('gain').innerHTML=`${fmt(d.worth)} <span style="font-size:16px">铜钱</span>`;txt('gainSub',`≈ ${yin(d.worth)} 银票`)}
+  const a=d.acc||{};txt('kd',`${fmt(a.kills)} / ${fmt(a.deaths)}`);txt('kdSub',`本次连线击杀 ${fmt(d.kills)} · 躲箭 ${d.dodges||0} · 撤退 ${d.flees||0} · 卡顿回弹 ${d.setbacks||0}`);
+  if(d.online){
+    txt('hp',`${d.hp} / ${d.maxHp}`);$('hpBar').style.width=Math.min(100,d.hp/d.maxHp*100)+'%';$('hpBar').style.background=d.hp/d.maxHp<.4?'var(--bad)':'var(--ok)';
+    txt('food',d.food+' / 20');txt('arrow',fmt(d.arrow));txt('free',d.free);txt('pos',`${d.x}, ${d.y}, ${d.z}`);txt('target',d.target||'—');
+    txt('acc',d.shots?`${Math.round(d.hits/d.shots*100)}%（${d.hits}/${d.shots}）`:'—');
+    txt('note',d.money.note);txt('ingot',d.money.ingot);txt('nug',d.money.nug);txt('worth',fmt(d.worth)+' 铜钱');
+    $('items').innerHTML=Object.entries(d.items).map(([k,v])=>{return `<div class="row"><span>${k}</span><b>${v}</b></div>`}).join('');
+    txt('homeLog',(d.homeLog||[]).join('\n'));txt('farmLog',(d.farmLog||[]).join('\n'));
+  }
+  txt('alerts',(d.alerts||[]).slice().reverse().join('\n')||'无');
+  $('rounds').tBodies[0].innerHTML=(d.rounds||[]).slice().reverse().map(r=>`<tr><td>${r.end}</td><td>${r.min}</td><td>${r.kills}</td><td class="${r.d>=0?'pos':'neg'}">${sign(r.d)}</td><td>${r.min?fmt(r.d/r.min*60):'—'}</td></tr>`).join('');
+}
+async function loadHist(){try{hist=await (await fetch('/api/history?h='+(H+NS[nIdx]/60+0.05))).json()}catch{hist=[]}draw();rate();drawRate()}
+let geo=null;
+function cum(){const C=[0],O=[0];for(let i=1;i<hist.length;i++){const d=hist[i].t-hist[i-1].t,on=d<120e3&&hist[i-1].t>=RESET;C.push(C[i-1]+(on?hist[i].w-hist[i-1].w:0));O.push(O[i-1]+(on?d:0))}return{C,O}}
+function idxAt(t){let j=0;for(let i=0;i<hist.length;i++){if(hist[i].t<=t)j=i;else break}return j}
+function selStats(){if(selA==null||selB==null||hist.length<2)return;const a=Math.min(selA,selB),b=Math.max(selA,selB);const {C,O}=cum();const i=idxAt(a),j=idxAt(b);const g=C[j]-C[i],o=O[j]-O[i];
+  const k=hist[j].k>=hist[i].k?hist[j].k-hist[i].k:0;const ts=t=>new Date(t).toTimeString().slice(0,5);
+  $('sel').innerHTML=o<60e3?'选的这段没有在线数据':`<b>${ts(hist[i].t)} → ${ts(hist[j].t)}</b>：在线 ${(o/60e3).toFixed(0)} 分钟，赚 <span class="${g>=0?'pos':'neg'}">${sign(g)}</span> 铜钱，平均 <b class="${g>=0?'pos':'neg'}">${sign(g/o*3600e3)} 铜钱/时</b>（≈${yin(g/o*3600e3)} 银票/时），击杀 ${k} &nbsp;<a href="#" id="selClr" style="color:var(--acc)">清除</a>`;
+  const c=$('selClr');if(c)c.onclick=e=>{e.preventDefault();selA=selB=null;draw();$('sel').textContent='在曲线上按住拖动选一段时间，会算出这段赚了多少、平均每小时多少。'}}
+function drawRate(){
+  const c=$('rchart'),r=window.devicePixelRatio||1,W=c.clientWidth,Hh=c.clientHeight;c.width=W*r;c.height=Hh*r;const g=c.getContext('2d');g.scale(r,r);g.clearRect(0,0,W,Hh);
+  const N=NS[nIdx]*60e3,t1=Date.now(),t0=t1-H*3600e3;const {C,O}=cum();const pts=[];let j=0;
+  for(let i=0;i<hist.length;i++){if(hist[i].t<t0)continue;while(j<i&&hist[j+1].t<=hist[i].t-N)j++;if(hist[j].t>hist[i].t-N+60e3)continue;const o=O[i]-O[j];if(o<N*0.5)continue;pts.push([hist[i].t,(C[i]-C[j])/o*3600e3])}
+  g.fillStyle='#8b919c';g.font='11px system-ui';
+  if(pts.length<2){g.fillText('数据不够：需要至少 '+NS[nIdx]+' 分钟的记录',10,20);return}
+  let lo=Math.min(0,...pts.map(p=>p[1])),hi=Math.max(...pts.map(p=>p[1]));if(hi===lo)hi=lo+1;hi+=(hi-lo)*.08;
+  const L=54,R=8,T=8,B=22;const X=t=>L+(t-t0)/(t1-t0)*(W-L-R),Y=v=>T+(hi-v)/(hi-lo)*(Hh-T-B);g.strokeStyle='#262a33';
+  for(let i=0;i<=4;i++){const v=lo+(hi-lo)*i/4,y=Y(v);g.beginPath();g.moveTo(L,y);g.lineTo(W-R,y);g.stroke();g.fillText(fmt(v),4,y+4)}
+  for(let i=0;i<=5;i++){const t=t0+(t1-t0)*i/5;g.fillText(new Date(t).toTimeString().slice(0,5),X(t)-14,Hh-6)}
+  g.strokeStyle='#8b919c';g.setLineDash([4,4]);g.beginPath();g.moveTo(L,Y(0));g.lineTo(W-R,Y(0));g.stroke();g.setLineDash([]);
+  g.strokeStyle='#60a5fa';g.lineWidth=2;g.beginPath();let prev=null;for(const p of pts){const x=X(p[0]),y=Y(p[1]);if(prev&&p[0]-prev>120e3)g.moveTo(x,y);else prev?g.lineTo(x,y):g.moveTo(x,y);prev=p[0]}g.stroke();
+  const last=pts[pts.length-1];g.fillStyle='#60a5fa';g.fillText('现在 '+sign(last[1])+'/时',W-110,T+12);
+}
+function nLabel(){const m=NS[nIdx];txt('nLab',m<60?m+' 分钟':(m/60)+' 小时')}
+$('nSl').oninput=e=>{nIdx=+e.target.value;nLabel();loadHist()};nLabel();
+(()=>{const c=$('chart');const tAt=e=>{if(!geo)return null;const x=e.clientX-c.getBoundingClientRect().left;return geo.t0+Math.max(0,Math.min(1,(x-geo.L)/(geo.W-geo.L-geo.R)))*(geo.t1-geo.t0)};
+  const down=e=>{drag=true;selA=selB=tAt(e.touches?e.touches[0]:e);};const mv=e=>{if(!drag)return;selB=tAt(e.touches?e.touches[0]:e);draw();selStats();if(e.touches)e.preventDefault()};const up=()=>{drag=false};
+  c.addEventListener('mousedown',down);c.addEventListener('mousemove',mv);window.addEventListener('mouseup',up);c.addEventListener('touchstart',down,{passive:true});c.addEventListener('touchmove',mv,{passive:false});c.addEventListener('touchend',up)})();
+function rate(){
+  if(hist.length<2){txt('rate','—');return}
+  const last=hist[hist.length-1];const pick=m=>{const t=Math.max(last.t-m*60e3,RESET);let p=hist[0];for(const x of hist){if(x.t<=t)p=x;else break}return p};
+  const p60=pick(60);const mins=(last.t-p60.t)/60e3;const r=mins>5?(last.w-p60.w)/mins*60:null;
+  $('rate').innerHTML=r==null?'—':`<span class="${r>=0?'pos':'neg'}">${sign(r)}</span> <span style="font-size:16px">铜钱/时</span>`;
+  const f=hist[0];const tm=(last.t-f.t)/3600e3;const lab=H<1?Math.round(H*60)+'min':H+'h';txt('rateSub',`近 ${Math.round(mins)} 分钟 · ${lab} 区间内 ${sign(last.w-f.w)}（${tm.toFixed(1)} 小时）· 击杀 ${fmt(last.k-f.k)}`);
+}
+function draw(){
+  const c=$('chart'),r=window.devicePixelRatio||1,W=c.clientWidth,Hh=c.clientHeight;c.width=W*r;c.height=Hh*r;const g=c.getContext('2d');g.scale(r,r);g.clearRect(0,0,W,Hh);
+  if(hist.length<2){g.fillStyle='#8b919c';g.fillText('数据不够（12:45 开始记录）',10,20);return}
+  const t1=Date.now(),t0=t1-H*3600e3;let lo=Infinity,hi=-Infinity;for(const p of hist){if(p.t<t0)continue;lo=Math.min(lo,p.w);hi=Math.max(hi,p.w)}if(lo===Infinity){lo=0;hi=1}if(hi===lo)hi=lo+1;
+  const L=54,R=8,T=8,B=22;geo={t0,t1,L,R,W};const X=t=>L+(t-t0)/(t1-t0||1)*(W-L-R),Y=v=>T+(hi-v)/(hi-lo)*(Hh-T-B);
+  g.strokeStyle='#262a33';g.fillStyle='#8b919c';g.font='11px system-ui';
+  for(let i=0;i<=4;i++){const v=lo+(hi-lo)*i/4,y=Y(v);g.beginPath();g.moveTo(L,y);g.lineTo(W-R,y);g.stroke();g.fillText(fmt(v),4,y+4)}
+  for(let i=0;i<=5;i++){const t=t0+(t1-t0)*i/5;g.fillText(new Date(t).toTimeString().slice(0,5),X(t)-14,Hh-6)}
+  if(hist[0].t>t0+60e3){g.fillStyle='rgba(139,145,156,.10)';g.fillRect(L,T,X(hist[0].t)-L,Hh-T-B);g.fillStyle='#8b919c';g.fillText('没有记录',L+6,Hh-B-6)}
+  // 离线/不在刷怪点 时段画底色
+  for(let i=1;i<hist.length;i++){if(hist[i].t-hist[i-1].t>120e3){g.fillStyle='rgba(248,113,113,.12)';g.fillRect(X(hist[i-1].t),T,X(hist[i].t)-X(hist[i-1].t),Hh-T-B)}
+    else if(hist[i].z&&hist[i].z!=='刷怪点'){g.fillStyle='rgba(251,191,36,.10)';g.fillRect(X(hist[i-1].t),T,X(hist[i].t)-X(hist[i-1].t),Hh-T-B)}}
+  g.strokeStyle='#4ade80';g.lineWidth=2;g.beginPath();let st=0;hist.forEach(p=>{if(p.t<t0)return;const x=X(p.t),y=Y(p.w);st++?g.lineTo(x,y):g.moveTo(x,y)});g.stroke();
+  if(selA!=null&&selB!=null){const a=Math.min(selA,selB),b=Math.max(selA,selB);g.fillStyle='rgba(96,165,250,.18)';g.fillRect(X(a),T,X(b)-X(a),Hh-T-B)}
+  g.fillStyle='#8b919c';g.fillText('红底=离线  黄底=在路上/回城',W-170,T+12);
+}
+$('seg').onclick=e=>{const btn=e.target.closest('button');if(!btn)return;const h=btn.dataset.h;if(!h)return;H=+h;for(const b of $('seg').children)b.classList.toggle('act',b===btn);loadHist()};
+async function avg(){let a;try{a=await (await fetch('/api/avg')).json()}catch{return}
+  if(a.perHour==null){txt('avg','—');txt('avgSub',RESET?'自 '+new Date(RESET).toLocaleString()+' 重置，在线满 3 分钟后开始显示':'');return}
+  $('avg').innerHTML=`<span class="${a.perHour>=0?'pos':'neg'}">${sign(a.perHour)}</span> <span style="font-size:16px">铜钱/时</span>`;
+  txt('avgSub',`≈ ${yin(a.perHour)} 银票/时 · 自 ${new Date(RESET||a.since).toLocaleString()} 在线 ${a.hrs.toFixed(1)} 小时共 ${sign(a.gain)} 铜钱 · 击杀 ${fmt(a.killsPerHour)}/时（已扣买箭买粮）`)}
+avg();setInterval(avg,60000);
+let PAUSED=false;const KEY=new URLSearchParams(location.search).get('k')||localStorage.getItem('dashKey')||'';if(KEY)localStorage.setItem('dashKey',KEY);
+let OFFLINE=false;
+function key(){let k=KEY||localStorage.getItem('dashKey');if(!k){k=prompt('输入看板口令');if(k)localStorage.setItem('dashKey',k)}return k}
+async function act(a,v,btn){const k=key();if(!k)return;if(btn)btn.disabled=true;txt('ctlMsg',a+' …');
+  try{const r=await (await fetch('/api/ctl?a='+a+'&k='+encodeURIComponent(k)+(v!=null?'&v='+encodeURIComponent(v):''),{method:'POST'})).json();
+    if(r.badKey)localStorage.removeItem('dashKey');txt('ctlMsg',(r.ok?'✓ ':'✗ ')+(r.ok?(typeof r.r==='string'?r.r:JSON.stringify(r.r)):r.err))}catch(e){txt('ctlMsg','✗ 请求失败')}
+  if(a==='profile'){loadProfiles();loadCfg();loadTitle()}if(btn)btn.disabled=false;now()}
+$('rsBtn').onclick=e=>{if(!confirm('重置经济统计？平均速度、速度曲线、最近几轮、击杀/死亡都从现在重新算。总资产和历史曲线不删。'))return;act('reset_stats',null,e.target)};
+$('obtn').onclick=e=>{if(!OFFLINE&&!confirm('下线后不会自动重连，要点「上线」才回来。确定？'))return;act(OFFLINE?'online':'offline',null,e.target)};
+document.querySelector('.ctl').onclick=e=>{const b=e.target.closest('button');if(!b||!b.dataset.a)return;const a=b.dataset.a;if(a==='suicide'&&!confirm('喝鶴頂丹自杀？会在奈何桥复活，扣等级。'))return;
+  const v=a==='route'?$('rSel').value:a==='goto'?$('gIn').value.trim():a==='profile'?$('pSel').value:null;if((a==='route'||a==='goto'||a==='profile')&&!v)return;act(a,v,b)};
+(async()=>{try{const r=await (await fetch('/api/routes')).json();$('rSel').innerHTML=r.routes.map(x=>`<option>${x}</option>`).join('');$('pList').innerHTML=r.places.map(x=>`<option value="${x}">`).join('')}catch{}})();
+// 刷怪路线档案（每条路线绑一套战利品处理方式）
+async function loadProfiles(){try{const r=await (await fetch('/api/profiles')).json();
+  $('pSel').innerHTML=(r.list||[]).map(p=>`<option value="${p.name}"${p.active?' selected':''}>${p.label}${p.active?' ✓':''}</option>`).join('');
+  txt('pMsg',(r.list||[]).find(p=>p.active)?'当前：'+((r.list||[]).find(p=>p.active).label):'')}catch(e){txt('pMsg','✗ 读不到档案')}}
+function loadTitle(){fetch('/api/profiles').then(r=>r.json()).then(r=>{const a=(r.list||[]).find(p=>p.active);if(a)txt('ttl','vakesamahere · '+a.name)}).catch(()=>{})}
+loadProfiles();loadTitle();
+let CFP=null;
+const CFK=['minArrow','buyArrowTo','maxArrow','minFood','buyFoodTo','minFree','wangMin'];
+const CFE=[['rotten_flesh','金元素(腐肉)'],['bone','木元素(骨頭)'],['string','水元素(線)'],['blaze_rod','火元素(烈焰棒)'],['magma_cream','土元素(岩漿膏)']];
+$('cfElem').innerHTML=CFE.map(([k,n])=>`<div class="row"><span>${n}</span><select id="ce_${k}"><option value="sell">卖</option><option value="refine">精炼</option></select></div>`).join('');
+const setElem=em=>{for(const [k] of CFE)$('ce_'+k).value=(em&&em[k]==='refine')?'refine':'sell'};
+
+async function loadCfg(){try{const c=await (await fetch('/api/cfg')).json();CFP=c.profile||null;for(const k of CFK)if(c[k]!=null)$('cf_'+k).value=c[k];if(c.wang!=null)$('cf_wang').value=c.wang?'1':'0';setElem(c.elemMode);
+  txt('cfProf',(c.profile||'')+(c.saleNpc?(' · 货卖给 '+c.saleNpc+(c.saleGoods?'（'+c.saleGoods+'）':'')):''));
+  $('cfWangBox').style.display=c.showWang?'':'none';
+  if(c.showWang){var wl=document.querySelector('#cfWangBox .row span');if(wl)wl.textContent=c.saleNpc+'货物去换金元宝'}else{if(c.saleNpc){var box=document.querySelector('#cfWangBox');}}return c}catch{return null}}
+loadCfg();
+$('cfSave').onclick=async()=>{const k=key();if(!k)return;const v={};if(CFP)v.profile=CFP;for(const x of CFK){const s=$('cf_'+x).value;if(s!=='')v[x]=+s}v.elemMode={};for(const [x] of CFE)v.elemMode[x]=$('ce_'+x).value;v.wang=$('cf_wang').value==='1';
+  try{const r=await (await fetch('/api/cfg?k='+encodeURIComponent(k)+'&v='+encodeURIComponent(JSON.stringify(v)),{method:'POST'})).json();
+    if(r.badKey)localStorage.removeItem('dashKey');if(r.ok){for(const x of CFK)$('cf_'+x).value=r.cfg[x];setElem(r.cfg.elemMode);$('cf_wang').value=r.cfg.wang?'1':'0';txt('cfMsg','✓ 已保存'+(r.live?'，号上已生效':'（号不在线，上线开刷时生效）'))}else txt('cfMsg','✗ '+r.err)}catch{txt('cfMsg','✗ 请求失败')}};
+let LIVE=null;
+// 原版英文名 → 本服叫法（材质包 zh_TW.lang + 常见原版中文）
+const ZH={gold_nugget:'銅錢(金粒)',gold_ingot:'金元寶',iron_ingot:'銀票',bone:'木元素(骨頭)',rotten_flesh:'金元素(腐肉)',string:'水元素(線)',blaze_rod:'火元素(烈焰棒)',magma_cream:'土元素(岩漿膏)',
+ arrow:'箭',coal:'煤炭','skull:1':'凋零頭',nether_star:'下界之星',carrot:'胡蘿蔔',potato:'馬鈴薯',written_book:'書',glass_bottle:'玻璃瓶',cooked_beef:'牛排',cooked_fish:'熟魚',bread:'包子(麵包)',ghast_tear:'惡魂之淚',bow:'弓',diamond:'靈玉簡',speckled_melon:'閃爍的西瓜',poisonous_potato:'毒馬鈴薯',dye:'染料'};
+const zh=i=>{const en=/^[A-Za-z0-9 '()-]+$/.test(i.n);return en?(ZH[i.id]||ZH[i.id.split(':')[0]]||i.n):i.n};
+function esc(x){return String(x).replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]))}
+function renderBag(){if(!LIVE||!LIVE.bot)return;const b=LIVE.bot;let rows=b.items.slice();
+  if($('bagMerge').checked){const m={};for(const i of rows){const k=zh(i)+'|'+i.id;if(!m[k])m[k]={n:zh(i),id:i.id,c:0,s:[]};m[k].c+=i.c;m[k].s.push(i.s)}rows=Object.values(m).sort((a,b)=>b.c-a.c).map(x=>({n:x.n,id:x.id,c:x.c,s:x.s.length+' 格'}))}
+  else rows.sort((a,b)=>a.s-b.s);
+  $('bagT').tBodies[0].innerHTML=rows.map(i=>`<tr><td title="${esc(i.id)}">${esc($('bagMerge').checked?i.n:zh(i))}</td><td>${i.c}</td><td>${i.s}</td></tr>`).join('');
+  txt('bagN',`${b.items.length} 格占用，空 ${b.free} 格`)}
+async function live(){try{LIVE=await (await fetch('/api/live')).json()}catch{LIVE=null}
+  if(!LIVE||!LIVE.ok){txt('liveT','号不在线');}else{const b=LIVE.bot;txt('liveT',new Date(b.t).toLocaleTimeString());
+    txt('lPos',`${b.pos.x}, ${b.pos.y}, ${b.pos.z}`);txt('lYaw',`${b.yaw}° / ${b.dim}`);txt('lHp',`${b.hp} / ${b.food} / ${b.sat}`);txt('lXp',b.xp==null?'—':b.xp);
+    txt('lHeld',b.held?`${zh(b.held)} ×${b.held.c}（快捷栏 ${b.quick+1}）`:'空手');
+    $('lArm').innerHTML=b.armor.map(a=>a?esc(zh(a)):'—').join('<br>');
+    txt('lSt',`${b.farm?'开':'关'} / ${b.combat?'开':'关'} / ${b.home||'—'}`);txt('lJob',b.job?`${b.job.w}（${b.job.s}）`:'无');renderBag();renderBows(b.bows||[],b.bowName||'')}
+  const E=LIVE&&LIVE.ender;txt('endT',LIVE&&LIVE.enderT?'（'+LIVE.enderT.slice(4,21)+' 快照）':'');
+  $('endTb').tBodies[0].innerHTML=E?Object.entries(E).sort((a,b)=>b[1]-a[1]).map(([k,v])=>`<tr><td>${esc(ZH[k]||k)}</td><td>${v}</td></tr>`).join(''):'<tr><td colspan=2>还没有记录</td></tr>'}
+$('bagMerge').onchange=renderBag;
+// 弓：背包里有的弓列出来选；保存写进 home_cfg.json 并立刻作用到战斗层
+let BOWS=[];
+function renderBows(list,cur){BOWS=list;const s=$('bowSel');const opts=[['','默认（优先北斗那把）']].concat(list.map(b=>[b.name,b.name+'（'+b.count+' 把，格'+b.slot+'）']));
+  const sig=opts.map(o=>o[0]).join('|');if(s.dataset.sig!==sig){s.dataset.sig=sig;s.innerHTML=opts.map(([v,t])=>`<option value="${esc(v)}">${esc(t)}</option>`).join('')}
+  if(s.dataset.saved!=='1')s.value=cur||'';
+  if(!list.length)txt('bowMsg','背包里没看到弓（可能拿在手上或不在线）')}
+$('bowSel').onchange=()=>{$('bowSel').dataset.saved='0';txt('bowMsg','选好了，点「保存弓」生效')};
+$('bowSave').onclick=async()=>{const k=key();if(!k)return;$('bowSave').disabled=true;
+  try{const r=await (await fetch('/api/cfg?k='+encodeURIComponent(k)+'&v='+encodeURIComponent(JSON.stringify({bowName:$('bowSel').value})),{method:'POST'})).json();
+    if(r.ok){$('bowSel').dataset.saved='1';txt('bowMsg','✓ 已保存'+(r.live?'，号上已生效':'（号不在线，下次上线生效）'))}else txt('bowMsg','✗ '+(r.err||'失败'))}catch{txt('bowMsg','✗ 请求失败')}
+  $('bowSave').disabled=false};
+$('rbtn').onclick=async()=>{$('rbtn').disabled=true;$('rbtn').textContent='…';await Promise.all([live(),now(),loadHist(),avg()]);$('rbtn').disabled=false;$('rbtn').textContent='🔄 刷新'};
+// 观战：prismarine-viewer 在 bot 进程里单独起一个端口（线上 3008 / 本地 3007），看板用 /view/ 代理过去（同源同端口）
+let VIEW=null;
+async function viewPort(){ if(VIEW!=null) return VIEW; try{const r=await (await fetch('/api/view')).json();VIEW=r.ok?r:null}catch{VIEW=null} return VIEW }
+function viewUrl(){ return location.protocol+'//'+location.host+'/view/'; } // 走看板自己的 /view/，不需要额外端口
+function vMount(){ const box=$('vBox'); box.querySelectorAll('iframe').forEach(f=>f.remove()); $('vHint').style.display='none';
+  const f=document.createElement('iframe'); f.src=viewUrl(); f.allow='fullscreen'; box.appendChild(f); }
+$('vLoad').onclick=async()=>{ $('vLoad').disabled=true; txt('vMsg','连接中…'); const p=await viewPort(); $('vLoad').disabled=false;
+  if(!p) return txt('vMsg','✗ 拿不到观战端口（看板没重启？）');
+  txt('vMsg','观战就绪'); vMount(); };
+$('vReload').onclick=async()=>{ const p=await viewPort(); if(!p) return txt('vMsg','✗ 拿不到观战端口'); const box=$('vBox'); const f=box.querySelector('iframe'); if(f){f.src=viewUrl()+'?t='+Date.now()}else vMount(); };
+$('vBig').onclick=()=>{ const b=$('vBox'); b.classList.toggle('big'); $('vBig').textContent=b.classList.contains('big')?'⤡ 收起':'⤢ 大屏'; };
+$('vOpen').onclick=async()=>{ const p=await viewPort(); if(!p) return txt('vMsg','✗ 拿不到观战端口'); window.open(viewUrl(),'_blank','noopener'); };
+viewPort().then(p=>{ if(p) txt('vMsg','观战就绪（点「开始观战」加载）'); else txt('vMsg','✗ 拿不到观战端口'); });
+live();setInterval(live,5000);
+window.onresize=()=>{draw();drawRate()};now();loadHist();setInterval(now,2000);setInterval(loadHist,30000);
+</script></body></html>
